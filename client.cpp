@@ -10,7 +10,6 @@
 #include <ctime>
 #endif
 
-#include "json/json.h"
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/transport/TSocket.h>
 #include <thrift/transport/TTransportUtils.h>
