@@ -1,13 +1,14 @@
-#include "client.h"
+﻿#include "client.h"
 
 #include <stdio.h>
+#include <ctime>
 
 #ifdef WIN32
 #include <iostream>
 #include <io.h>
 #include <fcntl.h>
 #include <codecvt>
-#include <ctime>
+
 #endif
 
 #include <thrift/protocol/TBinaryProtocol.h>
@@ -15,6 +16,7 @@
 #include <thrift/transport/TTransportUtils.h>
 
 #include "PassengerService.h"
+#include "utiltime.h"
 
 using namespace std;
 using namespace apache::thrift;
@@ -147,12 +149,6 @@ void coutPassengerUsage(PassengerUsage &v)
 		<< v.payload.papercount  << '\t'; 
 }
 
-time_t currentTime()
-{
-	time_t r(time(NULL));
-	return r;
-}
-
 /**
 	Return current month number: 0 - 11
 */
@@ -199,6 +195,10 @@ int init()
 #endif
 	return 0;
 }
+
+const STR FMT_DATE = "%Y-%m-%d";
+const STR FMT_TIME = "%H:%M";
+const STR FMT_DATETIME = "%Y-%m-%d %H:%M";
 
 int doCmd(int argc, char** argv)
 {
@@ -259,7 +259,21 @@ int doCmd(int argc, char** argv)
 	struct arg_int  *i_isoperator = arg_int0(NULL, "isoperator", "0|1", "1- is operator");
 	struct arg_int  *i_canorder = arg_int0(NULL, "canorder", "1..3", "1- yes, 2- no, 3- route only");
 	struct arg_int  *i_isvip = arg_int0(NULL, "isvip", "0|1", "1- is V.I.P.");
-
+	
+	struct arg_date *d_datestart = arg_date0(NULL, "datestart", "<date>", FMT_DATE.c_str(), "2014-09-29");
+	struct arg_date *d_datefinish = arg_date0(NULL, "datefinish", "<date>", FMT_DATE.c_str(), "2014-09-29");
+	struct arg_int  *i_isday = arg_int0(NULL, "isday", "0|1", "1- is part of day");
+	struct arg_int  *i_hourstart = arg_int0(NULL, "hourstart", "0..23", "hour");
+	struct arg_int  *i_hourfinish = arg_int0(NULL, "hourfinish", "0..23", "hour");
+	struct arg_int  *i_isweekend = arg_int0(NULL, "isweekend", "0|1", "1- weekwend");
+	struct arg_dbl  *d_costmin = arg_dbl0(NULL, "costmin", "<currency>", "minimum price round to");
+	struct arg_dbl  *d_priceboarding = arg_dbl0(NULL, "priceboarding", "<currency>", "boarding price");
+	struct arg_dbl  *d_priceminute = arg_dbl0(NULL, "priceminute", "<currency>", "price per minute");
+	struct arg_dbl  *d_pricedelay = arg_dbl0(NULL, "pricedelay", "<currency>", "price per minute");
+	struct arg_dbl  *d_pricewait = arg_dbl0(NULL, "pricewait", "<currency>", "price per minute");
+	struct arg_int  *i_speedmin = arg_int0(NULL, "speedmin", "<speed>", "speed km/h");
+	struct arg_int  *i_timedelayfree = arg_int0(NULL, "timedelayfree", "<seconds>", "free wait time");
+	
 	struct arg_end  *end = arg_end(20);
 
 	void* argtable[] = { c_license, c_add, c_get, c_rm, c_ls, c_ls_ofs, c_ls_cnt, obj, verbose, help, 
@@ -270,6 +284,7 @@ int doCmd(int argc, char** argv)
 		i_id, i_callsign,
 		i_active, i_enabled, i_taxtype, i_preferreddriverid,
 		i_personid, i_customerid, i_isoperator, i_isvip,
+		d_datestart, d_datefinish, i_isday, i_hourstart, i_hourfinish, i_isweekend, d_costmin, d_priceboarding, d_priceminute, d_pricedelay, d_pricewait, i_speedmin, i_timedelayfree,
 		end };
 	const char* progname = "taxi-simple-cli";
 	int nerrors;
@@ -690,6 +705,81 @@ int doCmd(int argc, char** argv)
 				}				
 				client.addVehicleModelByBrandName(ret, credentials, userdevice, brandname, name, year);
 			}
+
+			if (strcmp("rate", *obj->sval) == 0)
+			{
+				Rate ret;
+				Rate v;
+
+				if (s_name->count == 0)
+				{
+					printf("--name missed.\n");
+					done(argtable);
+					return 2;
+				}
+				v.name = *s_name->sval;
+
+				if (i_cityid->count == 0)
+				{
+					printf("--cityid missed.\n");
+					done(argtable);
+					return 2;
+				}
+
+				v.cityid = *i_cityid->ival;
+
+				if (d_datestart->count == 0)
+					v.datestart = tm2time_tUTC(d_datestart->tmval);
+				if (d_datefinish->count == 0)
+					v.datefinish = tm2time_tUTC(d_datefinish->tmval);
+				if (i_active->count == 0)
+					v.active = (*i_active->ival != 0);
+				if (i_isday->count == 0)
+					v.isday = (*i_isday->ival != 0);
+				if (i_hourstart->count == 0)
+				{
+					v.hourstart = *i_hourstart->ival;
+					v.isday = true;
+				}
+				if (i_hourfinish->count == 0)
+				{
+					v.hourfinish = *i_hourfinish->ival;
+					v.isday = true;
+				}
+
+				if (i_isweekend->count == 0)
+					v.isweekend = (*i_isweekend->ival != 0);
+				
+				if (d_costmin->count == 0)
+					v.costmin = *d_costmin->dval;
+				else
+					v.costmin = .0;
+				if (d_priceboarding->count == 0)
+					v.priceboarding = *d_priceboarding->dval;
+				else
+					v.priceboarding = .0;
+				if (d_priceminute->count == 0)
+					v.priceminute = *d_priceminute->dval;
+				else
+					v.priceminute = .0;
+				if (d_pricedelay->count == 0)
+					v.pricedelay = *d_pricedelay->dval;
+				else
+					v.pricedelay = v.priceminute;
+				if (d_pricewait->count == 0)
+					v.pricewait = *d_pricewait->dval;
+				else
+					v.pricewait = v.priceminute;
+				if (i_speedmin->count == 0)
+					v.speedmin = *i_speedmin->ival;
+				else
+					v.speedmin = 0;
+				if (i_timedelayfree->count == 0)
+					v.timedelayfree = *i_speedmin->ival;
+				else
+					v.timedelayfree = 0; // seconds
+				client.addRate(ret, credentials, userdevice, v);
+			}
 		}
 
 		// listing range
@@ -778,7 +868,7 @@ int doCmd(int argc, char** argv)
 				for (Cities::iterator it = ret.begin(); it != ret.end(); ++it)
 				{
 					cout << it->id << '\t' << it->areaid << '\t' << it->tag << '\t';
-					printf("%s", it->name.c_str());
+					couts(it->name);
 					cout << '\t';
 					couts(it->notes);
 					cout << std::endl; 
@@ -792,7 +882,7 @@ int doCmd(int argc, char** argv)
 				for (DictEntries::iterator it = ret.begin(); it != ret.end(); ++it)
 				{
 					cout << it->id << '\t' << it->parent << '\t' << it->tag << '\t' << it->intvalue << '\t';
-					printf("%s", it->strvalue.c_str());
+					couts(it->strvalue);
 					cout << std::endl; 
 				}
 			}
@@ -951,8 +1041,27 @@ int doCmd(int argc, char** argv)
 					cout << std::endl;
 				}
 			}
-		}
 
+			if (strcmp("rate", *obj->sval) == 0)
+			{
+				Rates ret;
+				Rate v;
+				client.findRate(ret, credentials, userdevice, v, rowrange);
+				for (Rates::iterator it = ret.begin(); it != ret.end(); ++it)
+				{
+					cout << it->id << '\t' << it->orgserviceid << '\t' << it->cityid << '\t';
+					couts(it->name);
+					cout << '\t' << it->active << '\t';
+					coutdate(it->datestart);
+					cout << '\t';
+					coutdate(it->datefinish);
+					cout << '\t' << it->isweekend << '\t' << it->isday << '\t' << it->hourstart << '\t' << it->hourfinish << '\t'
+						<<  it->costmin << '\t' << it->priceboarding << '\t' <<  it->priceminute << '\t'
+						<<  it->pricedelay << '\t' <<  it->pricewait << '\t' <<  it->speedmin << '\t' <<  it->timedelayfree << '\t';
+					cout << std::endl; 
+				}
+			}
+		}
 
 		transport->close();
 	}
