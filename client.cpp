@@ -1,6 +1,7 @@
 ﻿#include "client.h"
 
 #include <stdio.h>
+#include <iostream>
 #include <ctime>
 
 #ifdef WIN32
@@ -33,13 +34,21 @@ void couts(const STR &s)
 void coutdate(const taxi::DATE &date)
 {
 	struct tm *tm = localtime(&date);
-	cout << std::put_time(tm, "%Y/%m/%d");
+	// cout << std::put_time(tm, "%Y/%m/%d");
+	char buffer [80];
+	struct tm *ld = localtime(&date);
+	strftime(buffer, sizeof(buffer), "%Y/%m/%d", ld);
+	puts(buffer);
 }						
 
 void couttime(const taxi::DATE &date)
 {
 	struct tm *tm = localtime(&date);
-	cout << std::put_time(tm, "%Y/%m/%d %T");
+	// cout << std::put_time(tm, "%Y/%m/%d %T");
+        char buffer [80];
+        struct tm *ld = localtime(&date);
+        strftime(buffer, sizeof(buffer), "%Y/%m/%d %T", ld);
+        puts(buffer);
 }						
 
 void coutPerson(taxi::Person &v)

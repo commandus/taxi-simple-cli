@@ -1,4 +1,7 @@
 #include "taxi-simple-cli.h"
+
+#ifdef WIN32
+#include <tchar.h>
 #include "argvcharsetconv.h"
 
 int _tmain(int argc, TCHAR** argv)
@@ -9,3 +12,12 @@ int _tmain(int argc, TCHAR** argv)
 	return r;
 }
 
+#else
+
+int main(int argc, char** argv)
+{
+        int r = doCmd(argc, argv);
+        return r;
+}
+
+#endif

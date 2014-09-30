@@ -1,7 +1,6 @@
 #ifndef _WIN32
 	error Windows only
 #endif
-// argvcharsetconv.h
 #include <tchar.h>
 
 char** argvConv(int argc, TCHAR** argv);
