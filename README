@@ -1,0 +1,5 @@
+./configure
+make
+sudo make install
+
+See README.md (UTF-8)
