@@ -11,7 +11,6 @@ INCS=\
 	-I. \
 	-Ithrift \
 	-I/usr/local/include \
-	-I../../../thrift/gen-cpp \
 	-I/home/andrei/src/boost_1_56_0
 
 LIBS=\
