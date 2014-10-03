@@ -275,7 +275,7 @@ int sendGCM(const STR &apikey, const vector<STR> ids, const STR &data, bool verb
 		stringstream strmids;
 		for (vector<STR>::const_iterator it = ids.begin(); it != ids.end(); ++it )
 		{
-			strmids << *it << ",";
+			strmids << "\"" << *it << "\",";
 		}
 		STR sids = strmids.str();
 		sdata.append(sids.substr(0, sids.size()-1));
