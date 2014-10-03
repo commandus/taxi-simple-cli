@@ -18,6 +18,8 @@ AC_CHECK_LIB([argtable2], [main])
 # FIXME: Replace `main' with a function in `-lthrift':
 AC_CHECK_LIB([thrift], [main])
 
+AC_CHECK_LIB([curl], [main])
+
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h])
 
@@ -33,7 +35,8 @@ AC_TYPE_UINT8_T
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_MKTIME
-AC_CHECK_FUNCS([memset socket])
+AC_FUNC_REALLOC
+AC_CHECK_FUNCS([memset socket select])
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
