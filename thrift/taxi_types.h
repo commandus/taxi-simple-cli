@@ -79,16 +79,15 @@ extern const std::map<int, const char*> _TaxiServiceRole_VALUES_TO_NAMES;
 
 struct PersonRole {
   enum type {
-    REQUEST = 0,
-    NOTAUTHORIZED = 1,
-    GUEST = 2,
-    PASSENGER = 3,
-    OPERATOR = 4,
-    DRIVER = 5,
-    DISPATCHER = 6,
-    MANAGER = 7,
-    CUSTOMER = 8,
-    ADMIN = 9
+    ADMIN = 0,
+    CUSTOMER = 1,
+    MANAGER = 2,
+    DISPATCHER = 3,
+    DRIVER = 4,
+    OPERATOR = 5,
+    PASSENGER = 6,
+    GUEST = 7,
+    NOTAUTHORIZED = 8
   };
 };
 
@@ -384,6 +383,63 @@ struct DictTag {
 
 extern const std::map<int, const char*> _DictTag_VALUES_TO_NAMES;
 
+struct ServiceObject {
+  enum type {
+    SO_Unknown = 0,
+    SO_AutoPayment = 1,
+    SO_Bank = 2,
+    SO_BillAct = 3,
+    SO_City = 4,
+    SO_Claim = 5,
+    SO_Credentials = 6,
+    SO_Customer = 7,
+    SO_CustomerStatistic = 8,
+    SO_DateRange = 9,
+    SO_Dept = 10,
+    SO_DictEntry = 11,
+    SO_Dispatcher = 12,
+    SO_Document = 13,
+    SO_Driver = 14,
+    SO_DriverBlackList = 15,
+    SO_GeoLocation = 16,
+    SO_Location = 17,
+    SO_Notification = 18,
+    SO_Org = 19,
+    SO_OrgService = 20,
+    SO_Passenger = 21,
+    SO_PassengerLimit = 22,
+    SO_PassengerUsage = 23,
+    SO_Payload = 24,
+    SO_Payment = 25,
+    SO_Person = 26,
+    SO_Rate = 27,
+    SO_RowRange = 28,
+    SO_ServiceObjectAction = 29,
+    SO_ServiceOrder = 30,
+    SO_ServiceOrderDecline = 31,
+    SO_ServiceOrderStop = 32,
+    SO_Shedule = 33,
+    SO_SheduleDays = 34,
+    SO_SheduleStop = 35,
+    SO_Track = 36,
+    SO_UserDevice = 37,
+    SO_Vehicle = 38
+  };
+};
+
+extern const std::map<int, const char*> _ServiceObject_VALUES_TO_NAMES;
+
+struct ServiceAction {
+  enum type {
+    ACT_DO = 0,
+    ACT_ADD = 1,
+    ACT_EDIT = 2,
+    ACT_RM = 3
+  };
+};
+
+extern const std::map<int, const char*> _ServiceAction_VALUES_TO_NAMES;
+
 typedef std::string BLOB;
 
 typedef int64_t DATE;
@@ -427,6 +483,10 @@ typedef std::map<Month::type, class PassengerUsage>  PassengerUsageMonth;
 typedef std::map<NUMBER32, class PassengerUsage>  PassengerUsageYear;
 
 typedef std::vector<class UserDevice>  UserDevices;
+
+typedef std::map<ServiceAction::type, bool>  ServiceActionPermit;
+
+typedef std::map<ServiceObject::type, ServiceActionPermit>  ServiceObjectActionPermit;
 
 typedef ID Personid;
 
@@ -1127,11 +1187,13 @@ class UserDevice {
 void swap(UserDevice &a, UserDevice &b);
 
 typedef struct _Credentials__isset {
-  _Credentials__isset() : phone(false), personrole(true), token(false), password(false), islogged(false), timelogon(false) {}
+  _Credentials__isset() : phone(false), personrole(true), token(false), password(false), serviceaction(false), serviceobject(false), islogged(false), timelogon(false) {}
   bool phone;
   bool personrole;
   bool token;
   bool password;
+  bool serviceaction;
+  bool serviceobject;
   bool islogged;
   bool timelogon;
 } _Credentials__isset;
@@ -1139,11 +1201,11 @@ typedef struct _Credentials__isset {
 class Credentials {
  public:
 
-  static const char* ascii_fingerprint; // = "7DC7E75D6971522CCFD03BAA0AA5AE12";
-  static const uint8_t binary_fingerprint[16]; // = {0x7D,0xC7,0xE7,0x5D,0x69,0x71,0x52,0x2C,0xCF,0xD0,0x3B,0xAA,0x0A,0xA5,0xAE,0x12};
+  static const char* ascii_fingerprint; // = "404AEE7244E085B98A670967F2D10AE0";
+  static const uint8_t binary_fingerprint[16]; // = {0x40,0x4A,0xEE,0x72,0x44,0xE0,0x85,0xB9,0x8A,0x67,0x09,0x67,0xF2,0xD1,0x0A,0xE0};
 
-  Credentials() : phone(), personrole((PersonRole::type)0), token(), password(), islogged(0), timelogon(0) {
-    personrole = (PersonRole::type)0;
+  Credentials() : phone(), personrole((PersonRole::type)8), token(), password(), serviceaction((ServiceAction::type)0), serviceobject((ServiceObject::type)0), islogged(0), timelogon(0) {
+    personrole = (PersonRole::type)8;
 
   }
 
@@ -1153,6 +1215,8 @@ class Credentials {
   PersonRole::type personrole;
   STR token;
   STR password;
+  ServiceAction::type serviceaction;
+  ServiceObject::type serviceobject;
   bool islogged;
   DATE timelogon;
 
@@ -1174,6 +1238,14 @@ class Credentials {
     password = val;
   }
 
+  void __set_serviceaction(const ServiceAction::type val) {
+    serviceaction = val;
+  }
+
+  void __set_serviceobject(const ServiceObject::type val) {
+    serviceobject = val;
+  }
+
   void __set_islogged(const bool val) {
     islogged = val;
   }
@@ -1191,6 +1263,10 @@ class Credentials {
     if (!(token == rhs.token))
       return false;
     if (!(password == rhs.password))
+      return false;
+    if (!(serviceaction == rhs.serviceaction))
+      return false;
+    if (!(serviceobject == rhs.serviceobject))
       return false;
     if (!(islogged == rhs.islogged))
       return false;
@@ -1234,8 +1310,8 @@ typedef struct _Person__isset {
 class Person {
  public:
 
-  static const char* ascii_fingerprint; // = "182B40AD2588C53124FB85962CE56EC0";
-  static const uint8_t binary_fingerprint[16]; // = {0x18,0x2B,0x40,0xAD,0x25,0x88,0xC5,0x31,0x24,0xFB,0x85,0x96,0x2C,0xE5,0x6E,0xC0};
+  static const char* ascii_fingerprint; // = "CF73CCD1CC68595189AFA6621AEEC328";
+  static const uint8_t binary_fingerprint[16]; // = {0xCF,0x73,0xCC,0xD1,0xCC,0x68,0x59,0x51,0x89,0xAF,0xA6,0x62,0x1A,0xEE,0xC3,0x28};
 
   Person() : tag(0), firstname(), lastname(), middlename(), prefix(), birthdate(0), deparment(), position(), note(), phone1(), phone2(), fax(), email(), photo() {
   }
@@ -1579,8 +1655,8 @@ typedef struct _Org__isset {
 class Org {
  public:
 
-  static const char* ascii_fingerprint; // = "3688BFA06FEE4FA0B3047841F968ADAC";
-  static const uint8_t binary_fingerprint[16]; // = {0x36,0x88,0xBF,0xA0,0x6F,0xEE,0x4F,0xA0,0xB3,0x04,0x78,0x41,0xF9,0x68,0xAD,0xAC};
+  static const char* ascii_fingerprint; // = "CF436D1BD01573E195E296E37507559A";
+  static const uint8_t binary_fingerprint[16]; // = {0xCF,0x43,0x6D,0x1B,0xD0,0x15,0x73,0xE1,0x95,0xE2,0x96,0xE3,0x75,0x07,0x55,0x9A};
 
   Org() : id(0), orgrole((OrgRole::type)0), orgtype((OrgType::type)0), start(0), tag(0), name(), fullname(), shortname(), inn(), kpp(), ogrn(), phone(), email(), currentaccount(), correspondentaccount(), description(), note() {
   }
@@ -1776,8 +1852,8 @@ typedef struct _Dept__isset {
 class Dept {
  public:
 
-  static const char* ascii_fingerprint; // = "555535F27CF83F0266B523A223240534";
-  static const uint8_t binary_fingerprint[16]; // = {0x55,0x55,0x35,0xF2,0x7C,0xF8,0x3F,0x02,0x66,0xB5,0x23,0xA2,0x23,0x24,0x05,0x34};
+  static const char* ascii_fingerprint; // = "30B290109952327E31AE01A265365B1D";
+  static const uint8_t binary_fingerprint[16]; // = {0x30,0xB2,0x90,0x10,0x99,0x52,0x32,0x7E,0x31,0xAE,0x01,0xA2,0x65,0x36,0x5B,0x1D};
 
   Dept() : id(0), orgid(0), name(), fullname(), shortname(), phone(), email(), currentaccount(), correspondentaccount(), description(), note() {
   }
@@ -2644,8 +2720,8 @@ typedef struct _Driver__isset {
 class Driver {
  public:
 
-  static const char* ascii_fingerprint; // = "6E1EC05F6E1E998BA50467B83CFC005D";
-  static const uint8_t binary_fingerprint[16]; // = {0x6E,0x1E,0xC0,0x5F,0x6E,0x1E,0x99,0x8B,0xA5,0x04,0x67,0xB8,0x3C,0xFC,0x00,0x5D};
+  static const char* ascii_fingerprint; // = "52B444B1FB9963813E6834C0899BA16E";
+  static const uint8_t binary_fingerprint[16]; // = {0x52,0xB4,0x44,0xB1,0xFB,0x99,0x63,0x81,0x3E,0x68,0x34,0xC0,0x89,0x9B,0xA1,0x6E};
 
   Driver() : id(0), cityid(0), status((EmployeeStatus::type)0), nickname(), callsign(0), cabclass((CabClass::type)0), rating(0), online(0) {
   }
@@ -2770,8 +2846,8 @@ typedef struct _Dispatcher__isset {
 class Dispatcher {
  public:
 
-  static const char* ascii_fingerprint; // = "947B626909480D53FC5C011022FC7A28";
-  static const uint8_t binary_fingerprint[16]; // = {0x94,0x7B,0x62,0x69,0x09,0x48,0x0D,0x53,0xFC,0x5C,0x01,0x10,0x22,0xFC,0x7A,0x28};
+  static const char* ascii_fingerprint; // = "6592E2714C7CF771B89E12F135A8F8ED";
+  static const uint8_t binary_fingerprint[16]; // = {0x65,0x92,0xE2,0x71,0x4C,0x7C,0xF7,0x71,0xB8,0x9E,0x12,0xF1,0x35,0xA8,0xF8,0xED};
 
   Dispatcher() : id(0), status((EmployeeStatus::type)0), nickname(), online(0) {
   }
@@ -2867,8 +2943,8 @@ typedef struct _ServiceOrderStop__isset {
 class ServiceOrderStop {
  public:
 
-  static const char* ascii_fingerprint; // = "47AFD758DB04CDF012751839C995DA42";
-  static const uint8_t binary_fingerprint[16]; // = {0x47,0xAF,0xD7,0x58,0xDB,0x04,0xCD,0xF0,0x12,0x75,0x18,0x39,0xC9,0x95,0xDA,0x42};
+  static const char* ascii_fingerprint; // = "03994098E54589F537CFE95C17205FBE";
+  static const uint8_t binary_fingerprint[16]; // = {0x03,0x99,0x40,0x98,0xE5,0x45,0x89,0xF5,0x37,0xCF,0xE9,0x5C,0x17,0x20,0x5F,0xBE};
 
   ServiceOrderStop() : id(0), serviceorderid(0), stopno(0), stoptype((StopType::type)0), stage((OrderStage::type)0), created(0), assigned(0), started(0), arrived(0), finished(0), notes() {
   }

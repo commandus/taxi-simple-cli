@@ -1,11 +1,15 @@
 ﻿#include "client.h"
 
 #include <stdio.h>
+#include <string>
 #include <iostream>
+#include <fstream>
+#include <streambuf>
+
 #include <ctime>
+#include "curl/curl.h"
 
 #ifdef WIN32
-#include <iostream>
 #include <io.h>
 #include <fcntl.h>
 #include <codecvt>
@@ -209,6 +213,115 @@ const STR FMT_DATE = "%Y-%m-%d";
 const STR FMT_TIME = "%H:%M";
 const STR FMT_DATETIME = "%Y-%m-%d %H:%M";
 
+struct cbCurlData 
+{
+	char *memory;
+	size_t size;
+};
+
+static size_t cbCurl(void *contents, size_t size, size_t nmemb, void *userp)
+{
+	size_t realsize = size * nmemb;
+	struct cbCurlData *mem = (struct cbCurlData *) userp;
+	mem->memory = (char *) realloc(mem->memory, mem->size + realsize + 1);
+	if (mem->memory == NULL) 
+	{
+		cerr << "not enough memory (realloc returned NULL)";
+		return 3;
+	}
+	memcpy(&(mem->memory[mem->size]), contents, realsize);
+	mem->size += realsize;
+	mem->memory[mem->size] = 0;
+	printf("%s", mem->memory);
+	return realsize;
+}
+
+size_t readstring(FILE *f, string &data)
+{
+	fseek(f, 0, SEEK_END);
+	size_t r = ftell(f);
+	data.resize(r);
+	rewind(f);
+	return fread(&data[0], sizeof(char), r, f);
+}
+
+int sendGCM(const STR &apikey, const vector<STR> ids, const STR &data, bool verbose)
+{
+	CURL *curl;
+	CURLcode res;
+
+	if (ids.size() <= 0)
+		return -1;
+	
+	curl_global_init(CURL_GLOBAL_DEFAULT);
+ 	curl = curl_easy_init();
+	if(curl) {
+		struct curl_slist *headers = NULL; // init to NULL is important 
+		
+		STR authKey("Authorization: key=");
+		authKey.append(apikey);
+		headers = curl_slist_append(headers, authKey.c_str());  
+		headers = curl_slist_append(headers, "Content-Type: application/json");
+		headers = curl_slist_append(headers, "charsets: utf-8"); 
+
+		curl_easy_setopt(curl, CURLOPT_URL, "https://android.googleapis.com/gcm/send");
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+
+		if (verbose)
+			curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
+
+		STR sdata("{\"registration_ids\":[");
+		stringstream strmids;
+		for (vector<STR>::const_iterator it = ids.begin(); it != ids.end(); ++it )
+		{
+			strmids << *it << ",";
+		}
+		STR sids = strmids.str();
+		sdata.append(sids.substr(0, sids.size()-1));
+		sdata.append("],\"data\":");
+		sdata.append(data);
+		sdata.append("}");
+
+		size_t lines = std::count(sdata.begin(), sdata.end(), '\n') + 1;
+		size_t bytes = sdata.size();
+
+		stringstream strmcontentlen;
+		strmcontentlen << "Content-Length: " << bytes;
+		headers = curl_slist_append(headers, strmcontentlen.str().c_str()); 
+
+		res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+		if (res != CURLE_OK)
+		{
+			fprintf(stderr, "send GSM error: %d\n", res);
+			return res;
+		}
+		
+		curl_easy_setopt(curl, CURLOPT_POST, lines);
+		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, sdata.c_str());
+
+
+		/* send all data to this function  */
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, cbCurl);
+		/* we pass our 'chunk' struct to the callback function */
+		struct cbCurlData chunk;
+		chunk.memory = (char*) malloc(1);  /* will be grown as needed by the realloc above */
+		chunk.size = 0;    /* no data at this point */
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
+
+ 		/* Perform the request, res will get the return code */ 
+		res = curl_easy_perform(curl);
+		/* Check for errors */ 
+		if (res != CURLE_OK)
+			fprintf(stderr, "send GSM error: %s\n",
+	
+		curl_easy_strerror(res));
+ 		curl_easy_cleanup(curl);
+	}
+ 	curl_global_cleanup();
+	return res;
+}
+
 int doCmd(int argc, char** argv)
 {
 	init();
@@ -221,7 +334,10 @@ int doCmd(int argc, char** argv)
 	struct arg_int  *c_ls_cnt = arg_int0(NULL, "count", "<number>", "1..");
 	struct arg_str  *obj = arg_str0("o", "object", "<object>", "Objects: bank,.. See documentation.");
 	struct arg_lit  *verbose = arg_lit0("v", "verbose,debug", "verbose messages");
-	struct arg_lit  *help = arg_lit0("h", "help", "print this help and exit");
+	struct arg_lit  *help = arg_lit0("?", "help", "print this help and exit");
+
+	struct arg_int  *i_port = arg_int0("p", "port", "<number>", "1..65535, default 9090");
+	struct arg_str  *s_hostname = arg_str0("h", "host", "<address>", "Address or IP");
 
 	struct arg_str  *s_name = arg_str0("n", "name", "<name>", "Common Name");
 	struct arg_int  *i_year = arg_int0(NULL, "year", "<number>", "1700..2700");
@@ -282,7 +398,14 @@ int doCmd(int argc, char** argv)
 	struct arg_dbl  *d_pricewait = arg_dbl0(NULL, "pricewait", "<currency>", "price per minute");
 	struct arg_int  *i_speedmin = arg_int0(NULL, "speedmin", "<speed>", "speed km/h");
 	struct arg_int  *i_timedelayfree = arg_int0(NULL, "timedelayfree", "<seconds>", "free wait time");
-	
+
+	// sendGCM
+	struct arg_lit  *c_sendgcm = arg_lit0(NULL, "sendgcm", "push GCM");
+	struct arg_str  *s_apikey = arg_str0(NULL, "apikey", "<API key>", "GCM project id: taxi-b2b");
+	struct arg_str  *s_data = arg_str0(NULL, "data", "<data>", "data to send");
+	struct arg_file  *f_data = arg_file0(NULL, "file", "<file name>", "file to send");
+	struct arg_str  *s_registrationid = arg_strn(NULL, NULL, "<registration_id>", 1, 100, "GCM registration id");
+
 	struct arg_end  *end = arg_end(20);
 
 	void* argtable[] = { c_license, c_add, c_get, c_rm, c_ls, c_ls_ofs, c_ls_cnt, obj, verbose, help, 
@@ -294,7 +417,9 @@ int doCmd(int argc, char** argv)
 		i_active, i_enabled, i_taxtype, i_preferreddriverid,
 		i_personid, i_customerid, i_isoperator, i_isvip,
 		d_datestart, d_datefinish, i_isday, i_hourstart, i_hourfinish, i_isweekend, d_costmin, d_priceboarding, d_priceminute, d_pricedelay, d_pricewait, i_speedmin, i_timedelayfree,
-		end };
+		c_sendgcm, s_apikey, s_data, s_registrationid, f_data,
+		end
+	};
 	const char* progname = "taxi-simple-cli";
 	int nerrors;
 	
@@ -354,9 +479,66 @@ int doCmd(int argc, char** argv)
 		return 0;
 	}
 
-	/* normal case: take the command line options at face value */
-	// TODO
-	boost::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+	if (c_sendgcm->count > 0)
+	{
+		if (s_apikey->count == 0)
+		{
+			printf("--apikey missed.\n");
+			done(argtable);
+			return 2;
+		}
+
+		if (s_registrationid->count <= 0)
+		{
+			printf("registration id missed.\n");
+			done(argtable);
+			return 2;
+		}
+
+		vector<STR> ids;
+		for (int i = 0; i < s_registrationid->count; i++)
+		{
+			ids.push_back(s_registrationid->sval[i]);
+		}
+
+		STR data;
+		if (s_data->count > 0)
+		{
+			data = *s_data->sval;
+		} else {
+			FILE *f;
+			if (f_data->count > 0)
+			{
+				f = fopen(*f_data->filename, "r");
+			} else {
+				f = stdin;
+			}
+			if (f) {
+				readstring(f, data);
+				fclose(f);
+			} else {
+				printf("Error read input file\n");
+			}
+		}
+		if (data.size() == 0)
+			data = "{}";
+		int r = sendGCM(*s_apikey->sval, ids, data, verbose->count > 0);
+		exit(r);
+	}
+
+	STR hostname;
+	if (s_hostname->count == 0)
+	{
+		hostname = "localhost";
+	}
+
+	int port;
+	if (i_port->count == 0)
+	{
+		port = 9090;
+	}
+
+	boost::shared_ptr<TTransport> socket(new TSocket(hostname, port));
 	boost::shared_ptr<TTransport> transport(new TFramedTransport(socket));
 	boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
 	PassengerServiceClient client(protocol);
@@ -1075,9 +1257,7 @@ int doCmd(int argc, char** argv)
 		transport->close();
 	}
 	catch (TException &tx) {
-		printf("ERROR: %s\n", tx.what());
+		printf("Error: %s\n", tx.what());
 	}
-
 	return 0;
 }
-
