@@ -80,14 +80,15 @@ extern const std::map<int, const char*> _TaxiServiceRole_VALUES_TO_NAMES;
 struct PersonRole {
   enum type {
     ADMIN = 0,
-    CUSTOMER = 1,
-    MANAGER = 2,
+    MANAGER = 1,
+    CUSTOMER = 2,
     DISPATCHER = 3,
     DRIVER = 4,
-    OPERATOR = 5,
-    PASSENGER = 6,
-    GUEST = 7,
-    NOTAUTHORIZED = 8
+    MASTER = 5,
+    OPERATOR = 6,
+    PASSENGER = 7,
+    GUEST = 8,
+    NOTAUTHORIZED = 9
   };
 };
 
@@ -403,27 +404,30 @@ struct ServiceObject {
     SO_DriverBlackList = 15,
     SO_GeoLocation = 16,
     SO_Location = 17,
-    SO_Notification = 18,
-    SO_Org = 19,
-    SO_OrgService = 20,
-    SO_Passenger = 21,
-    SO_PassengerLimit = 22,
-    SO_PassengerUsage = 23,
-    SO_Payload = 24,
-    SO_Payment = 25,
-    SO_Person = 26,
-    SO_Rate = 27,
-    SO_RowRange = 28,
-    SO_ServiceObjectAction = 29,
-    SO_ServiceOrder = 30,
-    SO_ServiceOrderDecline = 31,
-    SO_ServiceOrderStop = 32,
-    SO_Shedule = 33,
-    SO_SheduleDays = 34,
-    SO_SheduleStop = 35,
-    SO_Track = 36,
-    SO_UserDevice = 37,
-    SO_Vehicle = 38
+    SO_Manager = 18,
+    SO_Notification = 19,
+    SO_NotificationEvent = 20,
+    SO_Org = 21,
+    SO_OrgService = 22,
+    SO_Passenger = 23,
+    SO_PassengerLimit = 24,
+    SO_PassengerUsage = 25,
+    SO_Payload = 26,
+    SO_Payment = 27,
+    SO_Person = 28,
+    SO_Rate = 29,
+    SO_RowRange = 30,
+    SO_ServiceObjectAction = 31,
+    SO_ServiceOrder = 32,
+    SO_ServiceOrderDecline = 33,
+    SO_ServiceOrderStop = 34,
+    SO_Shedule = 35,
+    SO_SheduleDays = 36,
+    SO_SheduleStop = 37,
+    SO_TariffPlan = 38,
+    SO_Track = 39,
+    SO_UserDevice = 40,
+    SO_Vehicle = 41
   };
 };
 
@@ -431,10 +435,11 @@ extern const std::map<int, const char*> _ServiceObject_VALUES_TO_NAMES;
 
 struct ServiceAction {
   enum type {
-    ACT_DO = 0,
+    ACT_GET = 0,
     ACT_ADD = 1,
     ACT_EDIT = 2,
-    ACT_RM = 3
+    ACT_RM = 3,
+    ACT_DO = 4
   };
 };
 
@@ -540,11 +545,23 @@ typedef ID Documentid;
 
 typedef std::map<DocumentType::type, Documentid>  DocumentMap;
 
+typedef ID Managerid;
+
+typedef std::vector<class Manager>  Managers;
+
+typedef std::vector<Managerid>  Managerids;
+
 typedef ID Driverid;
 
 typedef std::vector<class Driver>  Drivers;
 
 typedef std::vector<Driverid>  Driverids;
+
+typedef std::map<Driverid, class DriverOnline>  DriverOnlineMap;
+
+typedef std::map<Cityid, DriverOnlineMap>  CityDriverOnlineMap;
+
+typedef std::vector<class DriverOnline>  DriverOnlines;
 
 typedef std::map<CrewRole::type, Driverid>  Crew;
 
@@ -580,11 +597,19 @@ typedef std::vector<Trackid>  Trackids;
 
 typedef std::vector<class Track>  Tracks;
 
+typedef ID TariffPlanid;
+
+typedef std::vector<class TariffPlan>  TariffPlans;
+
+typedef std::vector<TariffPlanid>  TariffPlanids;
+
 typedef ID Rateid;
 
 typedef std::vector<class Rate>  Rates;
 
 typedef std::vector<Rateid>  Rateids;
+
+typedef std::vector<class NotificationEvent>  NotificationEvents;
 
 typedef struct _RowRange__isset {
   _RowRange__isset() : start(false), len(false) {}
@@ -1079,10 +1104,60 @@ class PassengerUsage {
 
 void swap(PassengerUsage &a, PassengerUsage &b);
 
+typedef struct _GeoLocation__isset {
+  _GeoLocation__isset() : latitude(false), longitude(false) {}
+  bool latitude;
+  bool longitude;
+} _GeoLocation__isset;
+
+class GeoLocation {
+ public:
+
+  static const char* ascii_fingerprint; // = "EA2086D2BB14222991D7B0497DE7B58B";
+  static const uint8_t binary_fingerprint[16]; // = {0xEA,0x20,0x86,0xD2,0xBB,0x14,0x22,0x29,0x91,0xD7,0xB0,0x49,0x7D,0xE7,0xB5,0x8B};
+
+  GeoLocation() : latitude(0), longitude(0) {
+  }
+
+  virtual ~GeoLocation() throw() {}
+
+  GEO latitude;
+  GEO longitude;
+
+  _GeoLocation__isset __isset;
+
+  void __set_latitude(const GEO val) {
+    latitude = val;
+  }
+
+  void __set_longitude(const GEO val) {
+    longitude = val;
+  }
+
+  bool operator == (const GeoLocation & rhs) const
+  {
+    if (!(latitude == rhs.latitude))
+      return false;
+    if (!(longitude == rhs.longitude))
+      return false;
+    return true;
+  }
+  bool operator != (const GeoLocation &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const GeoLocation & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+void swap(GeoLocation &a, GeoLocation &b);
+
 typedef struct _UserDevice__isset {
-  _UserDevice__isset() : devicetype(false), isactive(false), model(false), imei(false), line1(false), line2(false), hasGSMorCDMA(false), hasGPS(false), isGPS(false) {}
+  _UserDevice__isset() : devicetype(false), model(false), imei(false), line1(false), line2(false), hasGSMorCDMA(false), hasGPS(false), isGPS(false), geolocation(false) {}
   bool devicetype;
-  bool isactive;
   bool model;
   bool imei;
   bool line1;
@@ -1090,21 +1165,21 @@ typedef struct _UserDevice__isset {
   bool hasGSMorCDMA;
   bool hasGPS;
   bool isGPS;
+  bool geolocation;
 } _UserDevice__isset;
 
 class UserDevice {
  public:
 
-  static const char* ascii_fingerprint; // = "E57809942F99C6298227A26403A3F69D";
-  static const uint8_t binary_fingerprint[16]; // = {0xE5,0x78,0x09,0x94,0x2F,0x99,0xC6,0x29,0x82,0x27,0xA2,0x64,0x03,0xA3,0xF6,0x9D};
+  static const char* ascii_fingerprint; // = "8F192A3F14BF2889CD29F3AABD117D07";
+  static const uint8_t binary_fingerprint[16]; // = {0x8F,0x19,0x2A,0x3F,0x14,0xBF,0x28,0x89,0xCD,0x29,0xF3,0xAA,0xBD,0x11,0x7D,0x07};
 
-  UserDevice() : devicetype((DeviceType::type)0), isactive(0), model(), imei(), line1(), line2(), hasGSMorCDMA(0), hasGPS(0), isGPS(0) {
+  UserDevice() : devicetype((DeviceType::type)0), model(), imei(), line1(), line2(), hasGSMorCDMA(0), hasGPS(0), isGPS(0) {
   }
 
   virtual ~UserDevice() throw() {}
 
   DeviceType::type devicetype;
-  bool isactive;
   STR model;
   STR imei;
   STR line1;
@@ -1112,15 +1187,12 @@ class UserDevice {
   bool hasGSMorCDMA;
   bool hasGPS;
   bool isGPS;
+  GeoLocation geolocation;
 
   _UserDevice__isset __isset;
 
   void __set_devicetype(const DeviceType::type val) {
     devicetype = val;
-  }
-
-  void __set_isactive(const bool val) {
-    isactive = val;
   }
 
   void __set_model(const STR& val) {
@@ -1151,11 +1223,13 @@ class UserDevice {
     isGPS = val;
   }
 
+  void __set_geolocation(const GeoLocation& val) {
+    geolocation = val;
+  }
+
   bool operator == (const UserDevice & rhs) const
   {
     if (!(devicetype == rhs.devicetype))
-      return false;
-    if (!(isactive == rhs.isactive))
       return false;
     if (!(model == rhs.model))
       return false;
@@ -1170,6 +1244,8 @@ class UserDevice {
     if (!(hasGPS == rhs.hasGPS))
       return false;
     if (!(isGPS == rhs.isGPS))
+      return false;
+    if (!(geolocation == rhs.geolocation))
       return false;
     return true;
   }
@@ -1204,8 +1280,8 @@ class Credentials {
   static const char* ascii_fingerprint; // = "404AEE7244E085B98A670967F2D10AE0";
   static const uint8_t binary_fingerprint[16]; // = {0x40,0x4A,0xEE,0x72,0x44,0xE0,0x85,0xB9,0x8A,0x67,0x09,0x67,0xF2,0xD1,0x0A,0xE0};
 
-  Credentials() : phone(), personrole((PersonRole::type)8), token(), password(), serviceaction((ServiceAction::type)0), serviceobject((ServiceObject::type)0), islogged(0), timelogon(0) {
-    personrole = (PersonRole::type)8;
+  Credentials() : phone(), personrole((PersonRole::type)9), token(), password(), serviceaction((ServiceAction::type)0), serviceobject((ServiceObject::type)0), islogged(0), timelogon(0) {
+    personrole = (PersonRole::type)9;
 
   }
 
@@ -1288,7 +1364,8 @@ class Credentials {
 void swap(Credentials &a, Credentials &b);
 
 typedef struct _Person__isset {
-  _Person__isset() : credentials(false), userdevice(false), tag(false), firstname(false), lastname(false), middlename(false), prefix(false), birthdate(false), deparment(false), position(false), note(false), phone1(false), phone2(false), fax(false), email(false), photo(false) {}
+  _Person__isset() : id(false), credentials(false), userdevice(false), tag(false), firstname(false), lastname(false), middlename(false), prefix(false), birthdate(false), deparment(false), position(false), note(false), phone1(false), phone2(false), fax(false), email(false), photo(false) {}
+  bool id;
   bool credentials;
   bool userdevice;
   bool tag;
@@ -1310,14 +1387,15 @@ typedef struct _Person__isset {
 class Person {
  public:
 
-  static const char* ascii_fingerprint; // = "CF73CCD1CC68595189AFA6621AEEC328";
-  static const uint8_t binary_fingerprint[16]; // = {0xCF,0x73,0xCC,0xD1,0xCC,0x68,0x59,0x51,0x89,0xAF,0xA6,0x62,0x1A,0xEE,0xC3,0x28};
+  static const char* ascii_fingerprint; // = "A356C66F03741F766E3B8DD19635F0F8";
+  static const uint8_t binary_fingerprint[16]; // = {0xA3,0x56,0xC6,0x6F,0x03,0x74,0x1F,0x76,0x6E,0x3B,0x8D,0xD1,0x96,0x35,0xF0,0xF8};
 
-  Person() : tag(0), firstname(), lastname(), middlename(), prefix(), birthdate(0), deparment(), position(), note(), phone1(), phone2(), fax(), email(), photo() {
+  Person() : id(0), tag(0), firstname(), lastname(), middlename(), prefix(), birthdate(0), deparment(), position(), note(), phone1(), phone2(), fax(), email(), photo() {
   }
 
   virtual ~Person() throw() {}
 
+  ID id;
   Credentials credentials;
   UserDevices userdevice;
   TAG tag;
@@ -1336,6 +1414,10 @@ class Person {
   LINK photo;
 
   _Person__isset __isset;
+
+  void __set_id(const ID val) {
+    id = val;
+  }
 
   void __set_credentials(const Credentials& val) {
     credentials = val;
@@ -1403,6 +1485,8 @@ class Person {
 
   bool operator == (const Person & rhs) const
   {
+    if (!(id == rhs.id))
+      return false;
     if (!(credentials == rhs.credentials))
       return false;
     if (!(userdevice == rhs.userdevice))
@@ -1509,57 +1593,6 @@ class Bank {
 
 void swap(Bank &a, Bank &b);
 
-typedef struct _GeoLocation__isset {
-  _GeoLocation__isset() : latitude(false), longitude(false) {}
-  bool latitude;
-  bool longitude;
-} _GeoLocation__isset;
-
-class GeoLocation {
- public:
-
-  static const char* ascii_fingerprint; // = "EA2086D2BB14222991D7B0497DE7B58B";
-  static const uint8_t binary_fingerprint[16]; // = {0xEA,0x20,0x86,0xD2,0xBB,0x14,0x22,0x29,0x91,0xD7,0xB0,0x49,0x7D,0xE7,0xB5,0x8B};
-
-  GeoLocation() : latitude(0), longitude(0) {
-  }
-
-  virtual ~GeoLocation() throw() {}
-
-  GEO latitude;
-  GEO longitude;
-
-  _GeoLocation__isset __isset;
-
-  void __set_latitude(const GEO val) {
-    latitude = val;
-  }
-
-  void __set_longitude(const GEO val) {
-    longitude = val;
-  }
-
-  bool operator == (const GeoLocation & rhs) const
-  {
-    if (!(latitude == rhs.latitude))
-      return false;
-    if (!(longitude == rhs.longitude))
-      return false;
-    return true;
-  }
-  bool operator != (const GeoLocation &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const GeoLocation & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-void swap(GeoLocation &a, GeoLocation &b);
-
 typedef struct _Location__isset {
   _Location__isset() : location(false), name(false), city(false), address(false) {}
   bool location;
@@ -1655,8 +1688,8 @@ typedef struct _Org__isset {
 class Org {
  public:
 
-  static const char* ascii_fingerprint; // = "CF436D1BD01573E195E296E37507559A";
-  static const uint8_t binary_fingerprint[16]; // = {0xCF,0x43,0x6D,0x1B,0xD0,0x15,0x73,0xE1,0x95,0xE2,0x96,0xE3,0x75,0x07,0x55,0x9A};
+  static const char* ascii_fingerprint; // = "C4EB56E849306813B8F82A886080AEAA";
+  static const uint8_t binary_fingerprint[16]; // = {0xC4,0xEB,0x56,0xE8,0x49,0x30,0x68,0x13,0xB8,0xF8,0x2A,0x88,0x60,0x80,0xAE,0xAA};
 
   Org() : id(0), orgrole((OrgRole::type)0), orgtype((OrgType::type)0), start(0), tag(0), name(), fullname(), shortname(), inn(), kpp(), ogrn(), phone(), email(), currentaccount(), correspondentaccount(), description(), note() {
   }
@@ -1852,8 +1885,8 @@ typedef struct _Dept__isset {
 class Dept {
  public:
 
-  static const char* ascii_fingerprint; // = "30B290109952327E31AE01A265365B1D";
-  static const uint8_t binary_fingerprint[16]; // = {0x30,0xB2,0x90,0x10,0x99,0x52,0x32,0x7E,0x31,0xAE,0x01,0xA2,0x65,0x36,0x5B,0x1D};
+  static const char* ascii_fingerprint; // = "78C40DDB4120D736A254845C79585BB5";
+  static const uint8_t binary_fingerprint[16]; // = {0x78,0xC4,0x0D,0xDB,0x41,0x20,0xD7,0x36,0xA2,0x54,0x84,0x5C,0x79,0x58,0x5B,0xB5};
 
   Dept() : id(0), orgid(0), name(), fullname(), shortname(), phone(), email(), currentaccount(), correspondentaccount(), description(), note() {
   }
@@ -2053,7 +2086,7 @@ class OrgService {
 void swap(OrgService &a, OrgService &b);
 
 typedef struct _Customer__isset {
-  _Customer__isset() : id(false), cityid(false), nickname(false), tag(false), organization(false), taxtype(false), active(false), enabled(false), haspreferreddriver(false), preferreddriverid(false), hascredit(false), hascreditlimit(false), creditlimit(false) {}
+  _Customer__isset() : id(false), cityid(false), nickname(false), tag(false), organization(false), taxtype(false), active(false), enabled(false), tariffplanid(false), haspreferreddriver(false), preferreddriverid(false), hascredit(false), hascreditlimit(false), creditlimit(false) {}
   bool id;
   bool cityid;
   bool nickname;
@@ -2062,6 +2095,7 @@ typedef struct _Customer__isset {
   bool taxtype;
   bool active;
   bool enabled;
+  bool tariffplanid;
   bool haspreferreddriver;
   bool preferreddriverid;
   bool hascredit;
@@ -2072,10 +2106,10 @@ typedef struct _Customer__isset {
 class Customer {
  public:
 
-  static const char* ascii_fingerprint; // = "0F04251EA5A5615E43031B38F4D98E04";
-  static const uint8_t binary_fingerprint[16]; // = {0x0F,0x04,0x25,0x1E,0xA5,0xA5,0x61,0x5E,0x43,0x03,0x1B,0x38,0xF4,0xD9,0x8E,0x04};
+  static const char* ascii_fingerprint; // = "A89703D16EB7229B25F0633089F66747";
+  static const uint8_t binary_fingerprint[16]; // = {0xA8,0x97,0x03,0xD1,0x6E,0xB7,0x22,0x9B,0x25,0xF0,0x63,0x30,0x89,0xF6,0x67,0x47};
 
-  Customer() : id(0), cityid(0), nickname(), tag(0), taxtype((TaxType::type)0), active(0), enabled(0), haspreferreddriver(0), preferreddriverid(0), hascredit(0), hascreditlimit(0), creditlimit(0) {
+  Customer() : id(0), cityid(0), nickname(), tag(0), taxtype((TaxType::type)0), active(0), enabled(0), tariffplanid(0), haspreferreddriver(0), preferreddriverid(0), hascredit(0), hascreditlimit(0), creditlimit(0) {
   }
 
   virtual ~Customer() throw() {}
@@ -2088,6 +2122,7 @@ class Customer {
   TaxType::type taxtype;
   bool active;
   bool enabled;
+  ID tariffplanid;
   bool haspreferreddriver;
   ID preferreddriverid;
   bool hascredit;
@@ -2128,6 +2163,10 @@ class Customer {
     enabled = val;
   }
 
+  void __set_tariffplanid(const ID val) {
+    tariffplanid = val;
+  }
+
   void __set_haspreferreddriver(const bool val) {
     haspreferreddriver = val;
   }
@@ -2165,6 +2204,8 @@ class Customer {
     if (!(active == rhs.active))
       return false;
     if (!(enabled == rhs.enabled))
+      return false;
+    if (!(tariffplanid == rhs.tariffplanid))
       return false;
     if (!(haspreferreddriver == rhs.haspreferreddriver))
       return false;
@@ -2291,7 +2332,7 @@ class CustomerStatistic {
 void swap(CustomerStatistic &a, CustomerStatistic &b);
 
 typedef struct _Passenger__isset {
-  _Passenger__isset() : id(false), cityid(false), customerid(false), tag(false), isoperator(false), isvip(false), status(false), personid(false), canorder(false), passengerlimitmonth(false), passengerusagemonth(false) {}
+  _Passenger__isset() : id(false), cityid(false), customerid(false), tag(false), isoperator(false), isvip(false), status(false), person(false), canorder(false), passengerlimitmonth(false), passengerusagemonth(false) {}
   bool id;
   bool cityid;
   bool customerid;
@@ -2299,7 +2340,7 @@ typedef struct _Passenger__isset {
   bool isoperator;
   bool isvip;
   bool status;
-  bool personid;
+  bool person;
   bool canorder;
   bool passengerlimitmonth;
   bool passengerusagemonth;
@@ -2308,10 +2349,10 @@ typedef struct _Passenger__isset {
 class Passenger {
  public:
 
-  static const char* ascii_fingerprint; // = "F5060DDC8C4B35453E4BECF4CE35D3D2";
-  static const uint8_t binary_fingerprint[16]; // = {0xF5,0x06,0x0D,0xDC,0x8C,0x4B,0x35,0x45,0x3E,0x4B,0xEC,0xF4,0xCE,0x35,0xD3,0xD2};
+  static const char* ascii_fingerprint; // = "9191F1E581F658342555626F5FCEC7DE";
+  static const uint8_t binary_fingerprint[16]; // = {0x91,0x91,0xF1,0xE5,0x81,0xF6,0x58,0x34,0x25,0x55,0x62,0x6F,0x5F,0xCE,0xC7,0xDE};
 
-  Passenger() : id(0), cityid(0), customerid(0), tag(0), isoperator(0), isvip(0), status((EmployeeStatus::type)0), personid(0), canorder((CanOrder::type)0) {
+  Passenger() : id(0), cityid(0), customerid(0), tag(0), isoperator(0), isvip(0), status((EmployeeStatus::type)0), canorder((CanOrder::type)0) {
   }
 
   virtual ~Passenger() throw() {}
@@ -2323,7 +2364,7 @@ class Passenger {
   bool isoperator;
   bool isvip;
   EmployeeStatus::type status;
-  Personid personid;
+  Person person;
   CanOrder::type canorder;
   PassengerLimitMonth passengerlimitmonth;
   PassengerUsageMonth passengerusagemonth;
@@ -2358,8 +2399,8 @@ class Passenger {
     status = val;
   }
 
-  void __set_personid(const Personid val) {
-    personid = val;
+  void __set_person(const Person& val) {
+    person = val;
   }
 
   void __set_canorder(const CanOrder::type val) {
@@ -2390,7 +2431,7 @@ class Passenger {
       return false;
     if (!(status == rhs.status))
       return false;
-    if (!(personid == rhs.personid))
+    if (!(person == rhs.person))
       return false;
     if (!(canorder == rhs.canorder))
       return false;
@@ -2701,8 +2742,8 @@ class Document {
 
 void swap(Document &a, Document &b);
 
-typedef struct _Driver__isset {
-  _Driver__isset() : id(false), cityid(false), svc(false), status(false), person(false), license(false), nickname(false), callsign(false), cabclass(false), rating(false), online(false), vehicleids(false) {}
+typedef struct _Manager__isset {
+  _Manager__isset() : id(false), cityid(false), svc(false), status(false), person(false), license(false), nickname(false), online(false), isadmin(false) {}
   bool id;
   bool cityid;
   bool svc;
@@ -2710,38 +2751,32 @@ typedef struct _Driver__isset {
   bool person;
   bool license;
   bool nickname;
-  bool callsign;
-  bool cabclass;
-  bool rating;
   bool online;
-  bool vehicleids;
-} _Driver__isset;
+  bool isadmin;
+} _Manager__isset;
 
-class Driver {
+class Manager {
  public:
 
-  static const char* ascii_fingerprint; // = "52B444B1FB9963813E6834C0899BA16E";
-  static const uint8_t binary_fingerprint[16]; // = {0x52,0xB4,0x44,0xB1,0xFB,0x99,0x63,0x81,0x3E,0x68,0x34,0xC0,0x89,0x9B,0xA1,0x6E};
+  static const char* ascii_fingerprint; // = "9261984299B7D6BFCA993DCCFF7E3B1C";
+  static const uint8_t binary_fingerprint[16]; // = {0x92,0x61,0x98,0x42,0x99,0xB7,0xD6,0xBF,0xCA,0x99,0x3D,0xCC,0xFF,0x7E,0x3B,0x1C};
 
-  Driver() : id(0), cityid(0), status((EmployeeStatus::type)0), nickname(), callsign(0), cabclass((CabClass::type)0), rating(0), online(0) {
+  Manager() : id(0), cityid(0), status((EmployeeStatus::type)0), nickname(), online(0), isadmin(0) {
   }
 
-  virtual ~Driver() throw() {}
+  virtual ~Manager() throw() {}
 
   ID id;
   ID cityid;
   RoleOrgService svc;
   EmployeeStatus::type status;
-  OrgPositionPerson person;
+  Person person;
   DocumentMap license;
   STR nickname;
-  NUMBER32 callsign;
-  CabClass::type cabclass;
-  NUMBER32 rating;
   bool online;
-  Vehicleids vehicleids;
+  bool isadmin;
 
-  _Driver__isset __isset;
+  _Manager__isset __isset;
 
   void __set_id(const ID val) {
     id = val;
@@ -2759,7 +2794,140 @@ class Driver {
     status = val;
   }
 
-  void __set_person(const OrgPositionPerson& val) {
+  void __set_person(const Person& val) {
+    person = val;
+  }
+
+  void __set_license(const DocumentMap& val) {
+    license = val;
+  }
+
+  void __set_nickname(const STR& val) {
+    nickname = val;
+  }
+
+  void __set_online(const bool val) {
+    online = val;
+  }
+
+  void __set_isadmin(const bool val) {
+    isadmin = val;
+  }
+
+  bool operator == (const Manager & rhs) const
+  {
+    if (!(id == rhs.id))
+      return false;
+    if (!(cityid == rhs.cityid))
+      return false;
+    if (!(svc == rhs.svc))
+      return false;
+    if (!(status == rhs.status))
+      return false;
+    if (!(person == rhs.person))
+      return false;
+    if (!(license == rhs.license))
+      return false;
+    if (!(nickname == rhs.nickname))
+      return false;
+    if (!(online == rhs.online))
+      return false;
+    if (!(isadmin == rhs.isadmin))
+      return false;
+    return true;
+  }
+  bool operator != (const Manager &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Manager & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+void swap(Manager &a, Manager &b);
+
+typedef struct _Driver__isset {
+  _Driver__isset() : id(false), cityid(false), svc(false), geolocation(false), updated(false), serviceorderid(false), status(false), person(false), license(false), nickname(false), callsign(false), cabclass(false), rating(false), online(false), ismaster(false), vehicleids(false) {}
+  bool id;
+  bool cityid;
+  bool svc;
+  bool geolocation;
+  bool updated;
+  bool serviceorderid;
+  bool status;
+  bool person;
+  bool license;
+  bool nickname;
+  bool callsign;
+  bool cabclass;
+  bool rating;
+  bool online;
+  bool ismaster;
+  bool vehicleids;
+} _Driver__isset;
+
+class Driver {
+ public:
+
+  static const char* ascii_fingerprint; // = "A2A73CF2A08B03431B8671EB50E24B54";
+  static const uint8_t binary_fingerprint[16]; // = {0xA2,0xA7,0x3C,0xF2,0xA0,0x8B,0x03,0x43,0x1B,0x86,0x71,0xEB,0x50,0xE2,0x4B,0x54};
+
+  Driver() : id(0), cityid(0), updated(0), serviceorderid(0), status((EmployeeStatus::type)0), nickname(), callsign(0), cabclass((CabClass::type)0), rating(0), online(0), ismaster(0) {
+  }
+
+  virtual ~Driver() throw() {}
+
+  ID id;
+  ID cityid;
+  RoleOrgService svc;
+  GeoLocation geolocation;
+  DATE updated;
+  ID serviceorderid;
+  EmployeeStatus::type status;
+  Person person;
+  DocumentMap license;
+  STR nickname;
+  NUMBER32 callsign;
+  CabClass::type cabclass;
+  NUMBER32 rating;
+  bool online;
+  bool ismaster;
+  Vehicleids vehicleids;
+
+  _Driver__isset __isset;
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  void __set_cityid(const ID val) {
+    cityid = val;
+  }
+
+  void __set_svc(const RoleOrgService& val) {
+    svc = val;
+  }
+
+  void __set_geolocation(const GeoLocation& val) {
+    geolocation = val;
+  }
+
+  void __set_updated(const DATE val) {
+    updated = val;
+  }
+
+  void __set_serviceorderid(const ID val) {
+    serviceorderid = val;
+  }
+
+  void __set_status(const EmployeeStatus::type val) {
+    status = val;
+  }
+
+  void __set_person(const Person& val) {
     person = val;
   }
 
@@ -2787,6 +2955,10 @@ class Driver {
     online = val;
   }
 
+  void __set_ismaster(const bool val) {
+    ismaster = val;
+  }
+
   void __set_vehicleids(const Vehicleids& val) {
     vehicleids = val;
   }
@@ -2798,6 +2970,12 @@ class Driver {
     if (!(cityid == rhs.cityid))
       return false;
     if (!(svc == rhs.svc))
+      return false;
+    if (!(geolocation == rhs.geolocation))
+      return false;
+    if (!(updated == rhs.updated))
+      return false;
+    if (!(serviceorderid == rhs.serviceorderid))
       return false;
     if (!(status == rhs.status))
       return false;
@@ -2814,6 +2992,8 @@ class Driver {
     if (!(rating == rhs.rating))
       return false;
     if (!(online == rhs.online))
+      return false;
+    if (!(ismaster == rhs.ismaster))
       return false;
     if (!(vehicleids == rhs.vehicleids))
       return false;
@@ -2832,6 +3012,65 @@ class Driver {
 
 void swap(Driver &a, Driver &b);
 
+typedef struct _DriverOnline__isset {
+  _DriverOnline__isset() : driverid(false), geolocation(false), serviceorderid(false) {}
+  bool driverid;
+  bool geolocation;
+  bool serviceorderid;
+} _DriverOnline__isset;
+
+class DriverOnline {
+ public:
+
+  static const char* ascii_fingerprint; // = "4BE74BEBDA7C66F60B478AC4F511ACFD";
+  static const uint8_t binary_fingerprint[16]; // = {0x4B,0xE7,0x4B,0xEB,0xDA,0x7C,0x66,0xF6,0x0B,0x47,0x8A,0xC4,0xF5,0x11,0xAC,0xFD};
+
+  DriverOnline() : driverid(0), serviceorderid(0) {
+  }
+
+  virtual ~DriverOnline() throw() {}
+
+  Driverid driverid;
+  GeoLocation geolocation;
+  ID serviceorderid;
+
+  _DriverOnline__isset __isset;
+
+  void __set_driverid(const Driverid val) {
+    driverid = val;
+  }
+
+  void __set_geolocation(const GeoLocation& val) {
+    geolocation = val;
+  }
+
+  void __set_serviceorderid(const ID val) {
+    serviceorderid = val;
+  }
+
+  bool operator == (const DriverOnline & rhs) const
+  {
+    if (!(driverid == rhs.driverid))
+      return false;
+    if (!(geolocation == rhs.geolocation))
+      return false;
+    if (!(serviceorderid == rhs.serviceorderid))
+      return false;
+    return true;
+  }
+  bool operator != (const DriverOnline &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const DriverOnline & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+void swap(DriverOnline &a, DriverOnline &b);
+
 typedef struct _Dispatcher__isset {
   _Dispatcher__isset() : id(false), svc(false), status(false), person(false), license(false), nickname(false), online(false) {}
   bool id;
@@ -2846,8 +3085,8 @@ typedef struct _Dispatcher__isset {
 class Dispatcher {
  public:
 
-  static const char* ascii_fingerprint; // = "6592E2714C7CF771B89E12F135A8F8ED";
-  static const uint8_t binary_fingerprint[16]; // = {0x65,0x92,0xE2,0x71,0x4C,0x7C,0xF7,0x71,0xB8,0x9E,0x12,0xF1,0x35,0xA8,0xF8,0xED};
+  static const char* ascii_fingerprint; // = "86B1B9E991385C82E7BA8D464263AA53";
+  static const uint8_t binary_fingerprint[16]; // = {0x86,0xB1,0xB9,0xE9,0x91,0x38,0x5C,0x82,0xE7,0xBA,0x8D,0x46,0x42,0x63,0xAA,0x53};
 
   Dispatcher() : id(0), status((EmployeeStatus::type)0), nickname(), online(0) {
   }
@@ -2857,7 +3096,7 @@ class Dispatcher {
   ID id;
   RoleOrgService svc;
   EmployeeStatus::type status;
-  OrgPositionPerson person;
+  Person person;
   DocumentMap license;
   STR nickname;
   bool online;
@@ -2876,7 +3115,7 @@ class Dispatcher {
     status = val;
   }
 
-  void __set_person(const OrgPositionPerson& val) {
+  void __set_person(const Person& val) {
     person = val;
   }
 
@@ -2943,8 +3182,8 @@ typedef struct _ServiceOrderStop__isset {
 class ServiceOrderStop {
  public:
 
-  static const char* ascii_fingerprint; // = "03994098E54589F537CFE95C17205FBE";
-  static const uint8_t binary_fingerprint[16]; // = {0x03,0x99,0x40,0x98,0xE5,0x45,0x89,0xF5,0x37,0xCF,0xE9,0x5C,0x17,0x20,0x5F,0xBE};
+  static const char* ascii_fingerprint; // = "04E0139AD89C50BD0840050D9D3B73F7";
+  static const uint8_t binary_fingerprint[16]; // = {0x04,0xE0,0x13,0x9A,0xD8,0x9C,0x50,0xBD,0x08,0x40,0x05,0x0D,0x9D,0x3B,0x73,0xF7};
 
   ServiceOrderStop() : id(0), serviceorderid(0), stopno(0), stoptype((StopType::type)0), stage((OrderStage::type)0), created(0), assigned(0), started(0), arrived(0), finished(0), notes() {
   }
@@ -3982,11 +4221,93 @@ class SheduleStop {
 
 void swap(SheduleStop &a, SheduleStop &b);
 
-typedef struct _Rate__isset {
-  _Rate__isset() : id(false), orgserviceid(false), cityid(false), name(false), active(false), datestart(false), datefinish(false), isweekend(false), isday(false), hourstart(false), hourfinish(false), costmin(false), priceboarding(false), priceminute(false), pricedelay(false), pricewait(false), speedmin(false), timedelayfree(false) {}
+typedef struct _TariffPlan__isset {
+  _TariffPlan__isset() : id(false), orgserviceid(false), cityid(false), name(false), notes(false), active(false) {}
   bool id;
   bool orgserviceid;
   bool cityid;
+  bool name;
+  bool notes;
+  bool active;
+} _TariffPlan__isset;
+
+class TariffPlan {
+ public:
+
+  static const char* ascii_fingerprint; // = "CA6D95DB1B0AA22C1ECBC7C48D241638";
+  static const uint8_t binary_fingerprint[16]; // = {0xCA,0x6D,0x95,0xDB,0x1B,0x0A,0xA2,0x2C,0x1E,0xCB,0xC7,0xC4,0x8D,0x24,0x16,0x38};
+
+  TariffPlan() : id(0), orgserviceid(0), cityid(0), name(), notes(), active(0) {
+  }
+
+  virtual ~TariffPlan() throw() {}
+
+  ID id;
+  OrgServiceid orgserviceid;
+  ID cityid;
+  STR name;
+  STR notes;
+  bool active;
+
+  _TariffPlan__isset __isset;
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  void __set_orgserviceid(const OrgServiceid val) {
+    orgserviceid = val;
+  }
+
+  void __set_cityid(const ID val) {
+    cityid = val;
+  }
+
+  void __set_name(const STR& val) {
+    name = val;
+  }
+
+  void __set_notes(const STR& val) {
+    notes = val;
+  }
+
+  void __set_active(const bool val) {
+    active = val;
+  }
+
+  bool operator == (const TariffPlan & rhs) const
+  {
+    if (!(id == rhs.id))
+      return false;
+    if (!(orgserviceid == rhs.orgserviceid))
+      return false;
+    if (!(cityid == rhs.cityid))
+      return false;
+    if (!(name == rhs.name))
+      return false;
+    if (!(notes == rhs.notes))
+      return false;
+    if (!(active == rhs.active))
+      return false;
+    return true;
+  }
+  bool operator != (const TariffPlan &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const TariffPlan & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+void swap(TariffPlan &a, TariffPlan &b);
+
+typedef struct _Rate__isset {
+  _Rate__isset() : id(false), tariffplanid(false), name(false), active(false), datestart(false), datefinish(false), isweekend(false), isday(false), hourstart(false), hourfinish(false), costmin(false), priceboarding(false), priceminute(false), pricedelay(false), pricewait(false), speedmin(false), timedelayfree(false) {}
+  bool id;
+  bool tariffplanid;
   bool name;
   bool active;
   bool datestart;
@@ -4007,17 +4328,16 @@ typedef struct _Rate__isset {
 class Rate {
  public:
 
-  static const char* ascii_fingerprint; // = "E062C8E7E485184A7AA8681BD13DB48D";
-  static const uint8_t binary_fingerprint[16]; // = {0xE0,0x62,0xC8,0xE7,0xE4,0x85,0x18,0x4A,0x7A,0xA8,0x68,0x1B,0xD1,0x3D,0xB4,0x8D};
+  static const char* ascii_fingerprint; // = "B59FCAFA8796B9A33928E7CB12304B0B";
+  static const uint8_t binary_fingerprint[16]; // = {0xB5,0x9F,0xCA,0xFA,0x87,0x96,0xB9,0xA3,0x39,0x28,0xE7,0xCB,0x12,0x30,0x4B,0x0B};
 
-  Rate() : id(0), orgserviceid(0), cityid(0), name(), active(0), datestart(0), datefinish(0), isweekend(0), isday(0), hourstart(0), hourfinish(0), costmin(0), priceboarding(0), priceminute(0), pricedelay(0), pricewait(0), speedmin(0), timedelayfree(0) {
+  Rate() : id(0), tariffplanid(0), name(), active(0), datestart(0), datefinish(0), isweekend(0), isday(0), hourstart(0), hourfinish(0), costmin(0), priceboarding(0), priceminute(0), pricedelay(0), pricewait(0), speedmin(0), timedelayfree(0) {
   }
 
   virtual ~Rate() throw() {}
 
   ID id;
-  OrgServiceid orgserviceid;
-  ID cityid;
+  ID tariffplanid;
   STR name;
   bool active;
   DATE datestart;
@@ -4040,12 +4360,8 @@ class Rate {
     id = val;
   }
 
-  void __set_orgserviceid(const OrgServiceid val) {
-    orgserviceid = val;
-  }
-
-  void __set_cityid(const ID val) {
-    cityid = val;
+  void __set_tariffplanid(const ID val) {
+    tariffplanid = val;
   }
 
   void __set_name(const STR& val) {
@@ -4112,9 +4428,7 @@ class Rate {
   {
     if (!(id == rhs.id))
       return false;
-    if (!(orgserviceid == rhs.orgserviceid))
-      return false;
-    if (!(cityid == rhs.cityid))
+    if (!(tariffplanid == rhs.tariffplanid))
       return false;
     if (!(name == rhs.name))
       return false;
@@ -4620,6 +4934,145 @@ class AutoPayment {
 };
 
 void swap(AutoPayment &a, AutoPayment &b);
+
+typedef struct _NotificationEvent__isset {
+  _NotificationEvent__isset() : id(false), receiverrole(false), receiver(false), emitterrole(false), emitter(false), serviceobject(false), serviceaction(false), datestart(false), infuture(false), serviceobjectid(false), sent(false), sentdate(false), notes(false) {}
+  bool id;
+  bool receiverrole;
+  bool receiver;
+  bool emitterrole;
+  bool emitter;
+  bool serviceobject;
+  bool serviceaction;
+  bool datestart;
+  bool infuture;
+  bool serviceobjectid;
+  bool sent;
+  bool sentdate;
+  bool notes;
+} _NotificationEvent__isset;
+
+class NotificationEvent {
+ public:
+
+  static const char* ascii_fingerprint; // = "6AADE700AA19D30149BEEB2C0BE7F86E";
+  static const uint8_t binary_fingerprint[16]; // = {0x6A,0xAD,0xE7,0x00,0xAA,0x19,0xD3,0x01,0x49,0xBE,0xEB,0x2C,0x0B,0xE7,0xF8,0x6E};
+
+  NotificationEvent() : id(0), receiverrole((PersonRole::type)0), receiver(0), emitterrole((PersonRole::type)0), emitter(0), serviceobject((ServiceObject::type)0), serviceaction((ServiceAction::type)0), datestart(0), infuture(0), serviceobjectid(0), sent(0), sentdate(0), notes() {
+  }
+
+  virtual ~NotificationEvent() throw() {}
+
+  ID id;
+  PersonRole::type receiverrole;
+  ID receiver;
+  PersonRole::type emitterrole;
+  ID emitter;
+  ServiceObject::type serviceobject;
+  ServiceAction::type serviceaction;
+  DATE datestart;
+  bool infuture;
+  ID serviceobjectid;
+  bool sent;
+  DATE sentdate;
+  STR notes;
+
+  _NotificationEvent__isset __isset;
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  void __set_receiverrole(const PersonRole::type val) {
+    receiverrole = val;
+  }
+
+  void __set_receiver(const ID val) {
+    receiver = val;
+  }
+
+  void __set_emitterrole(const PersonRole::type val) {
+    emitterrole = val;
+  }
+
+  void __set_emitter(const ID val) {
+    emitter = val;
+  }
+
+  void __set_serviceobject(const ServiceObject::type val) {
+    serviceobject = val;
+  }
+
+  void __set_serviceaction(const ServiceAction::type val) {
+    serviceaction = val;
+  }
+
+  void __set_datestart(const DATE val) {
+    datestart = val;
+  }
+
+  void __set_infuture(const bool val) {
+    infuture = val;
+  }
+
+  void __set_serviceobjectid(const ID val) {
+    serviceobjectid = val;
+  }
+
+  void __set_sent(const bool val) {
+    sent = val;
+  }
+
+  void __set_sentdate(const DATE val) {
+    sentdate = val;
+  }
+
+  void __set_notes(const STR& val) {
+    notes = val;
+  }
+
+  bool operator == (const NotificationEvent & rhs) const
+  {
+    if (!(id == rhs.id))
+      return false;
+    if (!(receiverrole == rhs.receiverrole))
+      return false;
+    if (!(receiver == rhs.receiver))
+      return false;
+    if (!(emitterrole == rhs.emitterrole))
+      return false;
+    if (!(emitter == rhs.emitter))
+      return false;
+    if (!(serviceobject == rhs.serviceobject))
+      return false;
+    if (!(serviceaction == rhs.serviceaction))
+      return false;
+    if (!(datestart == rhs.datestart))
+      return false;
+    if (!(infuture == rhs.infuture))
+      return false;
+    if (!(serviceobjectid == rhs.serviceobjectid))
+      return false;
+    if (!(sent == rhs.sent))
+      return false;
+    if (!(sentdate == rhs.sentdate))
+      return false;
+    if (!(notes == rhs.notes))
+      return false;
+    return true;
+  }
+  bool operator != (const NotificationEvent &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const NotificationEvent & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+void swap(NotificationEvent &a, NotificationEvent &b);
 
 typedef struct _ServiceFailure__isset {
   _ServiceFailure__isset() : errortype(false), errorcode(false), description(false) {}

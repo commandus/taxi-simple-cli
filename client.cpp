@@ -24,12 +24,51 @@
 #include "PassengerService.h"
 #include "utiltime.h"
 
+#include "libconfig.h++" 
+
 using namespace std;
 using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
-
+using namespace libconfig;
 using namespace taxi;
+
+#define DEF_CONFIG	"taxi-simple.cfg"
+
+/**
+	get person role from the string
+*/
+PersonRole::type readPersonRole(std::string &str)
+{
+	if (str.compare("admin") == 0)
+		return PersonRole::ADMIN;
+	else 
+		if (str.compare("manager") == 0)
+			return PersonRole::MANAGER;
+	else 
+		if (str.compare("customer") == 0)
+			return PersonRole::CUSTOMER;
+	else 
+		if (str.compare("dispatcher") == 0)
+			return PersonRole::DISPATCHER;
+	else 
+		if (str.compare("driver") == 0)
+			return PersonRole::DRIVER;
+	else 
+		if (str.compare("master") == 0)
+			return PersonRole::MASTER;
+	else 
+		if (str.compare("operator") == 0)
+			return PersonRole::OPERATOR;
+	else 
+		if (str.compare("passenger") == 0)
+			return PersonRole::PASSENGER;
+	else 
+		if (str.compare("guest") == 0)
+			return PersonRole::GUEST;
+	else
+		return PersonRole::NOTAUTHORIZED;
+}
 
 void couts(const STR &s)
 {
@@ -326,6 +365,12 @@ int sendGCM(const STR &apikey, const vector<STR> ids, const STR &data, bool verb
 int doCmd(int argc, char** argv)
 {
 	init();
+	// credentials
+	struct arg_str  *cred_role = arg_str0(NULL, "myrole", "admin|manager|customer|dispatcher|driver|master|operator|passenger|guest", "role");
+	struct arg_str  *cred_phone = arg_str0(NULL, "myphone", "<phone>", "Phone number e.g. +79140001111");
+	struct arg_str  *cred_password = arg_str0(NULL, "mypassword", "<pwd>", "password");
+	struct arg_str  *cred_token = arg_str0(NULL, "mytoken", "<pwd>", "token");
+
 	struct arg_lit  *c_add = arg_lit0("a", "add", "add object");
 	struct arg_lit  *c_ls = arg_lit0("l", "list", "list objects");
 	struct arg_lit  *c_get = arg_lit0("g", "get", "get object by ID");
@@ -367,6 +412,9 @@ int doCmd(int argc, char** argv)
 	struct arg_str  *s_note = arg_str0(NULL, "note", "<text>", "string");
 	struct arg_str  *s_nickname = arg_str0(NULL, "nickname", "<nick>", "string");
 	struct arg_int  *i_cityid = arg_int0(NULL, "cityid", "<ID>", "city id");
+	struct arg_int  *i_orgserviceid = arg_int0(NULL, "orgserviceid", "<ID>", "org service id");
+	struct arg_int  *i_tariffplanid = arg_int0(NULL, "tariffplanid", "<ID>", "tariff plan id");
+	struct arg_int  *i_ismaster = arg_int0(NULL, "ismaster", "0|1", "1- is master");
 
 	struct arg_int  *i_svccarpoolid = arg_int0(NULL, "svccarpoolid", "<ID>", "car pool org id");
 	struct arg_int  *i_svcdispatchid = arg_int0(NULL, "svcdispatchid", "<ID>", "dispatch org id");
@@ -400,24 +448,30 @@ int doCmd(int argc, char** argv)
 	struct arg_int  *i_speedmin = arg_int0(NULL, "speedmin", "<speed>", "speed km/h");
 	struct arg_int  *i_timedelayfree = arg_int0(NULL, "timedelayfree", "<seconds>", "free wait time");
 
+	struct arg_int  *i_isadmin = arg_int0(NULL, "isadmin", "0|1", "1- is admin");
+	struct arg_str	*s_pwd = arg_str0(NULL, "pwd", "<pwd>", "password");
+
 	// sendGCM
 	struct arg_lit  *c_sendgcm = arg_lit0(NULL, "sendgcm", "push GCM");
 	struct arg_str  *s_apikey = arg_str0(NULL, "apikey", "<API key>", "GCM project id: taxi-b2b");
 	struct arg_str  *s_data = arg_str0(NULL, "data", "<data>", "data to send");
 	struct arg_file  *f_data = arg_file0(NULL, "file", "<file name>", "file to send");
-	struct arg_str  *s_registrationid = arg_strn(NULL, NULL, "<registration_id>", 1, 100, "GCM registration id");
+	struct arg_str  *s_registrationid = arg_str0(NULL, NULL, "<registration_id>", "GCM registration id");
 
 	struct arg_end  *end = arg_end(20);
 
-	void* argtable[] = { c_license, c_add, c_get, c_rm, c_ls, c_ls_ofs, c_ls_cnt, obj, verbose, help, 
+	void* argtable[] = { 
+		cred_role, cred_phone, cred_password, cred_token,
+		c_license, c_add, c_get, c_rm, c_ls, c_ls_ofs, c_ls_cnt, obj, verbose, help, i_port, s_hostname,
 		s_name, i_year, s_notes, i_areaid, i_tag, i_orgid, s_bik, i_value, s_brandname,
 		i_bankacc, i_orgrole, i_orgtype, s_fullname, s_shortname, s_inn, s_kpp, s_orgn, s_phone, s_email, s_currentaccount, s_correspondentaccount, 
 		s_description, s_note, s_nickname,
-		i_cityid, i_svccarpoolid, i_svcdispatchid, i_online, i_empstatus,
+		i_cityid, i_orgserviceid, i_tariffplanid, i_ismaster, i_svccarpoolid, i_svcdispatchid, i_online, i_empstatus,
 		i_id, i_callsign,
 		i_active, i_enabled, i_taxtype, i_preferreddriverid,
 		i_personid, i_customerid, i_isoperator, i_isvip,
 		d_datestart, d_datefinish, i_isday, i_hourstart, i_hourfinish, i_isweekend, d_costmin, d_priceboarding, d_priceminute, d_pricedelay, d_pricewait, i_speedmin, i_timedelayfree,
+		i_isadmin, s_pwd,
 		c_sendgcm, s_apikey, s_data, s_registrationid, f_data,
 		end
 	};
@@ -527,26 +581,94 @@ int doCmd(int argc, char** argv)
 		exit(r);
 	}
 
-	STR hostname;
-	if (s_hostname->count == 0)
+	std::string hostname("localhost");
+	int port = 9090;
+	Credentials credentials;
+	credentials.personrole = PersonRole::NOTAUTHORIZED;
+
+	// read from configuration file
+	Config cfg;
+	try
 	{
-		hostname = "localhost";
+		cfg.readFile(DEF_CONFIG);
+	}
+	catch(const FileIOException &fioex)
+	{
+	}
+	catch(const ParseException &pex)
+	{
+		std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()	<< " - " << pex.getError() << std::endl;
+		return (3);
 	}
 
-	int port;
-	if (i_port->count == 0)
+	cfg.lookupValue("client.port", port);
+
+	try
 	{
-		port = 9090;
+		hostname = (const char *) cfg.lookup("client.host");
 	}
+	catch(const SettingNotFoundException &nfex)
+	{
+	}
+	try
+	{
+		std::string role = (const char *) cfg.lookup("client.credentials.role");
+		credentials.personrole = readPersonRole(role);
+	}
+	catch(const SettingNotFoundException &nfex)
+	{
+	}
+	try
+	{
+		credentials.token = (const char *) cfg.lookup("client.crededentials.token");
+	}
+	catch(const SettingNotFoundException &nfex)
+	{
+	}
+	try
+	{
+		credentials.phone = (const char *) cfg.lookup("client.credentials.phone");
+	}
+	catch(const SettingNotFoundException &nfex)
+	{
+	}
+	try
+	{
+		credentials.password = (const char *) cfg.lookup("client.credentials.password");
+	}
+	catch(const SettingNotFoundException &nfex)
+	{
+	}
+	try
+	{
+		credentials.token = (const char *) cfg.lookup("client.credentials.token");
+	}
+	catch(const SettingNotFoundException &nfex)
+	{
+	}
+
+	// read from command line 
+	if (s_hostname->count != 0)
+		hostname = *s_hostname->sval;
+	if (i_port->count != 0)
+		port = *i_port->ival;
 
 	boost::shared_ptr<TTransport> socket(new TSocket(hostname, port));
 	boost::shared_ptr<TTransport> transport(new TFramedTransport(socket));
 	boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
 	PassengerServiceClient client(protocol);
 
+	if (cred_role->count == 0)
+		credentials.personrole = readPersonRole(std::string(*cred_role->sval));
+	if (cred_phone->count == 0)
+		credentials.phone = std::string(*cred_phone->sval);
+	if (cred_password->count == 0)
+		credentials.password = std::string(*cred_password->sval);
+	if (cred_token->count == 0)
+		credentials.token = std::string(*cred_token->sval);
+
 	try {
 		transport->open();
-		Credentials credentials;
 		UserDevice userdevice;
 		STR empty;
 
@@ -588,6 +710,38 @@ int doCmd(int argc, char** argv)
 				printf("-o,--object missed.\n");
 				done(argtable);
 				return 2;
+			}
+
+			if (strcmp("manager", *obj->sval) == 0)
+			{
+				Manager ret;
+				Manager v;
+				if (s_nickname->count == 0)
+				{
+					printf("--nickname missed.\n");
+					done(argtable);
+					return 2;
+				}
+				v.nickname = *s_nickname->sval;
+
+				if (s_phone->count == 0)
+				{
+					printf("--phone missed.\n");
+					done(argtable);
+					return 2;
+				}
+				v.person.phone1 = *s_phone->sval;
+
+				if (i_cityid->count > 0)
+					v.cityid = *i_cityid->ival;
+
+				if (i_isadmin->count > 0)
+					v.isadmin = *i_isadmin->ival != 0;
+
+				if (s_pwd->count > 0)
+					v.person.credentials.password = *s_pwd->sval;
+
+				client.addManager(ret, credentials, userdevice, v);
 			}
 
 			if (strcmp("city", *obj->sval) == 0)
@@ -797,7 +951,7 @@ int doCmd(int argc, char** argv)
 
 				if (i_personid->count != 0)
 				{
-					v.personid = *i_personid->ival;
+					v.person.id = *i_personid->ival;
 				}
 
 				client.addPassenger(ret, credentials, userdevice, v);
@@ -825,6 +979,8 @@ int doCmd(int argc, char** argv)
 					return 2;
 				}
 				v.cityid = *i_cityid->ival;
+
+				v.ismaster = (i_ismaster->count > 0);
 
 				if (i_svccarpoolid->count == 0)
 					v.svc[taxi::TaxiServiceRole::TS_CARPOOL] = *i_svccarpoolid->ival;
@@ -898,10 +1054,10 @@ int doCmd(int argc, char** argv)
 				client.addVehicleModelByBrandName(ret, credentials, userdevice, brandname, name, year);
 			}
 
-			if (strcmp("rate", *obj->sval) == 0)
+			if (strcmp("tariffplan", *obj->sval) == 0)
 			{
-				Rate ret;
-				Rate v;
+				TariffPlan ret;
+				TariffPlan v;
 
 				if (s_name->count == 0)
 				{
@@ -919,6 +1075,44 @@ int doCmd(int argc, char** argv)
 				}
 
 				v.cityid = *i_cityid->ival;
+
+				if (i_orgserviceid->count == 0)
+				{
+					printf("--orgserviceid missed.\n");
+					done(argtable);
+					return 2;
+				}
+
+				v.orgserviceid = *i_orgserviceid->ival;
+
+				if (i_active->count == 0)
+					v.active = (*i_active->ival != 0);
+				if (s_notes->count == 0)
+					v.notes = *s_notes->sval;
+				client.addTariffPlan(ret, credentials, userdevice, v);
+			}
+
+			if (strcmp("rate", *obj->sval) == 0)
+			{
+				Rate ret;
+				Rate v;
+
+				if (s_name->count == 0)
+				{
+					printf("--name missed.\n");
+					done(argtable);
+					return 2;
+				}
+				v.name = *s_name->sval;
+
+				if (i_tariffplanid->count == 0)
+				{
+					printf("--tariffplanid missed.\n");
+					done(argtable);
+					return 2;
+				}
+
+				v.tariffplanid = *i_tariffplanid->ival;
 
 				if (d_datestart->count == 0)
 					v.datestart = tm2time_tUTC(d_datestart->tmval);
@@ -1148,15 +1342,19 @@ int doCmd(int argc, char** argv)
 						it->svc[taxi::TaxiServiceRole::TS_CARPOOL] << '\t' << 
 						it->svc[taxi::TaxiServiceRole::TS_DISPATCH] << '\t' << 
 						it->status << '\t';
-						for (OrgPosition::type op = OrgPosition::SELFEMP; op <= OrgPosition::MGR; op = static_cast<OrgPosition::type>(static_cast<int>(op) + 1))
-						{
-							coutPerson(it->person[op]);
-						}
-						for (DocumentType::type dt = DocumentType::PASSPORT; dt <= DocumentType::PAYMENTRECEIPT; dt = static_cast<DocumentType::type>(static_cast<int>(dt) + 1))
-						{
-							coutDocumentById(client, credentials, userdevice, it->license[dt]);
-						}
-						cout << it->nickname << '\t' << 
+					/*
+					WAS
+					for (OrgPosition::type op = OrgPosition::SELFEMP; op <= OrgPosition::MGR; op = static_cast<OrgPosition::type>(static_cast<int>(op) + 1))
+					{
+						coutPerson(it->person[op]);
+					}
+					*/
+					coutPerson(it->person);
+					for (DocumentType::type dt = DocumentType::PASSPORT; dt <= DocumentType::PAYMENTRECEIPT; dt = static_cast<DocumentType::type>(static_cast<int>(dt) + 1))
+					{
+						coutDocumentById(client, credentials, userdevice, it->license[dt]);
+					}
+					cout << it->nickname << '\t' << 
 						it->callsign << '\t' << 
 						it->cabclass << '\t' << 
 						it->rating << '\t' << 
@@ -1207,7 +1405,7 @@ int doCmd(int argc, char** argv)
 				if (i_id->count == 0)
 					v.id = *i_id->ival;
 				if (i_personid->count == 0)
-					v.personid = *i_personid->ival;
+					v.person.id = *i_personid->ival;
 				if (i_cityid->count == 0)
 					v.cityid = *i_cityid->ival;
 				if (i_customerid->count == 0)
@@ -1227,10 +1425,26 @@ int doCmd(int argc, char** argv)
 				for (Passengers::iterator it = ret.begin(); it != ret.end(); ++it)
 				{
 					cout << it->id << '\t' << it->cityid << '\t' << it->tag << '\t' << it->customerid << '\t' <<
-						it->isoperator << '\t' << it->isvip << '\t' << it->status << '\t' << it->personid << '\t' << it->canorder << '\t';
+						it->isoperator << '\t' << it->isvip << '\t' << it->status << '\t' << it->person.id << '\t' << it->canorder << '\t';
 					coutPassengerLimit(it->passengerlimitmonth.at(getCurrentMonth()));
 					coutPassengerUsage(it->passengerusagemonth[getCurrentMonth()]);
 					cout << std::endl;
+				}
+			}
+
+			if (strcmp("tariffplan", *obj->sval) == 0)
+			{
+				TariffPlans ret;
+				TariffPlan v;
+				client.findTariffPlan(ret, credentials, userdevice, v, rowrange);
+				for (TariffPlans::iterator it = ret.begin(); it != ret.end(); ++it)
+				{
+					cout << it->id << '\t' << it->orgserviceid << '\t' << it->cityid << '\t';
+					couts(it->name);
+					cout << '\t';
+					couts(it->notes);
+					cout << '\t' << it->active;
+					cout << std::endl; 
 				}
 			}
 
@@ -1241,7 +1455,7 @@ int doCmd(int argc, char** argv)
 				client.findRate(ret, credentials, userdevice, v, rowrange);
 				for (Rates::iterator it = ret.begin(); it != ret.end(); ++it)
 				{
-					cout << it->id << '\t' << it->orgserviceid << '\t' << it->cityid << '\t';
+					cout << it->id << '\t' << it->tariffplanid << '\t';
 					couts(it->name);
 					cout << '\t' << it->active << '\t';
 					coutdate(it->datestart);
