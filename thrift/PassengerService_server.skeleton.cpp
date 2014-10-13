@@ -102,6 +102,11 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("addOrgService\n");
   }
 
+  void addManager(Manager& _return, const Credentials& credentials, const UserDevice& userdevice, const Manager& value) {
+    // Your implementation goes here
+    printf("addManager\n");
+  }
+
   void addCustomer(Customer& _return, const Credentials& credentials, const UserDevice& userdevice, const Customer& value) {
     // Your implementation goes here
     printf("addCustomer\n");
@@ -137,6 +142,11 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("addVehicleModelByBrandName\n");
   }
 
+  void addTariffPlan(TariffPlan& _return, const Credentials& credentials, const UserDevice& userdevice, const TariffPlan& value) {
+    // Your implementation goes here
+    printf("addTariffPlan\n");
+  }
+
   void addRate(Rate& _return, const Credentials& credentials, const UserDevice& userdevice, const Rate& value) {
     // Your implementation goes here
     printf("addRate\n");
@@ -157,9 +167,19 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("addClaim\n");
   }
 
-  ID addTrack(const Credentials& credentials, const UserDevice& userdevice, const Track& value) {
+  void addTrack(Track& _return, const Credentials& credentials, const UserDevice& userdevice, const Track& value) {
     // Your implementation goes here
     printf("addTrack\n");
+  }
+
+  void rmManager(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmManager\n");
+  }
+
+  void rmTariffPlan(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmTariffPlan\n");
   }
 
   void rmRate(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
@@ -185,6 +205,11 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
   void rmTrack(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
     // Your implementation goes here
     printf("rmTrack\n");
+  }
+
+  void rmOldTracks(const Credentials& credentials, const UserDevice& userdevice, const DATE olderthan) {
+    // Your implementation goes here
+    printf("rmOldTracks\n");
   }
 
   void findOrg(Orgs& _return, const Credentials& credentials, const UserDevice& userdevice, const Org& search, const RowRange& rowrange) {
@@ -222,9 +247,24 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("findCity\n");
   }
 
+  void findManager(Managers& _return, const Credentials& credentials, const UserDevice& userdevice, const Manager& search, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("findManager\n");
+  }
+
   void findDriver(Drivers& _return, const Credentials& credentials, const UserDevice& userdevice, const Driver& search, const RowRange& rowrange) {
     // Your implementation goes here
     printf("findDriver\n");
+  }
+
+  void getDriverOnlineAvailable(DriverOnlineMap& _return, const Credentials& credentials, const UserDevice& userdevice, const Cityid cityid) {
+    // Your implementation goes here
+    printf("getDriverOnlineAvailable\n");
+  }
+
+  void getDriverAvailable(Drivers& _return, const Credentials& credentials, const UserDevice& userdevice, const Cityid cityid) {
+    // Your implementation goes here
+    printf("getDriverAvailable\n");
   }
 
   void findCustomer(Customers& _return, const Credentials& credentials, const UserDevice& userdevice, const Customer& search, const RowRange& rowrange) {
@@ -235,6 +275,11 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
   void findPassenger(Passengers& _return, const Credentials& credentials, const UserDevice& userdevice, const Passenger& search, const RowRange& rowrange) {
     // Your implementation goes here
     printf("findPassenger\n");
+  }
+
+  void findTariffPlan(TariffPlans& _return, const Credentials& credentials, const UserDevice& userdevice, const TariffPlan& search, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("findTariffPlan\n");
   }
 
   void findRate(Rates& _return, const Credentials& credentials, const UserDevice& userdevice, const Rate& search, const RowRange& rowrange) {
@@ -260,6 +305,11 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
   void findTrack(Tracks& _return, const Credentials& credentials, const UserDevice& userdevice, const Track& search, const DateRange& sheduletime, const RowRange& rowrange) {
     // Your implementation goes here
     printf("findTrack\n");
+  }
+
+  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const PersonRole::type personrole, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("getEvents\n");
   }
 
 };
