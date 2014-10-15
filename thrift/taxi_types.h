@@ -1263,7 +1263,7 @@ class UserDevice {
 void swap(UserDevice &a, UserDevice &b);
 
 typedef struct _Credentials__isset {
-  _Credentials__isset() : phone(false), personrole(true), token(false), password(false), serviceaction(false), serviceobject(false), islogged(false), timelogon(false) {}
+  _Credentials__isset() : phone(false), personrole(true), token(false), password(false), serviceaction(false), serviceobject(false), islogged(false), timelogon(false), gcmregistrationid(false) {}
   bool phone;
   bool personrole;
   bool token;
@@ -1272,15 +1272,16 @@ typedef struct _Credentials__isset {
   bool serviceobject;
   bool islogged;
   bool timelogon;
+  bool gcmregistrationid;
 } _Credentials__isset;
 
 class Credentials {
  public:
 
-  static const char* ascii_fingerprint; // = "404AEE7244E085B98A670967F2D10AE0";
-  static const uint8_t binary_fingerprint[16]; // = {0x40,0x4A,0xEE,0x72,0x44,0xE0,0x85,0xB9,0x8A,0x67,0x09,0x67,0xF2,0xD1,0x0A,0xE0};
+  static const char* ascii_fingerprint; // = "684BC8000C9CE6200A124244DB017859";
+  static const uint8_t binary_fingerprint[16]; // = {0x68,0x4B,0xC8,0x00,0x0C,0x9C,0xE6,0x20,0x0A,0x12,0x42,0x44,0xDB,0x01,0x78,0x59};
 
-  Credentials() : phone(), personrole((PersonRole::type)9), token(), password(), serviceaction((ServiceAction::type)0), serviceobject((ServiceObject::type)0), islogged(0), timelogon(0) {
+  Credentials() : phone(), personrole((PersonRole::type)9), token(), password(), serviceaction((ServiceAction::type)0), serviceobject((ServiceObject::type)0), islogged(0), timelogon(0), gcmregistrationid() {
     personrole = (PersonRole::type)9;
 
   }
@@ -1295,6 +1296,7 @@ class Credentials {
   ServiceObject::type serviceobject;
   bool islogged;
   DATE timelogon;
+  STR gcmregistrationid;
 
   _Credentials__isset __isset;
 
@@ -1330,6 +1332,10 @@ class Credentials {
     timelogon = val;
   }
 
+  void __set_gcmregistrationid(const STR& val) {
+    gcmregistrationid = val;
+  }
+
   bool operator == (const Credentials & rhs) const
   {
     if (!(phone == rhs.phone))
@@ -1347,6 +1353,8 @@ class Credentials {
     if (!(islogged == rhs.islogged))
       return false;
     if (!(timelogon == rhs.timelogon))
+      return false;
+    if (!(gcmregistrationid == rhs.gcmregistrationid))
       return false;
     return true;
   }
@@ -1387,8 +1395,8 @@ typedef struct _Person__isset {
 class Person {
  public:
 
-  static const char* ascii_fingerprint; // = "A356C66F03741F766E3B8DD19635F0F8";
-  static const uint8_t binary_fingerprint[16]; // = {0xA3,0x56,0xC6,0x6F,0x03,0x74,0x1F,0x76,0x6E,0x3B,0x8D,0xD1,0x96,0x35,0xF0,0xF8};
+  static const char* ascii_fingerprint; // = "3B04270E07C9E2932F428DF1D2BB083B";
+  static const uint8_t binary_fingerprint[16]; // = {0x3B,0x04,0x27,0x0E,0x07,0xC9,0xE2,0x93,0x2F,0x42,0x8D,0xF1,0xD2,0xBB,0x08,0x3B};
 
   Person() : id(0), tag(0), firstname(), lastname(), middlename(), prefix(), birthdate(0), deparment(), position(), note(), phone1(), phone2(), fax(), email(), photo() {
   }
@@ -1688,8 +1696,8 @@ typedef struct _Org__isset {
 class Org {
  public:
 
-  static const char* ascii_fingerprint; // = "C4EB56E849306813B8F82A886080AEAA";
-  static const uint8_t binary_fingerprint[16]; // = {0xC4,0xEB,0x56,0xE8,0x49,0x30,0x68,0x13,0xB8,0xF8,0x2A,0x88,0x60,0x80,0xAE,0xAA};
+  static const char* ascii_fingerprint; // = "07C10FC5C0FA75835EB0467B9D341709";
+  static const uint8_t binary_fingerprint[16]; // = {0x07,0xC1,0x0F,0xC5,0xC0,0xFA,0x75,0x83,0x5E,0xB0,0x46,0x7B,0x9D,0x34,0x17,0x09};
 
   Org() : id(0), orgrole((OrgRole::type)0), orgtype((OrgType::type)0), start(0), tag(0), name(), fullname(), shortname(), inn(), kpp(), ogrn(), phone(), email(), currentaccount(), correspondentaccount(), description(), note() {
   }
@@ -1885,8 +1893,8 @@ typedef struct _Dept__isset {
 class Dept {
  public:
 
-  static const char* ascii_fingerprint; // = "78C40DDB4120D736A254845C79585BB5";
-  static const uint8_t binary_fingerprint[16]; // = {0x78,0xC4,0x0D,0xDB,0x41,0x20,0xD7,0x36,0xA2,0x54,0x84,0x5C,0x79,0x58,0x5B,0xB5};
+  static const char* ascii_fingerprint; // = "F2E14EB18887CA74A043E9D92A17325D";
+  static const uint8_t binary_fingerprint[16]; // = {0xF2,0xE1,0x4E,0xB1,0x88,0x87,0xCA,0x74,0xA0,0x43,0xE9,0xD9,0x2A,0x17,0x32,0x5D};
 
   Dept() : id(0), orgid(0), name(), fullname(), shortname(), phone(), email(), currentaccount(), correspondentaccount(), description(), note() {
   }
@@ -2349,8 +2357,8 @@ typedef struct _Passenger__isset {
 class Passenger {
  public:
 
-  static const char* ascii_fingerprint; // = "9191F1E581F658342555626F5FCEC7DE";
-  static const uint8_t binary_fingerprint[16]; // = {0x91,0x91,0xF1,0xE5,0x81,0xF6,0x58,0x34,0x25,0x55,0x62,0x6F,0x5F,0xCE,0xC7,0xDE};
+  static const char* ascii_fingerprint; // = "E98402372B6E55C03BA3D61157E6AFC2";
+  static const uint8_t binary_fingerprint[16]; // = {0xE9,0x84,0x02,0x37,0x2B,0x6E,0x55,0xC0,0x3B,0xA3,0xD6,0x11,0x57,0xE6,0xAF,0xC2};
 
   Passenger() : id(0), cityid(0), customerid(0), tag(0), isoperator(0), isvip(0), status((EmployeeStatus::type)0), canorder((CanOrder::type)0) {
   }
@@ -2758,8 +2766,8 @@ typedef struct _Manager__isset {
 class Manager {
  public:
 
-  static const char* ascii_fingerprint; // = "9261984299B7D6BFCA993DCCFF7E3B1C";
-  static const uint8_t binary_fingerprint[16]; // = {0x92,0x61,0x98,0x42,0x99,0xB7,0xD6,0xBF,0xCA,0x99,0x3D,0xCC,0xFF,0x7E,0x3B,0x1C};
+  static const char* ascii_fingerprint; // = "B7D7482E144326613E7C934CED8C3FC2";
+  static const uint8_t binary_fingerprint[16]; // = {0xB7,0xD7,0x48,0x2E,0x14,0x43,0x26,0x61,0x3E,0x7C,0x93,0x4C,0xED,0x8C,0x3F,0xC2};
 
   Manager() : id(0), cityid(0), status((EmployeeStatus::type)0), nickname(), online(0), isadmin(0) {
   }
@@ -2872,8 +2880,8 @@ typedef struct _Driver__isset {
 class Driver {
  public:
 
-  static const char* ascii_fingerprint; // = "A2A73CF2A08B03431B8671EB50E24B54";
-  static const uint8_t binary_fingerprint[16]; // = {0xA2,0xA7,0x3C,0xF2,0xA0,0x8B,0x03,0x43,0x1B,0x86,0x71,0xEB,0x50,0xE2,0x4B,0x54};
+  static const char* ascii_fingerprint; // = "72B5CF832BE537B6085D76F835E22C64";
+  static const uint8_t binary_fingerprint[16]; // = {0x72,0xB5,0xCF,0x83,0x2B,0xE5,0x37,0xB6,0x08,0x5D,0x76,0xF8,0x35,0xE2,0x2C,0x64};
 
   Driver() : id(0), cityid(0), updated(0), serviceorderid(0), status((EmployeeStatus::type)0), nickname(), callsign(0), cabclass((CabClass::type)0), rating(0), online(0), ismaster(0) {
   }
@@ -3085,8 +3093,8 @@ typedef struct _Dispatcher__isset {
 class Dispatcher {
  public:
 
-  static const char* ascii_fingerprint; // = "86B1B9E991385C82E7BA8D464263AA53";
-  static const uint8_t binary_fingerprint[16]; // = {0x86,0xB1,0xB9,0xE9,0x91,0x38,0x5C,0x82,0xE7,0xBA,0x8D,0x46,0x42,0x63,0xAA,0x53};
+  static const char* ascii_fingerprint; // = "747CBE9A1F50E8316A0693AF697D6B3F";
+  static const uint8_t binary_fingerprint[16]; // = {0x74,0x7C,0xBE,0x9A,0x1F,0x50,0xE8,0x31,0x6A,0x06,0x93,0xAF,0x69,0x7D,0x6B,0x3F};
 
   Dispatcher() : id(0), status((EmployeeStatus::type)0), nickname(), online(0) {
   }
@@ -3182,8 +3190,8 @@ typedef struct _ServiceOrderStop__isset {
 class ServiceOrderStop {
  public:
 
-  static const char* ascii_fingerprint; // = "04E0139AD89C50BD0840050D9D3B73F7";
-  static const uint8_t binary_fingerprint[16]; // = {0x04,0xE0,0x13,0x9A,0xD8,0x9C,0x50,0xBD,0x08,0x40,0x05,0x0D,0x9D,0x3B,0x73,0xF7};
+  static const char* ascii_fingerprint; // = "391C5DBB859D6635C569D441D94DA0EB";
+  static const uint8_t binary_fingerprint[16]; // = {0x39,0x1C,0x5D,0xBB,0x85,0x9D,0x66,0x35,0xC5,0x69,0xD4,0x41,0xD9,0x4D,0xA0,0xEB};
 
   ServiceOrderStop() : id(0), serviceorderid(0), stopno(0), stoptype((StopType::type)0), stage((OrderStage::type)0), created(0), assigned(0), started(0), arrived(0), finished(0), notes() {
   }
@@ -4936,10 +4944,10 @@ class AutoPayment {
 void swap(AutoPayment &a, AutoPayment &b);
 
 typedef struct _NotificationEvent__isset {
-  _NotificationEvent__isset() : id(false), receiverrole(false), receiver(false), emitterrole(false), emitter(false), serviceobject(false), serviceaction(false), datestart(false), infuture(false), serviceobjectid(false), sent(false), sentdate(false), notes(false) {}
+  _NotificationEvent__isset() : id(false), receiverrole(false), phone(false), emitterrole(false), emitter(false), serviceobject(false), serviceaction(false), datestart(false), infuture(false), serviceobjectid(false), sent(false), sentdate(false), notes(false), gcmsend(false), gcmsent(false), isgcmsentsuccess(false), isgcmsentdate(false), gcmresponsecode(false), gcmresponse(false) {}
   bool id;
   bool receiverrole;
-  bool receiver;
+  bool phone;
   bool emitterrole;
   bool emitter;
   bool serviceobject;
@@ -4950,22 +4958,28 @@ typedef struct _NotificationEvent__isset {
   bool sent;
   bool sentdate;
   bool notes;
+  bool gcmsend;
+  bool gcmsent;
+  bool isgcmsentsuccess;
+  bool isgcmsentdate;
+  bool gcmresponsecode;
+  bool gcmresponse;
 } _NotificationEvent__isset;
 
 class NotificationEvent {
  public:
 
-  static const char* ascii_fingerprint; // = "6AADE700AA19D30149BEEB2C0BE7F86E";
-  static const uint8_t binary_fingerprint[16]; // = {0x6A,0xAD,0xE7,0x00,0xAA,0x19,0xD3,0x01,0x49,0xBE,0xEB,0x2C,0x0B,0xE7,0xF8,0x6E};
+  static const char* ascii_fingerprint; // = "A7C1E91A1633125B1E1BA9227CC71E38";
+  static const uint8_t binary_fingerprint[16]; // = {0xA7,0xC1,0xE9,0x1A,0x16,0x33,0x12,0x5B,0x1E,0x1B,0xA9,0x22,0x7C,0xC7,0x1E,0x38};
 
-  NotificationEvent() : id(0), receiverrole((PersonRole::type)0), receiver(0), emitterrole((PersonRole::type)0), emitter(0), serviceobject((ServiceObject::type)0), serviceaction((ServiceAction::type)0), datestart(0), infuture(0), serviceobjectid(0), sent(0), sentdate(0), notes() {
+  NotificationEvent() : id(0), receiverrole((PersonRole::type)0), phone(), emitterrole((PersonRole::type)0), emitter(0), serviceobject((ServiceObject::type)0), serviceaction((ServiceAction::type)0), datestart(0), infuture(0), serviceobjectid(0), sent(0), sentdate(0), notes(), gcmsend(0), gcmsent(0), isgcmsentsuccess(0), isgcmsentdate(0), gcmresponsecode(), gcmresponse() {
   }
 
   virtual ~NotificationEvent() throw() {}
 
   ID id;
   PersonRole::type receiverrole;
-  ID receiver;
+  STR phone;
   PersonRole::type emitterrole;
   ID emitter;
   ServiceObject::type serviceobject;
@@ -4976,6 +4990,12 @@ class NotificationEvent {
   bool sent;
   DATE sentdate;
   STR notes;
+  bool gcmsend;
+  NUMBER32 gcmsent;
+  bool isgcmsentsuccess;
+  DATE isgcmsentdate;
+  STR gcmresponsecode;
+  STR gcmresponse;
 
   _NotificationEvent__isset __isset;
 
@@ -4987,8 +5007,8 @@ class NotificationEvent {
     receiverrole = val;
   }
 
-  void __set_receiver(const ID val) {
-    receiver = val;
+  void __set_phone(const STR& val) {
+    phone = val;
   }
 
   void __set_emitterrole(const PersonRole::type val) {
@@ -5031,13 +5051,37 @@ class NotificationEvent {
     notes = val;
   }
 
+  void __set_gcmsend(const bool val) {
+    gcmsend = val;
+  }
+
+  void __set_gcmsent(const NUMBER32 val) {
+    gcmsent = val;
+  }
+
+  void __set_isgcmsentsuccess(const bool val) {
+    isgcmsentsuccess = val;
+  }
+
+  void __set_isgcmsentdate(const DATE val) {
+    isgcmsentdate = val;
+  }
+
+  void __set_gcmresponsecode(const STR& val) {
+    gcmresponsecode = val;
+  }
+
+  void __set_gcmresponse(const STR& val) {
+    gcmresponse = val;
+  }
+
   bool operator == (const NotificationEvent & rhs) const
   {
     if (!(id == rhs.id))
       return false;
     if (!(receiverrole == rhs.receiverrole))
       return false;
-    if (!(receiver == rhs.receiver))
+    if (!(phone == rhs.phone))
       return false;
     if (!(emitterrole == rhs.emitterrole))
       return false;
@@ -5058,6 +5102,18 @@ class NotificationEvent {
     if (!(sentdate == rhs.sentdate))
       return false;
     if (!(notes == rhs.notes))
+      return false;
+    if (!(gcmsend == rhs.gcmsend))
+      return false;
+    if (!(gcmsent == rhs.gcmsent))
+      return false;
+    if (!(isgcmsentsuccess == rhs.isgcmsentsuccess))
+      return false;
+    if (!(isgcmsentdate == rhs.isgcmsentdate))
+      return false;
+    if (!(gcmresponsecode == rhs.gcmresponsecode))
+      return false;
+    if (!(gcmresponse == rhs.gcmresponse))
       return false;
     return true;
   }
