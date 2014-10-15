@@ -1,15 +1,70 @@
 taxi-simple-cli
 ===============
 
-
-Codepage UTF-8
-==============
-В свойствах окна консоли Windows должен быть установлен шрифт Lucida Console, а не Consolas.
-
-Service options
+taxi-simple.cfg
 ===============
+Конфигурационный файл содержит значения по умолчанию, перекрываются указанием соответствующей опции.
+Ищется в домашнем каталоге приложения.
+
+объект client:
+
+Соединение:
+ * host = по умолчанию localhost!
+ * port = по умолчанию 9090
+ 
+Объект client.credentials
+Аутентификация: 
+ * role = admin|manager|customer|dispatcher|driver|master|operator|passenger|guest
+ * phone = номер телефона
+ * password = номер телефона
+ 
+Объект service относится к сервису!
+
+Пример
+------
+client =
+{
+	host = "localhost";
+	port = 9090;
+	credentials =
+	{
+		role = "admin";
+		phone = "79141040619";
+		password = "123";
+	};
+}
+
+Команды
+=======
+--license	исп. для проверки вывода символов кириллицы
+--add		добавление
+--rm		удаление
+--get		один объект
+--list		поиск, --offset 0 --count 100 по умолчанию
+-?		список команд и опций
+
+Объекты
+=======
+--object
+Список объектов см. taxi.thrift
+
+Опции
+=====
+Опции --*name при поиске (идентификации объекта пор имени), как правило, позволяют ввести начало названия.
+--help		Список опций
+Если отсутствует обязательная опция, выдается сообщение об ошибке.
+Опции даты и времени в Windows могут не работать корректно.
+
+Опции соединения
+================
 -h		109.120.190.73
 -p		9090
+
+Опции аутентификации
+====================
+-myrole			admin|manager|customer|dispatcher|driver|master|operator|passenger|guest
+-myphone		79141040619
+-mypassword		1234
 
 Добавление
 ==========
@@ -18,6 +73,10 @@ Service options
 Добавление города
 -----------------
 taxi-simple-cli --add --object city --name Yakutsk --notes "-" --areaid 1 --tag 1
+
+Добавление банка
+-----------------
+taxi-simple-cli --add --object bank --name "Банк 1" --notes "-" --areaid 1 --tag 1
 
 Добавление торговой марки автомобиля
 ------------------------------------
@@ -45,9 +104,9 @@ taxi-simple-cli --add --object org --name "ООО 123"
 --orgn				ОГРН
 --phone				Телефон +79140001111
 --email				a@acme.com
---currentaccount	Р/С
---correspondentaccount	К/C
---description		Описание
+--currentaccount		Р/С
+--correspondentaccount		К/C
+--description			Описание
 --note				Заметка
 
 Добавление клиента
@@ -76,8 +135,8 @@ taxi-simple-cli --add --object driver --nickname "Вася Пупкин" --cityi
 taxi-simple-cli --add --object passenger --city 1 --customerid 1
 --personid		идентификатор персоны
 --cityid		идентификатор города
---customerid	идентификатор клиента- организации
---isoperator	1- оператор, 0- не оператор
+--customerid		идентификатор клиента- организации
+--isoperator		1- оператор, 0- не оператор
 --isvip			1- требует особого внимания
 --empstatus		1- работает 2- в отпуске 3- уволен
 --tag			номер пользовательской классификации (не используется)
@@ -137,6 +196,25 @@ taxi-simple-cli --list --object passenger
 --empstatus		1- работает 2- в отпуске 3- уволен
 --tag			номер пользовательской классификации (не используется)
 
+Проталкивание уведомления
+=========================
+Из строки или файла
+--sendgcm --apikey <Google API key> --data <JSON object|array>|--file <JSON file> Id1 Id2 ...
+Конвейером
+taxi-simple-cli --sendgcm --apikey <Google API key> Id1 Id2 ... < <JSON file>
+cat <JSON file> | taxi-simple-cli --sendgcm --apikey <Google API key> Id1 Id2 ...
+
+Id1, Id2... - идентификаторы пользователей
+
+Результат в stdout,  например:
+{"multicast_id":5412105220767091569,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"NotRegistered"}]}
+или сообщение об ошибке.
+В примере сообщение обработано успешно, но проталкивание не произошло.
+
+Пример
+------
+--sendgcm --apikey "AIzaSyCIv-PZWoKrEC_f7-gE013v7FI3ehlPhnw" --data "{\"aa\":\"22\"}" "APA91bGxdOKCEyGQHIZ676r7qB31uHh3C3r960mkS-WFrLFFFDmxM9s2RGrt_gePN3zT8NuOXJshZJDfaP59-6Uuca519IsxIq1VH0A1J_0AUMGoqe1UukgG9t3aU6KCiqnOOHQVinEh5aYNJo53FZAWOXxHTnkYvQ"
+
 Скрипты загрузки из файлов
 ==========================
 Структура каталогов:
@@ -163,5 +241,7 @@ load-color.pl --file ../data/color.txt --count 2000 --verbose
 FAQ
 ===
 Q:./taxi-simple-cli: error while loading shared libraries: libthrift-1.0.0-dev.so: cannot open shared object file: No such file or directory
-A:export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+A:export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib. Для 64 битных Linux библиотека Thrift не располагается в правильном каталоге
 
+Q:Если крякозябры в выводе консоли Windows. 
+A:В свойствах окна консоли Windows должен быть установлен шрифт Lucida Console, а не Consolas. В Linux консоль utf-8

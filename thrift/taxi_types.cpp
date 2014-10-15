@@ -1786,19 +1786,19 @@ uint32_t Person::read(::apache::thrift::protocol::TProtocol* iprot) {
       case 3:
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
-            this->userdevice.clear();
+            this->userdevices.clear();
             uint32_t _size5;
             ::apache::thrift::protocol::TType _etype8;
             xfer += iprot->readListBegin(_etype8, _size5);
-            this->userdevice.resize(_size5);
+            this->userdevices.resize(_size5);
             uint32_t _i9;
             for (_i9 = 0; _i9 < _size5; ++_i9)
             {
-              xfer += this->userdevice[_i9].read(iprot);
+              xfer += this->userdevices[_i9].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
-          this->__isset.userdevice = true;
+          this->__isset.userdevices = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1939,11 +1939,11 @@ uint32_t Person::write(::apache::thrift::protocol::TProtocol* oprot) const {
   xfer += this->credentials.write(oprot);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("userdevice", ::apache::thrift::protocol::T_LIST, 3);
+  xfer += oprot->writeFieldBegin("userdevices", ::apache::thrift::protocol::T_LIST, 3);
   {
-    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->userdevice.size()));
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->userdevices.size()));
     std::vector<UserDevice> ::const_iterator _iter10;
-    for (_iter10 = this->userdevice.begin(); _iter10 != this->userdevice.end(); ++_iter10)
+    for (_iter10 = this->userdevices.begin(); _iter10 != this->userdevices.end(); ++_iter10)
     {
       xfer += (*_iter10).write(oprot);
     }
@@ -2016,7 +2016,7 @@ void swap(Person &a, Person &b) {
   using ::std::swap;
   swap(a.id, b.id);
   swap(a.credentials, b.credentials);
-  swap(a.userdevice, b.userdevice);
+  swap(a.userdevices, b.userdevices);
   swap(a.tag, b.tag);
   swap(a.firstname, b.firstname);
   swap(a.lastname, b.lastname);

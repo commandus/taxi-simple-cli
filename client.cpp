@@ -38,7 +38,7 @@ using namespace taxi;
 /**
 	get person role from the string
 */
-PersonRole::type readPersonRole(std::string &str)
+PersonRole::type readPersonRole(const std::string &str)
 {
 	if (str.compare("admin") == 0)
 		return PersonRole::ADMIN;
@@ -658,13 +658,13 @@ int doCmd(int argc, char** argv)
 	boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
 	PassengerServiceClient client(protocol);
 
-	if (cred_role->count == 0)
+	if (cred_role->count > 0)
 		credentials.personrole = readPersonRole(std::string(*cred_role->sval));
-	if (cred_phone->count == 0)
+	if (cred_phone->count > 0)
 		credentials.phone = std::string(*cred_phone->sval);
-	if (cred_password->count == 0)
+	if (cred_password->count > 0)
 		credentials.password = std::string(*cred_password->sval);
-	if (cred_token->count == 0)
+	if (cred_token->count > 0)
 		credentials.token = std::string(*cred_token->sval);
 
 	try {

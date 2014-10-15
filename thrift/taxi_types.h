@@ -1364,10 +1364,10 @@ class Credentials {
 void swap(Credentials &a, Credentials &b);
 
 typedef struct _Person__isset {
-  _Person__isset() : id(false), credentials(false), userdevice(false), tag(false), firstname(false), lastname(false), middlename(false), prefix(false), birthdate(false), deparment(false), position(false), note(false), phone1(false), phone2(false), fax(false), email(false), photo(false) {}
+  _Person__isset() : id(false), credentials(false), userdevices(false), tag(false), firstname(false), lastname(false), middlename(false), prefix(false), birthdate(false), deparment(false), position(false), note(false), phone1(false), phone2(false), fax(false), email(false), photo(false) {}
   bool id;
   bool credentials;
-  bool userdevice;
+  bool userdevices;
   bool tag;
   bool firstname;
   bool lastname;
@@ -1397,7 +1397,7 @@ class Person {
 
   ID id;
   Credentials credentials;
-  UserDevices userdevice;
+  UserDevices userdevices;
   TAG tag;
   STR firstname;
   STR lastname;
@@ -1423,8 +1423,8 @@ class Person {
     credentials = val;
   }
 
-  void __set_userdevice(const UserDevices& val) {
-    userdevice = val;
+  void __set_userdevices(const UserDevices& val) {
+    userdevices = val;
   }
 
   void __set_tag(const TAG val) {
@@ -1489,7 +1489,7 @@ class Person {
       return false;
     if (!(credentials == rhs.credentials))
       return false;
-    if (!(userdevice == rhs.userdevice))
+    if (!(userdevices == rhs.userdevices))
       return false;
     if (!(tag == rhs.tag))
       return false;
