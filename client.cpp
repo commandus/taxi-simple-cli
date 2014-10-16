@@ -24,6 +24,9 @@
 #include "PassengerService.h"
 #include "utiltime.h"
 
+#ifdef _MSC_VER
+#pragma warning(disable:4290)
+#endif
 #include "libconfig.h++" 
 
 using namespace std;
@@ -35,9 +38,31 @@ using namespace taxi;
 
 #define DEF_CONFIG	"taxi-simple.cfg"
 
-/**
-	get person role from the string
-*/
+void couts(const STR &s)
+{
+	printf("%s", s.c_str());
+}
+
+void coutdate(const taxi::DATE &date)
+{
+	struct tm *tm = localtime(&date);
+	// cout << std::put_time(tm, "%Y/%m/%d");
+	char buffer [80];
+	struct tm *ld = localtime(&date);
+	strftime(buffer, sizeof(buffer), "%Y/%m/%d", ld);
+	puts(buffer);
+}						
+
+void couttime(const taxi::DATE &date)
+{
+	struct tm *tm = localtime(&date);
+	// cout << std::put_time(tm, "%Y/%m/%d %T");
+        char buffer [80];
+        struct tm *ld = localtime(&date);
+        strftime(buffer, sizeof(buffer), "%Y/%m/%d %T", ld);
+        puts(buffer);
+}						
+
 PersonRole::type readPersonRole(const std::string &str)
 {
 	if (str.compare("admin") == 0)
@@ -69,31 +94,6 @@ PersonRole::type readPersonRole(const std::string &str)
 	else
 		return PersonRole::NOTAUTHORIZED;
 }
-
-void couts(const STR &s)
-{
-	printf("%s", s.c_str());
-}
-
-void coutdate(const taxi::DATE &date)
-{
-	struct tm *tm = localtime(&date);
-	// cout << std::put_time(tm, "%Y/%m/%d");
-	char buffer [80];
-	struct tm *ld = localtime(&date);
-	strftime(buffer, sizeof(buffer), "%Y/%m/%d", ld);
-	puts(buffer);
-}						
-
-void couttime(const taxi::DATE &date)
-{
-	struct tm *tm = localtime(&date);
-	// cout << std::put_time(tm, "%Y/%m/%d %T");
-        char buffer [80];
-        struct tm *ld = localtime(&date);
-        strftime(buffer, sizeof(buffer), "%Y/%m/%d %T", ld);
-        puts(buffer);
-}						
 
 void coutPerson(taxi::Person &v)
 {
@@ -594,6 +594,7 @@ int doCmd(int argc, char** argv)
 	}
 	catch(const FileIOException &fioex)
 	{
+		std::cerr << "File read error: " << fioex.what() << std::endl;
 	}
 	catch(const ParseException &pex)
 	{
@@ -607,7 +608,7 @@ int doCmd(int argc, char** argv)
 	{
 		hostname = (const char *) cfg.lookup("client.host");
 	}
-	catch(const SettingNotFoundException &nfex)
+	catch(const SettingNotFoundException&)
 	{
 	}
 	try
@@ -615,35 +616,35 @@ int doCmd(int argc, char** argv)
 		std::string role = (const char *) cfg.lookup("client.credentials.role");
 		credentials.personrole = readPersonRole(role);
 	}
-	catch(const SettingNotFoundException &nfex)
+	catch(const SettingNotFoundException&)
 	{
 	}
 	try
 	{
 		credentials.token = (const char *) cfg.lookup("client.crededentials.token");
 	}
-	catch(const SettingNotFoundException &nfex)
+	catch(const SettingNotFoundException&)
 	{
 	}
 	try
 	{
 		credentials.phone = (const char *) cfg.lookup("client.credentials.phone");
 	}
-	catch(const SettingNotFoundException &nfex)
+	catch(const SettingNotFoundException&)
 	{
 	}
 	try
 	{
 		credentials.password = (const char *) cfg.lookup("client.credentials.password");
 	}
-	catch(const SettingNotFoundException &nfex)
+	catch(const SettingNotFoundException&)
 	{
 	}
 	try
 	{
 		credentials.token = (const char *) cfg.lookup("client.credentials.token");
 	}
-	catch(const SettingNotFoundException &nfex)
+	catch(const SettingNotFoundException&)
 	{
 	}
 
