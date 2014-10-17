@@ -469,6 +469,8 @@ typedef std::string TEL;
 
 typedef double CURR;
 
+typedef std::vector<ID>  IDs;
+
 typedef std::map<OrgAddressType::type, STR>  OrgAddress;
 
 typedef std::set<OrderFeature::type>  OrderFeatures;
@@ -713,20 +715,72 @@ class DateRange {
 
 void swap(DateRange &a, DateRange &b);
 
+typedef struct _GeoLocation__isset {
+  _GeoLocation__isset() : latitude(false), longitude(false) {}
+  bool latitude;
+  bool longitude;
+} _GeoLocation__isset;
+
+class GeoLocation {
+ public:
+
+  static const char* ascii_fingerprint; // = "EA2086D2BB14222991D7B0497DE7B58B";
+  static const uint8_t binary_fingerprint[16]; // = {0xEA,0x20,0x86,0xD2,0xBB,0x14,0x22,0x29,0x91,0xD7,0xB0,0x49,0x7D,0xE7,0xB5,0x8B};
+
+  GeoLocation() : latitude(0), longitude(0) {
+  }
+
+  virtual ~GeoLocation() throw() {}
+
+  GEO latitude;
+  GEO longitude;
+
+  _GeoLocation__isset __isset;
+
+  void __set_latitude(const GEO val) {
+    latitude = val;
+  }
+
+  void __set_longitude(const GEO val) {
+    longitude = val;
+  }
+
+  bool operator == (const GeoLocation & rhs) const
+  {
+    if (!(latitude == rhs.latitude))
+      return false;
+    if (!(longitude == rhs.longitude))
+      return false;
+    return true;
+  }
+  bool operator != (const GeoLocation &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const GeoLocation & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+void swap(GeoLocation &a, GeoLocation &b);
+
 typedef struct _City__isset {
-  _City__isset() : id(false), areaid(false), tag(false), name(false), notes(false) {}
+  _City__isset() : id(false), areaid(false), tag(false), name(false), notes(false), geolocation(false) {}
   bool id;
   bool areaid;
   bool tag;
   bool name;
   bool notes;
+  bool geolocation;
 } _City__isset;
 
 class City {
  public:
 
-  static const char* ascii_fingerprint; // = "FBA07522786D76D54E312388051DF258";
-  static const uint8_t binary_fingerprint[16]; // = {0xFB,0xA0,0x75,0x22,0x78,0x6D,0x76,0xD5,0x4E,0x31,0x23,0x88,0x05,0x1D,0xF2,0x58};
+  static const char* ascii_fingerprint; // = "2271149BD58F679C5413550D19E2D0B9";
+  static const uint8_t binary_fingerprint[16]; // = {0x22,0x71,0x14,0x9B,0xD5,0x8F,0x67,0x9C,0x54,0x13,0x55,0x0D,0x19,0xE2,0xD0,0xB9};
 
   City() : id(0), areaid(0), tag(0), name(), notes() {
   }
@@ -738,6 +792,7 @@ class City {
   NUMBER32 tag;
   STR name;
   STR notes;
+  GeoLocation geolocation;
 
   _City__isset __isset;
 
@@ -761,6 +816,10 @@ class City {
     notes = val;
   }
 
+  void __set_geolocation(const GeoLocation& val) {
+    geolocation = val;
+  }
+
   bool operator == (const City & rhs) const
   {
     if (!(id == rhs.id))
@@ -772,6 +831,8 @@ class City {
     if (!(name == rhs.name))
       return false;
     if (!(notes == rhs.notes))
+      return false;
+    if (!(geolocation == rhs.geolocation))
       return false;
     return true;
   }
@@ -1103,57 +1164,6 @@ class PassengerUsage {
 };
 
 void swap(PassengerUsage &a, PassengerUsage &b);
-
-typedef struct _GeoLocation__isset {
-  _GeoLocation__isset() : latitude(false), longitude(false) {}
-  bool latitude;
-  bool longitude;
-} _GeoLocation__isset;
-
-class GeoLocation {
- public:
-
-  static const char* ascii_fingerprint; // = "EA2086D2BB14222991D7B0497DE7B58B";
-  static const uint8_t binary_fingerprint[16]; // = {0xEA,0x20,0x86,0xD2,0xBB,0x14,0x22,0x29,0x91,0xD7,0xB0,0x49,0x7D,0xE7,0xB5,0x8B};
-
-  GeoLocation() : latitude(0), longitude(0) {
-  }
-
-  virtual ~GeoLocation() throw() {}
-
-  GEO latitude;
-  GEO longitude;
-
-  _GeoLocation__isset __isset;
-
-  void __set_latitude(const GEO val) {
-    latitude = val;
-  }
-
-  void __set_longitude(const GEO val) {
-    longitude = val;
-  }
-
-  bool operator == (const GeoLocation & rhs) const
-  {
-    if (!(latitude == rhs.latitude))
-      return false;
-    if (!(longitude == rhs.longitude))
-      return false;
-    return true;
-  }
-  bool operator != (const GeoLocation &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const GeoLocation & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-void swap(GeoLocation &a, GeoLocation &b);
 
 typedef struct _UserDevice__isset {
   _UserDevice__isset() : devicetype(false), model(false), imei(false), line1(false), line2(false), hasGSMorCDMA(false), hasGPS(false), isGPS(false), geolocation(false) {}

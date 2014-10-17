@@ -72,7 +72,7 @@ client =
 
 Добавление города
 -----------------
-taxi-simple-cli --add --object city --name Yakutsk --notes "-" --areaid 1 --tag 1
+taxi-simple-cli --add --object city --name Yakutsk --latitude 62.03389 --longitude 129.73306 --notes "-" --areaid 1 --tag 1
 
 Добавление банка
 -----------------

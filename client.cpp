@@ -458,6 +458,10 @@ int doCmd(int argc, char** argv)
 	struct arg_file  *f_data = arg_file0(NULL, "file", "<file name>", "file to send");
 	struct arg_str  *s_registrationid = arg_str0(NULL, NULL, "<registration_id>", "GCM registration id");
 
+	// geo
+	struct arg_dbl  *d_latitude = arg_dbl0(NULL, "latitude", "<degrees>", "geo coordinate");
+	struct arg_dbl  *d_longitude = arg_dbl0(NULL, "longitude", "<degrees>", "geo coordinate");
+
 	struct arg_end  *end = arg_end(20);
 
 	void* argtable[] = { 
@@ -473,6 +477,7 @@ int doCmd(int argc, char** argv)
 		d_datestart, d_datefinish, i_isday, i_hourstart, i_hourfinish, i_isweekend, d_costmin, d_priceboarding, d_priceminute, d_pricedelay, d_pricewait, i_speedmin, i_timedelayfree,
 		i_isadmin, s_pwd,
 		c_sendgcm, s_apikey, s_data, s_registrationid, f_data,
+		d_latitude, d_longitude,
 		end
 	};
 	const char* progname = "taxi-simple-cli";
@@ -732,6 +737,7 @@ int doCmd(int argc, char** argv)
 					return 2;
 				}
 				v.person.phone1 = *s_phone->sval;
+				v.person.credentials.phone = *s_phone->sval;
 
 				if (s_pwd->count == 0)
 				{
@@ -762,7 +768,25 @@ int doCmd(int argc, char** argv)
 					return 2;
 				}
 				v.name = *s_name->sval;
-				
+
+				if (d_latitude->count == 0)
+				{
+					printf("--latitude missed.\n");
+					done(argtable);
+					return 2;
+				}
+				if (d_longitude->count == 0)
+				{
+					printf("--longitude missed.\n");
+					done(argtable);
+					return 2;
+				}
+				v.__isset.geolocation = true;
+				v.geolocation.__isset.latitude = true;
+				v.geolocation.__isset.longitude = true;
+				v.geolocation.latitude = *d_latitude->dval;
+				v.geolocation.longitude = *d_longitude->dval;
+
 				if (s_notes->count > 0)
 					v.notes = *s_notes->sval;
 

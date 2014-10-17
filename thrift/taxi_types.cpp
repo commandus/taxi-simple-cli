@@ -744,8 +744,83 @@ void swap(DateRange &a, DateRange &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* City::ascii_fingerprint = "FBA07522786D76D54E312388051DF258";
-const uint8_t City::binary_fingerprint[16] = {0xFB,0xA0,0x75,0x22,0x78,0x6D,0x76,0xD5,0x4E,0x31,0x23,0x88,0x05,0x1D,0xF2,0x58};
+const char* GeoLocation::ascii_fingerprint = "EA2086D2BB14222991D7B0497DE7B58B";
+const uint8_t GeoLocation::binary_fingerprint[16] = {0xEA,0x20,0x86,0xD2,0xBB,0x14,0x22,0x29,0x91,0xD7,0xB0,0x49,0x7D,0xE7,0xB5,0x8B};
+
+uint32_t GeoLocation::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
+          xfer += iprot->readDouble(this->latitude);
+          this->__isset.latitude = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
+          xfer += iprot->readDouble(this->longitude);
+          this->__isset.longitude = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t GeoLocation::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("GeoLocation");
+
+  xfer += oprot->writeFieldBegin("latitude", ::apache::thrift::protocol::T_DOUBLE, 1);
+  xfer += oprot->writeDouble(this->latitude);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("longitude", ::apache::thrift::protocol::T_DOUBLE, 2);
+  xfer += oprot->writeDouble(this->longitude);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(GeoLocation &a, GeoLocation &b) {
+  using ::std::swap;
+  swap(a.latitude, b.latitude);
+  swap(a.longitude, b.longitude);
+  swap(a.__isset, b.__isset);
+}
+
+const char* City::ascii_fingerprint = "2271149BD58F679C5413550D19E2D0B9";
+const uint8_t City::binary_fingerprint[16] = {0x22,0x71,0x14,0x9B,0xD5,0x8F,0x67,0x9C,0x54,0x13,0x55,0x0D,0x19,0xE2,0xD0,0xB9};
 
 uint32_t City::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -807,6 +882,14 @@ uint32_t City::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
+      case 6:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->geolocation.read(iprot);
+          this->__isset.geolocation = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -843,6 +926,10 @@ uint32_t City::write(::apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeString(this->notes);
   xfer += oprot->writeFieldEnd();
 
+  xfer += oprot->writeFieldBegin("geolocation", ::apache::thrift::protocol::T_STRUCT, 6);
+  xfer += this->geolocation.write(oprot);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -855,6 +942,7 @@ void swap(City &a, City &b) {
   swap(a.tag, b.tag);
   swap(a.name, b.name);
   swap(a.notes, b.notes);
+  swap(a.geolocation, b.geolocation);
   swap(a.__isset, b.__isset);
 }
 
@@ -1339,81 +1427,6 @@ void swap(PassengerUsage &a, PassengerUsage &b) {
   swap(a.minutescount, b.minutescount);
   swap(a.moneycount, b.moneycount);
   swap(a.payload, b.payload);
-  swap(a.__isset, b.__isset);
-}
-
-const char* GeoLocation::ascii_fingerprint = "EA2086D2BB14222991D7B0497DE7B58B";
-const uint8_t GeoLocation::binary_fingerprint[16] = {0xEA,0x20,0x86,0xD2,0xBB,0x14,0x22,0x29,0x91,0xD7,0xB0,0x49,0x7D,0xE7,0xB5,0x8B};
-
-uint32_t GeoLocation::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
-          xfer += iprot->readDouble(this->latitude);
-          this->__isset.latitude = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
-          xfer += iprot->readDouble(this->longitude);
-          this->__isset.longitude = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t GeoLocation::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("GeoLocation");
-
-  xfer += oprot->writeFieldBegin("latitude", ::apache::thrift::protocol::T_DOUBLE, 1);
-  xfer += oprot->writeDouble(this->latitude);
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("longitude", ::apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += oprot->writeDouble(this->longitude);
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-void swap(GeoLocation &a, GeoLocation &b) {
-  using ::std::swap;
-  swap(a.latitude, b.latitude);
-  swap(a.longitude, b.longitude);
   swap(a.__isset, b.__isset);
 }
 
