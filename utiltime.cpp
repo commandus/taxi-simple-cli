@@ -174,3 +174,40 @@ struct arg_date* arg_date0(const char* shortopts,
 	return result;
 }
 #endif
+
+/**
+	Return 0- Sunday, 6- Saturday
+*/
+int getWeekDay(time_t time)
+{
+	struct tm *timeptr = localtime(&time);
+	return timeptr->tm_wday;
+}
+
+/**
+	Return 0- January, 11- December
+*/
+int getMonth(time_t time)
+{
+	struct tm *timeptr = localtime(&time);
+	return timeptr->tm_mon;
+}
+
+/**
+	Return current month number: 0 - 11
+*/
+taxi::Month::type getTaxiMonth(time_t time)
+{
+	struct tm *tm = localtime(&time);
+	return static_cast<taxi::Month::type> (tm->tm_mon); 
+}
+
+/**
+	Return current year
+*/
+int getCurrentYear()
+{
+	time_t r(time(NULL));
+	struct tm *tm = localtime(&r);
+	return tm->tm_year + 1900;
+}

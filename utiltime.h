@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctime>
 #include "argtable2.h"
+#include "taxi_types.h"
 
 time_t currentTime();
 
@@ -17,3 +18,24 @@ struct arg_date* arg_date0(const char* shortopts,
                            const char *datatype,
                            const char *glossary);
 #endif
+
+/**
+	Return 0- Sunday, 6- Saturday
+*/
+int getWeekDay(time_t time);
+
+/**
+	Return 0- January, 11- December
+*/
+int getMonth(time_t time);
+
+
+/**
+	Return current month number: 0 - 11
+*/
+taxi::Month::type getTaxiMonth(time_t time);
+
+/**
+	Return current year
+*/
+int getCurrentYear();

@@ -202,26 +202,6 @@ void coutPassengerUsage(PassengerUsage &v)
 		<< v.payload.papercount  << '\t'; 
 }
 
-/**
-	Return current month number: 0 - 11
-*/
-taxi::Month::type getCurrentMonth()
-{
-	time_t r(time(NULL));
-	struct tm *tm = localtime(&r);
-	return static_cast<taxi::Month::type> (tm->tm_mon); 
-}
-
-/**
-	Return current year
-*/
-int getCurrentYear()
-{
-	time_t r(time(NULL));
-	struct tm *tm = localtime(&r);
-	return tm->tm_year + 1900;
-}
-
 int done(void** argtable)
 {
 	/* deallocate each non-null entry in argtable[] */
@@ -1492,8 +1472,9 @@ int doCmd(int argc, char** argv)
 				{
 					cout << it->id << '\t' << it->cityid << '\t' << it->tag << '\t' << it->customerid << '\t' <<
 						it->isoperator << '\t' << it->isvip << '\t' << it->status << '\t' << it->person.id << '\t' << it->canorder << '\t';
-					coutPassengerLimit(it->passengerlimitmonth.at(getCurrentMonth()));
-					coutPassengerUsage(it->passengerusagemonth[getCurrentMonth()]);
+					time_t t = currentTime();
+					coutPassengerLimit(it->limitmonth.at(getTaxiMonth(t)));
+					coutPassengerUsage(it->usagemonth[getTaxiMonth(t)]);
 					cout << std::endl;
 				}
 			}
