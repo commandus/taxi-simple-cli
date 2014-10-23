@@ -346,9 +346,10 @@ extern const std::map<int, const char*> _StopType_VALUES_TO_NAMES;
 
 struct DeclineOrderCause {
   enum type {
-    DECLINE_BY_DRIVER = 0,
-    DECLINE_BY_SERVICE = 1,
-    DECLINE_BY_PASSENGER = 2
+    DECLINE_ASSIGN_BY_DRIVER = 0,
+    DECLINE_BY_DRIVER = 1,
+    DECLINE_BY_SERVICE = 2,
+    DECLINE_BY_PASSENGER = 3
   };
 };
 
@@ -559,6 +560,8 @@ typedef ID Driverid;
 typedef std::vector<class Driver>  Drivers;
 
 typedef std::vector<Driverid>  Driverids;
+
+typedef std::map<ID, class Driver>  DriverMap;
 
 typedef std::map<Driverid, class DriverOnline>  DriverOnlineMap;
 
@@ -3351,7 +3354,7 @@ class ServiceOrderStop {
 void swap(ServiceOrderStop &a, ServiceOrderStop &b);
 
 typedef struct _ServiceOrder__isset {
-  _ServiceOrder__isset() : id(false), cityid(false), tag(false), ordertype(false), ordertimetype(false), orderfeatures(false), svc(false), dispatcherid(false), passengerid(false), sheduleid(false), passengers(false), stops(false), payload(false), stage(false), crew(false), created(false), sheduletime(false), assigned(false), started(false), arrived(false), finished(false), locstart(false), locfinish(false), preferreddriverid(false), totaltimefiscal(false), totaltimeactual(false), sumfiscal(false), sumactual(false), cabclass(false), paymentstate(false), claimstate(false), hasstops(false), notes(false) {}
+  _ServiceOrder__isset() : id(false), cityid(false), tag(false), ordertype(false), ordertimetype(false), orderfeatures(false), svc(false), dispatcherid(false), passengerid(false), sheduleid(false), passengers(false), stops(false), payload(false), stage(false), crew(false), created(false), sheduletime(false), assigned(false), started(false), arrived(false), finished(false), estimated(false), stagemodified(false), locstart(false), locfinish(false), preferreddriverid(false), totaltimefiscal(false), totaltimeactual(false), sumfiscal(false), sumactual(false), cabclass(false), paymentstate(false), claimstate(false), hasstops(false), notes(false), iscalculated(false) {}
   bool id;
   bool cityid;
   bool tag;
@@ -3373,6 +3376,8 @@ typedef struct _ServiceOrder__isset {
   bool started;
   bool arrived;
   bool finished;
+  bool estimated;
+  bool stagemodified;
   bool locstart;
   bool locfinish;
   bool preferreddriverid;
@@ -3385,15 +3390,16 @@ typedef struct _ServiceOrder__isset {
   bool claimstate;
   bool hasstops;
   bool notes;
+  bool iscalculated;
 } _ServiceOrder__isset;
 
 class ServiceOrder {
  public:
 
-  static const char* ascii_fingerprint; // = "5CA42CDC3AF34B052A209496846E1365";
-  static const uint8_t binary_fingerprint[16]; // = {0x5C,0xA4,0x2C,0xDC,0x3A,0xF3,0x4B,0x05,0x2A,0x20,0x94,0x96,0x84,0x6E,0x13,0x65};
+  static const char* ascii_fingerprint; // = "EA0D7EFA6770F586CBDCFCD6D8858A5A";
+  static const uint8_t binary_fingerprint[16]; // = {0xEA,0x0D,0x7E,0xFA,0x67,0x70,0xF5,0x86,0xCB,0xDC,0xFC,0xD6,0xD8,0x85,0x8A,0x5A};
 
-  ServiceOrder() : id(0), cityid(0), tag(0), ordertype((OrderType::type)0), ordertimetype((OrderTimeType::type)0), dispatcherid(0), passengerid(0), sheduleid(0), stage((OrderStage::type)0), created(0), sheduletime(0), assigned(0), started(0), arrived(0), finished(0), preferreddriverid(0), totaltimefiscal(0), totaltimeactual(0), sumfiscal(0), sumactual(0), cabclass((CabClass::type)0), paymentstate((PaymentState::type)0), claimstate((ClaimState::type)0), hasstops(0), notes() {
+  ServiceOrder() : id(0), cityid(0), tag(0), ordertype((OrderType::type)0), ordertimetype((OrderTimeType::type)0), dispatcherid(0), passengerid(0), sheduleid(0), stage((OrderStage::type)0), created(0), sheduletime(0), assigned(0), started(0), arrived(0), finished(0), estimated(0), stagemodified(0), preferreddriverid(0), totaltimefiscal(0), totaltimeactual(0), sumfiscal(0), sumactual(0), cabclass((CabClass::type)0), paymentstate((PaymentState::type)0), claimstate((ClaimState::type)0), hasstops(0), notes(), iscalculated(0) {
   }
 
   virtual ~ServiceOrder() throw() {}
@@ -3419,6 +3425,8 @@ class ServiceOrder {
   DATE started;
   DATE arrived;
   DATE finished;
+  DATE estimated;
+  DATE stagemodified;
   Location locstart;
   Location locfinish;
   ID preferreddriverid;
@@ -3431,6 +3439,7 @@ class ServiceOrder {
   ClaimState::type claimstate;
   bool hasstops;
   STR notes;
+  bool iscalculated;
 
   _ServiceOrder__isset __isset;
 
@@ -3518,6 +3527,14 @@ class ServiceOrder {
     finished = val;
   }
 
+  void __set_estimated(const DATE val) {
+    estimated = val;
+  }
+
+  void __set_stagemodified(const DATE val) {
+    stagemodified = val;
+  }
+
   void __set_locstart(const Location& val) {
     locstart = val;
   }
@@ -3566,6 +3583,10 @@ class ServiceOrder {
     notes = val;
   }
 
+  void __set_iscalculated(const bool val) {
+    iscalculated = val;
+  }
+
   bool operator == (const ServiceOrder & rhs) const
   {
     if (!(id == rhs.id))
@@ -3610,6 +3631,10 @@ class ServiceOrder {
       return false;
     if (!(finished == rhs.finished))
       return false;
+    if (!(estimated == rhs.estimated))
+      return false;
+    if (!(stagemodified == rhs.stagemodified))
+      return false;
     if (!(locstart == rhs.locstart))
       return false;
     if (!(locfinish == rhs.locfinish))
@@ -3633,6 +3658,8 @@ class ServiceOrder {
     if (!(hasstops == rhs.hasstops))
       return false;
     if (!(notes == rhs.notes))
+      return false;
+    if (!(iscalculated == rhs.iscalculated))
       return false;
     return true;
   }
@@ -5033,12 +5060,14 @@ class AutoPayment {
 void swap(AutoPayment &a, AutoPayment &b);
 
 typedef struct _NotificationEvent__isset {
-  _NotificationEvent__isset() : id(false), receiverrole(false), phone(false), emitterrole(false), emitter(false), serviceobject(false), serviceaction(false), datestart(false), infuture(false), serviceobjectid(false), sent(false), sentdate(false), notes(false), gcmsend(false), gcmsent(false), isgcmsentsuccess(false), isgcmsentdate(false), gcmresponsecode(false), gcmresponse(false) {}
+  _NotificationEvent__isset() : id(false), receiverrole(false), receiver(false), phone(false), emitterrole(false), emitter(false), stage(false), serviceobject(false), serviceaction(false), datestart(false), infuture(false), serviceobjectid(false), sent(false), sentdate(false), notes(false), gcmsend(false), gcmsent(false), isgcmsentsuccess(false), gcmsentdate(false), gcmresponsecode(false), gcmresponse(false) {}
   bool id;
   bool receiverrole;
+  bool receiver;
   bool phone;
   bool emitterrole;
   bool emitter;
+  bool stage;
   bool serviceobject;
   bool serviceaction;
   bool datestart;
@@ -5050,7 +5079,7 @@ typedef struct _NotificationEvent__isset {
   bool gcmsend;
   bool gcmsent;
   bool isgcmsentsuccess;
-  bool isgcmsentdate;
+  bool gcmsentdate;
   bool gcmresponsecode;
   bool gcmresponse;
 } _NotificationEvent__isset;
@@ -5058,19 +5087,21 @@ typedef struct _NotificationEvent__isset {
 class NotificationEvent {
  public:
 
-  static const char* ascii_fingerprint; // = "A7C1E91A1633125B1E1BA9227CC71E38";
-  static const uint8_t binary_fingerprint[16]; // = {0xA7,0xC1,0xE9,0x1A,0x16,0x33,0x12,0x5B,0x1E,0x1B,0xA9,0x22,0x7C,0xC7,0x1E,0x38};
+  static const char* ascii_fingerprint; // = "FD2A69040D3AF2A33F11D7EC2BCAF42B";
+  static const uint8_t binary_fingerprint[16]; // = {0xFD,0x2A,0x69,0x04,0x0D,0x3A,0xF2,0xA3,0x3F,0x11,0xD7,0xEC,0x2B,0xCA,0xF4,0x2B};
 
-  NotificationEvent() : id(0), receiverrole((PersonRole::type)0), phone(), emitterrole((PersonRole::type)0), emitter(0), serviceobject((ServiceObject::type)0), serviceaction((ServiceAction::type)0), datestart(0), infuture(0), serviceobjectid(0), sent(0), sentdate(0), notes(), gcmsend(0), gcmsent(0), isgcmsentsuccess(0), isgcmsentdate(0), gcmresponsecode(), gcmresponse() {
+  NotificationEvent() : id(0), receiverrole((PersonRole::type)0), receiver(0), phone(), emitterrole((PersonRole::type)0), emitter(0), stage((OrderStage::type)0), serviceobject((ServiceObject::type)0), serviceaction((ServiceAction::type)0), datestart(0), infuture(0), serviceobjectid(0), sent(0), sentdate(0), notes(), gcmsend(0), gcmsent(0), isgcmsentsuccess(0), gcmsentdate(0), gcmresponsecode(), gcmresponse() {
   }
 
   virtual ~NotificationEvent() throw() {}
 
   ID id;
   PersonRole::type receiverrole;
+  ID receiver;
   STR phone;
   PersonRole::type emitterrole;
   ID emitter;
+  OrderStage::type stage;
   ServiceObject::type serviceobject;
   ServiceAction::type serviceaction;
   DATE datestart;
@@ -5082,7 +5113,7 @@ class NotificationEvent {
   bool gcmsend;
   NUMBER32 gcmsent;
   bool isgcmsentsuccess;
-  DATE isgcmsentdate;
+  DATE gcmsentdate;
   STR gcmresponsecode;
   STR gcmresponse;
 
@@ -5096,6 +5127,10 @@ class NotificationEvent {
     receiverrole = val;
   }
 
+  void __set_receiver(const ID val) {
+    receiver = val;
+  }
+
   void __set_phone(const STR& val) {
     phone = val;
   }
@@ -5106,6 +5141,10 @@ class NotificationEvent {
 
   void __set_emitter(const ID val) {
     emitter = val;
+  }
+
+  void __set_stage(const OrderStage::type val) {
+    stage = val;
   }
 
   void __set_serviceobject(const ServiceObject::type val) {
@@ -5152,8 +5191,8 @@ class NotificationEvent {
     isgcmsentsuccess = val;
   }
 
-  void __set_isgcmsentdate(const DATE val) {
-    isgcmsentdate = val;
+  void __set_gcmsentdate(const DATE val) {
+    gcmsentdate = val;
   }
 
   void __set_gcmresponsecode(const STR& val) {
@@ -5170,11 +5209,15 @@ class NotificationEvent {
       return false;
     if (!(receiverrole == rhs.receiverrole))
       return false;
+    if (!(receiver == rhs.receiver))
+      return false;
     if (!(phone == rhs.phone))
       return false;
     if (!(emitterrole == rhs.emitterrole))
       return false;
     if (!(emitter == rhs.emitter))
+      return false;
+    if (!(stage == rhs.stage))
       return false;
     if (!(serviceobject == rhs.serviceobject))
       return false;
@@ -5198,7 +5241,7 @@ class NotificationEvent {
       return false;
     if (!(isgcmsentsuccess == rhs.isgcmsentsuccess))
       return false;
-    if (!(isgcmsentdate == rhs.isgcmsentdate))
+    if (!(gcmsentdate == rhs.gcmsentdate))
       return false;
     if (!(gcmresponsecode == rhs.gcmresponsecode))
       return false;

@@ -441,16 +441,18 @@ const char* _kStopTypeNames[] = {
 const std::map<int, const char*> _StopType_VALUES_TO_NAMES(::apache::thrift::TEnumIterator(5, _kStopTypeValues, _kStopTypeNames), ::apache::thrift::TEnumIterator(-1, NULL, NULL));
 
 int _kDeclineOrderCauseValues[] = {
+  DeclineOrderCause::DECLINE_ASSIGN_BY_DRIVER,
   DeclineOrderCause::DECLINE_BY_DRIVER,
   DeclineOrderCause::DECLINE_BY_SERVICE,
   DeclineOrderCause::DECLINE_BY_PASSENGER
 };
 const char* _kDeclineOrderCauseNames[] = {
+  "DECLINE_ASSIGN_BY_DRIVER",
   "DECLINE_BY_DRIVER",
   "DECLINE_BY_SERVICE",
   "DECLINE_BY_PASSENGER"
 };
-const std::map<int, const char*> _DeclineOrderCause_VALUES_TO_NAMES(::apache::thrift::TEnumIterator(3, _kDeclineOrderCauseValues, _kDeclineOrderCauseNames), ::apache::thrift::TEnumIterator(-1, NULL, NULL));
+const std::map<int, const char*> _DeclineOrderCause_VALUES_TO_NAMES(::apache::thrift::TEnumIterator(4, _kDeclineOrderCauseValues, _kDeclineOrderCauseNames), ::apache::thrift::TEnumIterator(-1, NULL, NULL));
 
 int _kBankRoleValues[] = {
   BankRole::BANK_ACCOUNT
@@ -5491,8 +5493,8 @@ void swap(ServiceOrderStop &a, ServiceOrderStop &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* ServiceOrder::ascii_fingerprint = "5CA42CDC3AF34B052A209496846E1365";
-const uint8_t ServiceOrder::binary_fingerprint[16] = {0x5C,0xA4,0x2C,0xDC,0x3A,0xF3,0x4B,0x05,0x2A,0x20,0x94,0x96,0x84,0x6E,0x13,0x65};
+const char* ServiceOrder::ascii_fingerprint = "EA0D7EFA6770F586CBDCFCD6D8858A5A";
+const uint8_t ServiceOrder::binary_fingerprint[16] = {0xEA,0x0D,0x7E,0xFA,0x67,0x70,0xF5,0x86,0xCB,0xDC,0xFC,0xD6,0xD8,0x85,0x8A,0x5A};
 
 uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -5762,6 +5764,22 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
         }
         break;
       case 22:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->estimated);
+          this->__isset.estimated = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 23:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->stagemodified);
+          this->__isset.stagemodified = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 24:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->locstart.read(iprot);
           this->__isset.locstart = true;
@@ -5769,7 +5787,7 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 23:
+      case 25:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->locfinish.read(iprot);
           this->__isset.locfinish = true;
@@ -5777,7 +5795,7 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 24:
+      case 26:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->preferreddriverid);
           this->__isset.preferreddriverid = true;
@@ -5785,7 +5803,7 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 25:
+      case 27:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           xfer += iprot->readI32(this->totaltimefiscal);
           this->__isset.totaltimefiscal = true;
@@ -5793,7 +5811,7 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 26:
+      case 28:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           xfer += iprot->readI32(this->totaltimeactual);
           this->__isset.totaltimeactual = true;
@@ -5801,7 +5819,7 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 27:
+      case 29:
         if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->sumfiscal);
           this->__isset.sumfiscal = true;
@@ -5809,7 +5827,7 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 28:
+      case 30:
         if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->sumactual);
           this->__isset.sumactual = true;
@@ -5817,7 +5835,7 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 29:
+      case 31:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           int32_t ecast271;
           xfer += iprot->readI32(ecast271);
@@ -5827,7 +5845,7 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 30:
+      case 32:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           int32_t ecast272;
           xfer += iprot->readI32(ecast272);
@@ -5837,7 +5855,7 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 31:
+      case 33:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           int32_t ecast273;
           xfer += iprot->readI32(ecast273);
@@ -5847,7 +5865,7 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 32:
+      case 34:
         if (ftype == ::apache::thrift::protocol::T_BOOL) {
           xfer += iprot->readBool(this->hasstops);
           this->__isset.hasstops = true;
@@ -5855,10 +5873,18 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 33:
+      case 35:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->notes);
           this->__isset.notes = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 36:
+        if (ftype == ::apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool(this->iscalculated);
+          this->__isset.iscalculated = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -6005,52 +6031,64 @@ uint32_t ServiceOrder::write(::apache::thrift::protocol::TProtocol* oprot) const
   xfer += oprot->writeI64(this->finished);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("locstart", ::apache::thrift::protocol::T_STRUCT, 22);
+  xfer += oprot->writeFieldBegin("estimated", ::apache::thrift::protocol::T_I64, 22);
+  xfer += oprot->writeI64(this->estimated);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("stagemodified", ::apache::thrift::protocol::T_I64, 23);
+  xfer += oprot->writeI64(this->stagemodified);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("locstart", ::apache::thrift::protocol::T_STRUCT, 24);
   xfer += this->locstart.write(oprot);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("locfinish", ::apache::thrift::protocol::T_STRUCT, 23);
+  xfer += oprot->writeFieldBegin("locfinish", ::apache::thrift::protocol::T_STRUCT, 25);
   xfer += this->locfinish.write(oprot);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("preferreddriverid", ::apache::thrift::protocol::T_I64, 24);
+  xfer += oprot->writeFieldBegin("preferreddriverid", ::apache::thrift::protocol::T_I64, 26);
   xfer += oprot->writeI64(this->preferreddriverid);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("totaltimefiscal", ::apache::thrift::protocol::T_I32, 25);
+  xfer += oprot->writeFieldBegin("totaltimefiscal", ::apache::thrift::protocol::T_I32, 27);
   xfer += oprot->writeI32(this->totaltimefiscal);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("totaltimeactual", ::apache::thrift::protocol::T_I32, 26);
+  xfer += oprot->writeFieldBegin("totaltimeactual", ::apache::thrift::protocol::T_I32, 28);
   xfer += oprot->writeI32(this->totaltimeactual);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("sumfiscal", ::apache::thrift::protocol::T_DOUBLE, 27);
+  xfer += oprot->writeFieldBegin("sumfiscal", ::apache::thrift::protocol::T_DOUBLE, 29);
   xfer += oprot->writeDouble(this->sumfiscal);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("sumactual", ::apache::thrift::protocol::T_DOUBLE, 28);
+  xfer += oprot->writeFieldBegin("sumactual", ::apache::thrift::protocol::T_DOUBLE, 30);
   xfer += oprot->writeDouble(this->sumactual);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("cabclass", ::apache::thrift::protocol::T_I32, 29);
+  xfer += oprot->writeFieldBegin("cabclass", ::apache::thrift::protocol::T_I32, 31);
   xfer += oprot->writeI32((int32_t)this->cabclass);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("paymentstate", ::apache::thrift::protocol::T_I32, 30);
+  xfer += oprot->writeFieldBegin("paymentstate", ::apache::thrift::protocol::T_I32, 32);
   xfer += oprot->writeI32((int32_t)this->paymentstate);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("claimstate", ::apache::thrift::protocol::T_I32, 31);
+  xfer += oprot->writeFieldBegin("claimstate", ::apache::thrift::protocol::T_I32, 33);
   xfer += oprot->writeI32((int32_t)this->claimstate);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("hasstops", ::apache::thrift::protocol::T_BOOL, 32);
+  xfer += oprot->writeFieldBegin("hasstops", ::apache::thrift::protocol::T_BOOL, 34);
   xfer += oprot->writeBool(this->hasstops);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("notes", ::apache::thrift::protocol::T_STRING, 33);
+  xfer += oprot->writeFieldBegin("notes", ::apache::thrift::protocol::T_STRING, 35);
   xfer += oprot->writeString(this->notes);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("iscalculated", ::apache::thrift::protocol::T_BOOL, 36);
+  xfer += oprot->writeBool(this->iscalculated);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -6081,6 +6119,8 @@ void swap(ServiceOrder &a, ServiceOrder &b) {
   swap(a.started, b.started);
   swap(a.arrived, b.arrived);
   swap(a.finished, b.finished);
+  swap(a.estimated, b.estimated);
+  swap(a.stagemodified, b.stagemodified);
   swap(a.locstart, b.locstart);
   swap(a.locfinish, b.locfinish);
   swap(a.preferreddriverid, b.preferreddriverid);
@@ -6093,6 +6133,7 @@ void swap(ServiceOrder &a, ServiceOrder &b) {
   swap(a.claimstate, b.claimstate);
   swap(a.hasstops, b.hasstops);
   swap(a.notes, b.notes);
+  swap(a.iscalculated, b.iscalculated);
   swap(a.__isset, b.__isset);
 }
 
@@ -8344,8 +8385,8 @@ void swap(AutoPayment &a, AutoPayment &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* NotificationEvent::ascii_fingerprint = "A7C1E91A1633125B1E1BA9227CC71E38";
-const uint8_t NotificationEvent::binary_fingerprint[16] = {0xA7,0xC1,0xE9,0x1A,0x16,0x33,0x12,0x5B,0x1E,0x1B,0xA9,0x22,0x7C,0xC7,0x1E,0x38};
+const char* NotificationEvent::ascii_fingerprint = "FD2A69040D3AF2A33F11D7EC2BCAF42B";
+const uint8_t NotificationEvent::binary_fingerprint[16] = {0xFD,0x2A,0x69,0x04,0x0D,0x3A,0xF2,0xA3,0x3F,0x11,0xD7,0xEC,0x2B,0xCA,0xF4,0x2B};
 
 uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -8386,6 +8427,14 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
         }
         break;
       case 3:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->receiver);
+          this->__isset.receiver = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->phone);
           this->__isset.phone = true;
@@ -8393,7 +8442,7 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 4:
+      case 5:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           int32_t ecast316;
           xfer += iprot->readI32(ecast316);
@@ -8403,7 +8452,7 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 5:
+      case 6:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->emitter);
           this->__isset.emitter = true;
@@ -8411,27 +8460,37 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 6:
+      case 7:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           int32_t ecast317;
           xfer += iprot->readI32(ecast317);
-          this->serviceobject = (ServiceObject::type)ecast317;
-          this->__isset.serviceobject = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 7:
-        if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast318;
-          xfer += iprot->readI32(ecast318);
-          this->serviceaction = (ServiceAction::type)ecast318;
-          this->__isset.serviceaction = true;
+          this->stage = (OrderStage::type)ecast317;
+          this->__isset.stage = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 8:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          int32_t ecast318;
+          xfer += iprot->readI32(ecast318);
+          this->serviceobject = (ServiceObject::type)ecast318;
+          this->__isset.serviceobject = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 9:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          int32_t ecast319;
+          xfer += iprot->readI32(ecast319);
+          this->serviceaction = (ServiceAction::type)ecast319;
+          this->__isset.serviceaction = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 10:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->datestart);
           this->__isset.datestart = true;
@@ -8439,7 +8498,7 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 9:
+      case 11:
         if (ftype == ::apache::thrift::protocol::T_BOOL) {
           xfer += iprot->readBool(this->infuture);
           this->__isset.infuture = true;
@@ -8447,7 +8506,7 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 10:
+      case 12:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->serviceobjectid);
           this->__isset.serviceobjectid = true;
@@ -8455,7 +8514,7 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 11:
+      case 13:
         if (ftype == ::apache::thrift::protocol::T_BOOL) {
           xfer += iprot->readBool(this->sent);
           this->__isset.sent = true;
@@ -8463,7 +8522,7 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 12:
+      case 14:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->sentdate);
           this->__isset.sentdate = true;
@@ -8471,7 +8530,7 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 13:
+      case 15:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->notes);
           this->__isset.notes = true;
@@ -8479,7 +8538,7 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 14:
+      case 16:
         if (ftype == ::apache::thrift::protocol::T_BOOL) {
           xfer += iprot->readBool(this->gcmsend);
           this->__isset.gcmsend = true;
@@ -8487,7 +8546,7 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 15:
+      case 17:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           xfer += iprot->readI32(this->gcmsent);
           this->__isset.gcmsent = true;
@@ -8495,7 +8554,7 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 16:
+      case 18:
         if (ftype == ::apache::thrift::protocol::T_BOOL) {
           xfer += iprot->readBool(this->isgcmsentsuccess);
           this->__isset.isgcmsentsuccess = true;
@@ -8503,15 +8562,15 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 17:
+      case 19:
         if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->isgcmsentdate);
-          this->__isset.isgcmsentdate = true;
+          xfer += iprot->readI64(this->gcmsentdate);
+          this->__isset.gcmsentdate = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 18:
+      case 20:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->gcmresponsecode);
           this->__isset.gcmresponsecode = true;
@@ -8519,7 +8578,7 @@ uint32_t NotificationEvent::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 19:
+      case 21:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->gcmresponse);
           this->__isset.gcmresponse = true;
@@ -8551,71 +8610,79 @@ uint32_t NotificationEvent::write(::apache::thrift::protocol::TProtocol* oprot) 
   xfer += oprot->writeI32((int32_t)this->receiverrole);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("phone", ::apache::thrift::protocol::T_STRING, 3);
+  xfer += oprot->writeFieldBegin("receiver", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64(this->receiver);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("phone", ::apache::thrift::protocol::T_STRING, 4);
   xfer += oprot->writeString(this->phone);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("emitterrole", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeFieldBegin("emitterrole", ::apache::thrift::protocol::T_I32, 5);
   xfer += oprot->writeI32((int32_t)this->emitterrole);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("emitter", ::apache::thrift::protocol::T_I64, 5);
+  xfer += oprot->writeFieldBegin("emitter", ::apache::thrift::protocol::T_I64, 6);
   xfer += oprot->writeI64(this->emitter);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("serviceobject", ::apache::thrift::protocol::T_I32, 6);
+  xfer += oprot->writeFieldBegin("stage", ::apache::thrift::protocol::T_I32, 7);
+  xfer += oprot->writeI32((int32_t)this->stage);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("serviceobject", ::apache::thrift::protocol::T_I32, 8);
   xfer += oprot->writeI32((int32_t)this->serviceobject);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("serviceaction", ::apache::thrift::protocol::T_I32, 7);
+  xfer += oprot->writeFieldBegin("serviceaction", ::apache::thrift::protocol::T_I32, 9);
   xfer += oprot->writeI32((int32_t)this->serviceaction);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("datestart", ::apache::thrift::protocol::T_I64, 8);
+  xfer += oprot->writeFieldBegin("datestart", ::apache::thrift::protocol::T_I64, 10);
   xfer += oprot->writeI64(this->datestart);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("infuture", ::apache::thrift::protocol::T_BOOL, 9);
+  xfer += oprot->writeFieldBegin("infuture", ::apache::thrift::protocol::T_BOOL, 11);
   xfer += oprot->writeBool(this->infuture);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("serviceobjectid", ::apache::thrift::protocol::T_I64, 10);
+  xfer += oprot->writeFieldBegin("serviceobjectid", ::apache::thrift::protocol::T_I64, 12);
   xfer += oprot->writeI64(this->serviceobjectid);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("sent", ::apache::thrift::protocol::T_BOOL, 11);
+  xfer += oprot->writeFieldBegin("sent", ::apache::thrift::protocol::T_BOOL, 13);
   xfer += oprot->writeBool(this->sent);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("sentdate", ::apache::thrift::protocol::T_I64, 12);
+  xfer += oprot->writeFieldBegin("sentdate", ::apache::thrift::protocol::T_I64, 14);
   xfer += oprot->writeI64(this->sentdate);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("notes", ::apache::thrift::protocol::T_STRING, 13);
+  xfer += oprot->writeFieldBegin("notes", ::apache::thrift::protocol::T_STRING, 15);
   xfer += oprot->writeString(this->notes);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("gcmsend", ::apache::thrift::protocol::T_BOOL, 14);
+  xfer += oprot->writeFieldBegin("gcmsend", ::apache::thrift::protocol::T_BOOL, 16);
   xfer += oprot->writeBool(this->gcmsend);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("gcmsent", ::apache::thrift::protocol::T_I32, 15);
+  xfer += oprot->writeFieldBegin("gcmsent", ::apache::thrift::protocol::T_I32, 17);
   xfer += oprot->writeI32(this->gcmsent);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("isgcmsentsuccess", ::apache::thrift::protocol::T_BOOL, 16);
+  xfer += oprot->writeFieldBegin("isgcmsentsuccess", ::apache::thrift::protocol::T_BOOL, 18);
   xfer += oprot->writeBool(this->isgcmsentsuccess);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("isgcmsentdate", ::apache::thrift::protocol::T_I64, 17);
-  xfer += oprot->writeI64(this->isgcmsentdate);
+  xfer += oprot->writeFieldBegin("gcmsentdate", ::apache::thrift::protocol::T_I64, 19);
+  xfer += oprot->writeI64(this->gcmsentdate);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("gcmresponsecode", ::apache::thrift::protocol::T_STRING, 18);
+  xfer += oprot->writeFieldBegin("gcmresponsecode", ::apache::thrift::protocol::T_STRING, 20);
   xfer += oprot->writeString(this->gcmresponsecode);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("gcmresponse", ::apache::thrift::protocol::T_STRING, 19);
+  xfer += oprot->writeFieldBegin("gcmresponse", ::apache::thrift::protocol::T_STRING, 21);
   xfer += oprot->writeString(this->gcmresponse);
   xfer += oprot->writeFieldEnd();
 
@@ -8628,9 +8695,11 @@ void swap(NotificationEvent &a, NotificationEvent &b) {
   using ::std::swap;
   swap(a.id, b.id);
   swap(a.receiverrole, b.receiverrole);
+  swap(a.receiver, b.receiver);
   swap(a.phone, b.phone);
   swap(a.emitterrole, b.emitterrole);
   swap(a.emitter, b.emitter);
+  swap(a.stage, b.stage);
   swap(a.serviceobject, b.serviceobject);
   swap(a.serviceaction, b.serviceaction);
   swap(a.datestart, b.datestart);
@@ -8642,7 +8711,7 @@ void swap(NotificationEvent &a, NotificationEvent &b) {
   swap(a.gcmsend, b.gcmsend);
   swap(a.gcmsent, b.gcmsent);
   swap(a.isgcmsentsuccess, b.isgcmsentsuccess);
-  swap(a.isgcmsentdate, b.isgcmsentdate);
+  swap(a.gcmsentdate, b.gcmsentdate);
   swap(a.gcmresponsecode, b.gcmresponsecode);
   swap(a.gcmresponse, b.gcmresponse);
   swap(a.__isset, b.__isset);
@@ -8673,9 +8742,9 @@ uint32_t ServiceFailure::read(::apache::thrift::protocol::TProtocol* iprot) {
     {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast319;
-          xfer += iprot->readI32(ecast319);
-          this->errortype = (ErrorType::type)ecast319;
+          int32_t ecast320;
+          xfer += iprot->readI32(ecast320);
+          this->errortype = (ErrorType::type)ecast320;
           this->__isset.errortype = true;
         } else {
           xfer += iprot->skip(ftype);

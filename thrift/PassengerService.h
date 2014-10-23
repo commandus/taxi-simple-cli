@@ -72,7 +72,17 @@ class PassengerServiceIf {
   virtual void findServiceOrderDecline(ServiceOrderDeclines& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& search, const DateRange& sheduletime, const RowRange& rowrange) = 0;
   virtual void findClaim(Claims& _return, const Credentials& credentials, const UserDevice& userdevice, const Claim& search, const DateRange& sheduletime, const RowRange& rowrange) = 0;
   virtual void findTrack(Tracks& _return, const Credentials& credentials, const UserDevice& userdevice, const Track& search, const DateRange& sheduletime, const RowRange& rowrange) = 0;
-  virtual void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const PersonRole::type personrole, const RowRange& rowrange) = 0;
+  virtual void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) = 0;
+  virtual bool getOnline(const Credentials& credentials, const UserDevice& userdevice) = 0;
+  virtual bool setOnline(const Credentials& credentials, const UserDevice& userdevice, const bool value) = 0;
+  virtual bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes) = 0;
+  virtual bool startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
+  virtual bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
+  virtual bool stopDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
+  virtual bool completeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
+  virtual bool cancelOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
+  virtual bool failOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
+  virtual void getDriverServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) = 0;
 };
 
 class PassengerServiceIfFactory {
@@ -273,7 +283,46 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
   void findTrack(Tracks& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Track& /* search */, const DateRange& /* sheduletime */, const RowRange& /* rowrange */) {
     return;
   }
-  void getEvents(NotificationEvents& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const PersonRole::type /* personrole */, const RowRange& /* rowrange */) {
+  void getEvents(NotificationEvents& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const RowRange& /* rowrange */) {
+    return;
+  }
+  bool getOnline(const Credentials& /* credentials */, const UserDevice& /* userdevice */) {
+    bool _return = false;
+    return _return;
+  }
+  bool setOnline(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const bool /* value */) {
+    bool _return = false;
+    return _return;
+  }
+  bool takeOrder(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */, const bool /* confirm */, const NUMBER32 /* provisionminutes */) {
+    bool _return = false;
+    return _return;
+  }
+  bool startWaiting(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */) {
+    bool _return = false;
+    return _return;
+  }
+  bool startDriving(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */) {
+    bool _return = false;
+    return _return;
+  }
+  bool stopDriving(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */) {
+    bool _return = false;
+    return _return;
+  }
+  bool completeOrder(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */) {
+    bool _return = false;
+    return _return;
+  }
+  bool cancelOrder(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */) {
+    bool _return = false;
+    return _return;
+  }
+  bool failOrder(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */) {
+    bool _return = false;
+    return _return;
+  }
+  void getDriverServiceOrder(ServiceOrders& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const RowRange& /* rowrange */) {
     return;
   }
 };
@@ -8257,24 +8306,22 @@ class PassengerService_findTrack_presult {
 };
 
 typedef struct _PassengerService_getEvents_args__isset {
-  _PassengerService_getEvents_args__isset() : credentials(false), userdevice(false), personrole(false), rowrange(false) {}
+  _PassengerService_getEvents_args__isset() : credentials(false), userdevice(false), rowrange(false) {}
   bool credentials;
   bool userdevice;
-  bool personrole;
   bool rowrange;
 } _PassengerService_getEvents_args__isset;
 
 class PassengerService_getEvents_args {
  public:
 
-  PassengerService_getEvents_args() : personrole((PersonRole::type)0) {
+  PassengerService_getEvents_args() {
   }
 
   virtual ~PassengerService_getEvents_args() throw() {}
 
   Credentials credentials;
   UserDevice userdevice;
-  PersonRole::type personrole;
   RowRange rowrange;
 
   _PassengerService_getEvents_args__isset __isset;
@@ -8287,10 +8334,6 @@ class PassengerService_getEvents_args {
     userdevice = val;
   }
 
-  void __set_personrole(const PersonRole::type val) {
-    personrole = val;
-  }
-
   void __set_rowrange(const RowRange& val) {
     rowrange = val;
   }
@@ -8300,8 +8343,6 @@ class PassengerService_getEvents_args {
     if (!(credentials == rhs.credentials))
       return false;
     if (!(userdevice == rhs.userdevice))
-      return false;
-    if (!(personrole == rhs.personrole))
       return false;
     if (!(rowrange == rhs.rowrange))
       return false;
@@ -8327,7 +8368,6 @@ class PassengerService_getEvents_pargs {
 
   const Credentials* credentials;
   const UserDevice* userdevice;
-  const PersonRole::type* personrole;
   const RowRange* rowrange;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -8396,6 +8436,1375 @@ class PassengerService_getEvents_presult {
   ServiceFailure servicefailure;
 
   _PassengerService_getEvents_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_getOnline_args__isset {
+  _PassengerService_getOnline_args__isset() : credentials(false), userdevice(false) {}
+  bool credentials;
+  bool userdevice;
+} _PassengerService_getOnline_args__isset;
+
+class PassengerService_getOnline_args {
+ public:
+
+  PassengerService_getOnline_args() {
+  }
+
+  virtual ~PassengerService_getOnline_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+
+  _PassengerService_getOnline_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  bool operator == (const PassengerService_getOnline_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getOnline_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getOnline_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_getOnline_pargs {
+ public:
+
+
+  virtual ~PassengerService_getOnline_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getOnline_result__isset {
+  _PassengerService_getOnline_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getOnline_result__isset;
+
+class PassengerService_getOnline_result {
+ public:
+
+  PassengerService_getOnline_result() : success(0) {
+  }
+
+  virtual ~PassengerService_getOnline_result() throw() {}
+
+  bool success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getOnline_result__isset __isset;
+
+  void __set_success(const bool val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_getOnline_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getOnline_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getOnline_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getOnline_presult__isset {
+  _PassengerService_getOnline_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getOnline_presult__isset;
+
+class PassengerService_getOnline_presult {
+ public:
+
+
+  virtual ~PassengerService_getOnline_presult() throw() {}
+
+  bool* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getOnline_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_setOnline_args__isset {
+  _PassengerService_setOnline_args__isset() : credentials(false), userdevice(false), value(false) {}
+  bool credentials;
+  bool userdevice;
+  bool value;
+} _PassengerService_setOnline_args__isset;
+
+class PassengerService_setOnline_args {
+ public:
+
+  PassengerService_setOnline_args() : value(0) {
+  }
+
+  virtual ~PassengerService_setOnline_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  bool value;
+
+  _PassengerService_setOnline_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_value(const bool val) {
+    value = val;
+  }
+
+  bool operator == (const PassengerService_setOnline_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_setOnline_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_setOnline_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_setOnline_pargs {
+ public:
+
+
+  virtual ~PassengerService_setOnline_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const bool* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_setOnline_result__isset {
+  _PassengerService_setOnline_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_setOnline_result__isset;
+
+class PassengerService_setOnline_result {
+ public:
+
+  PassengerService_setOnline_result() : success(0) {
+  }
+
+  virtual ~PassengerService_setOnline_result() throw() {}
+
+  bool success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_setOnline_result__isset __isset;
+
+  void __set_success(const bool val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_setOnline_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_setOnline_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_setOnline_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_setOnline_presult__isset {
+  _PassengerService_setOnline_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_setOnline_presult__isset;
+
+class PassengerService_setOnline_presult {
+ public:
+
+
+  virtual ~PassengerService_setOnline_presult() throw() {}
+
+  bool* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_setOnline_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_takeOrder_args__isset {
+  _PassengerService_takeOrder_args__isset() : credentials(false), userdevice(false), serviceorderid(false), confirm(false), provisionminutes(false) {}
+  bool credentials;
+  bool userdevice;
+  bool serviceorderid;
+  bool confirm;
+  bool provisionminutes;
+} _PassengerService_takeOrder_args__isset;
+
+class PassengerService_takeOrder_args {
+ public:
+
+  PassengerService_takeOrder_args() : serviceorderid(0), confirm(0), provisionminutes(0) {
+  }
+
+  virtual ~PassengerService_takeOrder_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID serviceorderid;
+  bool confirm;
+  NUMBER32 provisionminutes;
+
+  _PassengerService_takeOrder_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_serviceorderid(const ID val) {
+    serviceorderid = val;
+  }
+
+  void __set_confirm(const bool val) {
+    confirm = val;
+  }
+
+  void __set_provisionminutes(const NUMBER32 val) {
+    provisionminutes = val;
+  }
+
+  bool operator == (const PassengerService_takeOrder_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(serviceorderid == rhs.serviceorderid))
+      return false;
+    if (!(confirm == rhs.confirm))
+      return false;
+    if (!(provisionminutes == rhs.provisionminutes))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_takeOrder_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_takeOrder_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_takeOrder_pargs {
+ public:
+
+
+  virtual ~PassengerService_takeOrder_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* serviceorderid;
+  const bool* confirm;
+  const NUMBER32* provisionminutes;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_takeOrder_result__isset {
+  _PassengerService_takeOrder_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_takeOrder_result__isset;
+
+class PassengerService_takeOrder_result {
+ public:
+
+  PassengerService_takeOrder_result() : success(0) {
+  }
+
+  virtual ~PassengerService_takeOrder_result() throw() {}
+
+  bool success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_takeOrder_result__isset __isset;
+
+  void __set_success(const bool val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_takeOrder_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_takeOrder_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_takeOrder_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_takeOrder_presult__isset {
+  _PassengerService_takeOrder_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_takeOrder_presult__isset;
+
+class PassengerService_takeOrder_presult {
+ public:
+
+
+  virtual ~PassengerService_takeOrder_presult() throw() {}
+
+  bool* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_takeOrder_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_startWaiting_args__isset {
+  _PassengerService_startWaiting_args__isset() : credentials(false), userdevice(false), serviceorderid(false) {}
+  bool credentials;
+  bool userdevice;
+  bool serviceorderid;
+} _PassengerService_startWaiting_args__isset;
+
+class PassengerService_startWaiting_args {
+ public:
+
+  PassengerService_startWaiting_args() : serviceorderid(0) {
+  }
+
+  virtual ~PassengerService_startWaiting_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID serviceorderid;
+
+  _PassengerService_startWaiting_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_serviceorderid(const ID val) {
+    serviceorderid = val;
+  }
+
+  bool operator == (const PassengerService_startWaiting_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(serviceorderid == rhs.serviceorderid))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_startWaiting_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_startWaiting_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_startWaiting_pargs {
+ public:
+
+
+  virtual ~PassengerService_startWaiting_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* serviceorderid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_startWaiting_result__isset {
+  _PassengerService_startWaiting_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_startWaiting_result__isset;
+
+class PassengerService_startWaiting_result {
+ public:
+
+  PassengerService_startWaiting_result() : success(0) {
+  }
+
+  virtual ~PassengerService_startWaiting_result() throw() {}
+
+  bool success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_startWaiting_result__isset __isset;
+
+  void __set_success(const bool val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_startWaiting_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_startWaiting_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_startWaiting_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_startWaiting_presult__isset {
+  _PassengerService_startWaiting_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_startWaiting_presult__isset;
+
+class PassengerService_startWaiting_presult {
+ public:
+
+
+  virtual ~PassengerService_startWaiting_presult() throw() {}
+
+  bool* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_startWaiting_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_startDriving_args__isset {
+  _PassengerService_startDriving_args__isset() : credentials(false), userdevice(false), serviceorderid(false) {}
+  bool credentials;
+  bool userdevice;
+  bool serviceorderid;
+} _PassengerService_startDriving_args__isset;
+
+class PassengerService_startDriving_args {
+ public:
+
+  PassengerService_startDriving_args() : serviceorderid(0) {
+  }
+
+  virtual ~PassengerService_startDriving_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID serviceorderid;
+
+  _PassengerService_startDriving_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_serviceorderid(const ID val) {
+    serviceorderid = val;
+  }
+
+  bool operator == (const PassengerService_startDriving_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(serviceorderid == rhs.serviceorderid))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_startDriving_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_startDriving_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_startDriving_pargs {
+ public:
+
+
+  virtual ~PassengerService_startDriving_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* serviceorderid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_startDriving_result__isset {
+  _PassengerService_startDriving_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_startDriving_result__isset;
+
+class PassengerService_startDriving_result {
+ public:
+
+  PassengerService_startDriving_result() : success(0) {
+  }
+
+  virtual ~PassengerService_startDriving_result() throw() {}
+
+  bool success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_startDriving_result__isset __isset;
+
+  void __set_success(const bool val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_startDriving_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_startDriving_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_startDriving_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_startDriving_presult__isset {
+  _PassengerService_startDriving_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_startDriving_presult__isset;
+
+class PassengerService_startDriving_presult {
+ public:
+
+
+  virtual ~PassengerService_startDriving_presult() throw() {}
+
+  bool* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_startDriving_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_stopDriving_args__isset {
+  _PassengerService_stopDriving_args__isset() : credentials(false), userdevice(false), serviceorderid(false) {}
+  bool credentials;
+  bool userdevice;
+  bool serviceorderid;
+} _PassengerService_stopDriving_args__isset;
+
+class PassengerService_stopDriving_args {
+ public:
+
+  PassengerService_stopDriving_args() : serviceorderid(0) {
+  }
+
+  virtual ~PassengerService_stopDriving_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID serviceorderid;
+
+  _PassengerService_stopDriving_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_serviceorderid(const ID val) {
+    serviceorderid = val;
+  }
+
+  bool operator == (const PassengerService_stopDriving_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(serviceorderid == rhs.serviceorderid))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_stopDriving_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_stopDriving_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_stopDriving_pargs {
+ public:
+
+
+  virtual ~PassengerService_stopDriving_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* serviceorderid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_stopDriving_result__isset {
+  _PassengerService_stopDriving_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_stopDriving_result__isset;
+
+class PassengerService_stopDriving_result {
+ public:
+
+  PassengerService_stopDriving_result() : success(0) {
+  }
+
+  virtual ~PassengerService_stopDriving_result() throw() {}
+
+  bool success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_stopDriving_result__isset __isset;
+
+  void __set_success(const bool val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_stopDriving_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_stopDriving_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_stopDriving_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_stopDriving_presult__isset {
+  _PassengerService_stopDriving_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_stopDriving_presult__isset;
+
+class PassengerService_stopDriving_presult {
+ public:
+
+
+  virtual ~PassengerService_stopDriving_presult() throw() {}
+
+  bool* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_stopDriving_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_completeOrder_args__isset {
+  _PassengerService_completeOrder_args__isset() : credentials(false), userdevice(false), serviceorderid(false) {}
+  bool credentials;
+  bool userdevice;
+  bool serviceorderid;
+} _PassengerService_completeOrder_args__isset;
+
+class PassengerService_completeOrder_args {
+ public:
+
+  PassengerService_completeOrder_args() : serviceorderid(0) {
+  }
+
+  virtual ~PassengerService_completeOrder_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID serviceorderid;
+
+  _PassengerService_completeOrder_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_serviceorderid(const ID val) {
+    serviceorderid = val;
+  }
+
+  bool operator == (const PassengerService_completeOrder_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(serviceorderid == rhs.serviceorderid))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_completeOrder_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_completeOrder_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_completeOrder_pargs {
+ public:
+
+
+  virtual ~PassengerService_completeOrder_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* serviceorderid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_completeOrder_result__isset {
+  _PassengerService_completeOrder_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_completeOrder_result__isset;
+
+class PassengerService_completeOrder_result {
+ public:
+
+  PassengerService_completeOrder_result() : success(0) {
+  }
+
+  virtual ~PassengerService_completeOrder_result() throw() {}
+
+  bool success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_completeOrder_result__isset __isset;
+
+  void __set_success(const bool val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_completeOrder_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_completeOrder_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_completeOrder_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_completeOrder_presult__isset {
+  _PassengerService_completeOrder_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_completeOrder_presult__isset;
+
+class PassengerService_completeOrder_presult {
+ public:
+
+
+  virtual ~PassengerService_completeOrder_presult() throw() {}
+
+  bool* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_completeOrder_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_cancelOrder_args__isset {
+  _PassengerService_cancelOrder_args__isset() : credentials(false), userdevice(false), serviceorderid(false) {}
+  bool credentials;
+  bool userdevice;
+  bool serviceorderid;
+} _PassengerService_cancelOrder_args__isset;
+
+class PassengerService_cancelOrder_args {
+ public:
+
+  PassengerService_cancelOrder_args() : serviceorderid(0) {
+  }
+
+  virtual ~PassengerService_cancelOrder_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID serviceorderid;
+
+  _PassengerService_cancelOrder_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_serviceorderid(const ID val) {
+    serviceorderid = val;
+  }
+
+  bool operator == (const PassengerService_cancelOrder_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(serviceorderid == rhs.serviceorderid))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_cancelOrder_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_cancelOrder_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_cancelOrder_pargs {
+ public:
+
+
+  virtual ~PassengerService_cancelOrder_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* serviceorderid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_cancelOrder_result__isset {
+  _PassengerService_cancelOrder_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_cancelOrder_result__isset;
+
+class PassengerService_cancelOrder_result {
+ public:
+
+  PassengerService_cancelOrder_result() : success(0) {
+  }
+
+  virtual ~PassengerService_cancelOrder_result() throw() {}
+
+  bool success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_cancelOrder_result__isset __isset;
+
+  void __set_success(const bool val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_cancelOrder_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_cancelOrder_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_cancelOrder_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_cancelOrder_presult__isset {
+  _PassengerService_cancelOrder_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_cancelOrder_presult__isset;
+
+class PassengerService_cancelOrder_presult {
+ public:
+
+
+  virtual ~PassengerService_cancelOrder_presult() throw() {}
+
+  bool* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_cancelOrder_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_failOrder_args__isset {
+  _PassengerService_failOrder_args__isset() : credentials(false), userdevice(false), serviceorderid(false) {}
+  bool credentials;
+  bool userdevice;
+  bool serviceorderid;
+} _PassengerService_failOrder_args__isset;
+
+class PassengerService_failOrder_args {
+ public:
+
+  PassengerService_failOrder_args() : serviceorderid(0) {
+  }
+
+  virtual ~PassengerService_failOrder_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID serviceorderid;
+
+  _PassengerService_failOrder_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_serviceorderid(const ID val) {
+    serviceorderid = val;
+  }
+
+  bool operator == (const PassengerService_failOrder_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(serviceorderid == rhs.serviceorderid))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_failOrder_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_failOrder_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_failOrder_pargs {
+ public:
+
+
+  virtual ~PassengerService_failOrder_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* serviceorderid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_failOrder_result__isset {
+  _PassengerService_failOrder_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_failOrder_result__isset;
+
+class PassengerService_failOrder_result {
+ public:
+
+  PassengerService_failOrder_result() : success(0) {
+  }
+
+  virtual ~PassengerService_failOrder_result() throw() {}
+
+  bool success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_failOrder_result__isset __isset;
+
+  void __set_success(const bool val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_failOrder_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_failOrder_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_failOrder_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_failOrder_presult__isset {
+  _PassengerService_failOrder_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_failOrder_presult__isset;
+
+class PassengerService_failOrder_presult {
+ public:
+
+
+  virtual ~PassengerService_failOrder_presult() throw() {}
+
+  bool* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_failOrder_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_getDriverServiceOrder_args__isset {
+  _PassengerService_getDriverServiceOrder_args__isset() : credentials(false), userdevice(false), rowrange(false) {}
+  bool credentials;
+  bool userdevice;
+  bool rowrange;
+} _PassengerService_getDriverServiceOrder_args__isset;
+
+class PassengerService_getDriverServiceOrder_args {
+ public:
+
+  PassengerService_getDriverServiceOrder_args() {
+  }
+
+  virtual ~PassengerService_getDriverServiceOrder_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  RowRange rowrange;
+
+  _PassengerService_getDriverServiceOrder_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_rowrange(const RowRange& val) {
+    rowrange = val;
+  }
+
+  bool operator == (const PassengerService_getDriverServiceOrder_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(rowrange == rhs.rowrange))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getDriverServiceOrder_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getDriverServiceOrder_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_getDriverServiceOrder_pargs {
+ public:
+
+
+  virtual ~PassengerService_getDriverServiceOrder_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const RowRange* rowrange;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getDriverServiceOrder_result__isset {
+  _PassengerService_getDriverServiceOrder_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getDriverServiceOrder_result__isset;
+
+class PassengerService_getDriverServiceOrder_result {
+ public:
+
+  PassengerService_getDriverServiceOrder_result() {
+  }
+
+  virtual ~PassengerService_getDriverServiceOrder_result() throw() {}
+
+  ServiceOrders success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getDriverServiceOrder_result__isset __isset;
+
+  void __set_success(const ServiceOrders& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_getDriverServiceOrder_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getDriverServiceOrder_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getDriverServiceOrder_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getDriverServiceOrder_presult__isset {
+  _PassengerService_getDriverServiceOrder_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getDriverServiceOrder_presult__isset;
+
+class PassengerService_getDriverServiceOrder_presult {
+ public:
+
+
+  virtual ~PassengerService_getDriverServiceOrder_presult() throw() {}
+
+  ServiceOrders* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getDriverServiceOrder_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -8592,9 +10001,39 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   void findTrack(Tracks& _return, const Credentials& credentials, const UserDevice& userdevice, const Track& search, const DateRange& sheduletime, const RowRange& rowrange);
   void send_findTrack(const Credentials& credentials, const UserDevice& userdevice, const Track& search, const DateRange& sheduletime, const RowRange& rowrange);
   void recv_findTrack(Tracks& _return);
-  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const PersonRole::type personrole, const RowRange& rowrange);
-  void send_getEvents(const Credentials& credentials, const UserDevice& userdevice, const PersonRole::type personrole, const RowRange& rowrange);
+  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange);
+  void send_getEvents(const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange);
   void recv_getEvents(NotificationEvents& _return);
+  bool getOnline(const Credentials& credentials, const UserDevice& userdevice);
+  void send_getOnline(const Credentials& credentials, const UserDevice& userdevice);
+  bool recv_getOnline();
+  bool setOnline(const Credentials& credentials, const UserDevice& userdevice, const bool value);
+  void send_setOnline(const Credentials& credentials, const UserDevice& userdevice, const bool value);
+  bool recv_setOnline();
+  bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes);
+  void send_takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes);
+  bool recv_takeOrder();
+  bool startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  void send_startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  bool recv_startWaiting();
+  bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  void send_startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  bool recv_startDriving();
+  bool stopDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  void send_stopDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  bool recv_stopDriving();
+  bool completeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  void send_completeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  bool recv_completeOrder();
+  bool cancelOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  void send_cancelOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  bool recv_cancelOrder();
+  bool failOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  void send_failOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  bool recv_failOrder();
+  void getDriverServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange);
+  void send_getDriverServiceOrder(const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange);
+  void recv_getDriverServiceOrder(ServiceOrders& _return);
  protected:
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -8668,6 +10107,16 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_findClaim(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_findTrack(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getEvents(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getOnline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_setOnline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_takeOrder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_startWaiting(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_startDriving(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_stopDriving(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_completeOrder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_cancelOrder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_failOrder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getDriverServiceOrder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   PassengerServiceProcessor(boost::shared_ptr<PassengerServiceIf> iface) :
     iface_(iface) {
@@ -8729,6 +10178,16 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["findClaim"] = &PassengerServiceProcessor::process_findClaim;
     processMap_["findTrack"] = &PassengerServiceProcessor::process_findTrack;
     processMap_["getEvents"] = &PassengerServiceProcessor::process_getEvents;
+    processMap_["getOnline"] = &PassengerServiceProcessor::process_getOnline;
+    processMap_["setOnline"] = &PassengerServiceProcessor::process_setOnline;
+    processMap_["takeOrder"] = &PassengerServiceProcessor::process_takeOrder;
+    processMap_["startWaiting"] = &PassengerServiceProcessor::process_startWaiting;
+    processMap_["startDriving"] = &PassengerServiceProcessor::process_startDriving;
+    processMap_["stopDriving"] = &PassengerServiceProcessor::process_stopDriving;
+    processMap_["completeOrder"] = &PassengerServiceProcessor::process_completeOrder;
+    processMap_["cancelOrder"] = &PassengerServiceProcessor::process_cancelOrder;
+    processMap_["failOrder"] = &PassengerServiceProcessor::process_failOrder;
+    processMap_["getDriverServiceOrder"] = &PassengerServiceProcessor::process_getDriverServiceOrder;
   }
 
   virtual ~PassengerServiceProcessor() {}
@@ -9319,13 +10778,104 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
     return;
   }
 
-  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const PersonRole::type personrole, const RowRange& rowrange) {
+  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->getEvents(_return, credentials, userdevice, personrole, rowrange);
+      ifaces_[i]->getEvents(_return, credentials, userdevice, rowrange);
     }
-    ifaces_[i]->getEvents(_return, credentials, userdevice, personrole, rowrange);
+    ifaces_[i]->getEvents(_return, credentials, userdevice, rowrange);
+    return;
+  }
+
+  bool getOnline(const Credentials& credentials, const UserDevice& userdevice) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getOnline(credentials, userdevice);
+    }
+    return ifaces_[i]->getOnline(credentials, userdevice);
+  }
+
+  bool setOnline(const Credentials& credentials, const UserDevice& userdevice, const bool value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->setOnline(credentials, userdevice, value);
+    }
+    return ifaces_[i]->setOnline(credentials, userdevice, value);
+  }
+
+  bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->takeOrder(credentials, userdevice, serviceorderid, confirm, provisionminutes);
+    }
+    return ifaces_[i]->takeOrder(credentials, userdevice, serviceorderid, confirm, provisionminutes);
+  }
+
+  bool startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->startWaiting(credentials, userdevice, serviceorderid);
+    }
+    return ifaces_[i]->startWaiting(credentials, userdevice, serviceorderid);
+  }
+
+  bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->startDriving(credentials, userdevice, serviceorderid);
+    }
+    return ifaces_[i]->startDriving(credentials, userdevice, serviceorderid);
+  }
+
+  bool stopDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->stopDriving(credentials, userdevice, serviceorderid);
+    }
+    return ifaces_[i]->stopDriving(credentials, userdevice, serviceorderid);
+  }
+
+  bool completeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->completeOrder(credentials, userdevice, serviceorderid);
+    }
+    return ifaces_[i]->completeOrder(credentials, userdevice, serviceorderid);
+  }
+
+  bool cancelOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->cancelOrder(credentials, userdevice, serviceorderid);
+    }
+    return ifaces_[i]->cancelOrder(credentials, userdevice, serviceorderid);
+  }
+
+  bool failOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->failOrder(credentials, userdevice, serviceorderid);
+    }
+    return ifaces_[i]->failOrder(credentials, userdevice, serviceorderid);
+  }
+
+  void getDriverServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getDriverServiceOrder(_return, credentials, userdevice, rowrange);
+    }
+    ifaces_[i]->getDriverServiceOrder(_return, credentials, userdevice, rowrange);
     return;
   }
 

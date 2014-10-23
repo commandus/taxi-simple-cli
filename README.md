@@ -215,6 +215,11 @@ Id1, Id2... - идентификаторы пользователей
 ------
 --sendgcm --apikey "AIzaSyCIv-PZWoKrEC_f7-gE013v7FI3ehlPhnw" --data "{\"aa\":\"22\"}" "APA91bGxdOKCEyGQHIZ676r7qB31uHh3C3r960mkS-WFrLFFFDmxM9s2RGrt_gePN3zT8NuOXJshZJDfaP59-6Uuca519IsxIq1VH0A1J_0AUMGoqe1UukgG9t3aU6KCiqnOOHQVinEh5aYNJo53FZAWOXxHTnkYvQ"
 
+События
+=======
+Водителя
+taxi-simple-cli -h localhost -p 9090 --myphone 7968... --mypassword ... --myrole driver --list --object events 
+
 Скрипты загрузки из файлов
 ==========================
 Структура каталогов:

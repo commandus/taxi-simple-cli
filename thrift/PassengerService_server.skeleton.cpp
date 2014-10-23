@@ -307,9 +307,59 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("findTrack\n");
   }
 
-  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const PersonRole::type personrole, const RowRange& rowrange) {
+  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) {
     // Your implementation goes here
     printf("getEvents\n");
+  }
+
+  bool getOnline(const Credentials& credentials, const UserDevice& userdevice) {
+    // Your implementation goes here
+    printf("getOnline\n");
+  }
+
+  bool setOnline(const Credentials& credentials, const UserDevice& userdevice, const bool value) {
+    // Your implementation goes here
+    printf("setOnline\n");
+  }
+
+  bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes) {
+    // Your implementation goes here
+    printf("takeOrder\n");
+  }
+
+  bool startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    // Your implementation goes here
+    printf("startWaiting\n");
+  }
+
+  bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    // Your implementation goes here
+    printf("startDriving\n");
+  }
+
+  bool stopDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    // Your implementation goes here
+    printf("stopDriving\n");
+  }
+
+  bool completeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    // Your implementation goes here
+    printf("completeOrder\n");
+  }
+
+  bool cancelOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    // Your implementation goes here
+    printf("cancelOrder\n");
+  }
+
+  bool failOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    // Your implementation goes here
+    printf("failOrder\n");
+  }
+
+  void getDriverServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("getDriverServiceOrder\n");
   }
 
 };

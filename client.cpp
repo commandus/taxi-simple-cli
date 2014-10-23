@@ -57,10 +57,10 @@ void couttime(const taxi::DATE &date)
 {
 	struct tm *tm = localtime(&date);
 	// cout << std::put_time(tm, "%Y/%m/%d %T");
-        char buffer [80];
-        struct tm *ld = localtime(&date);
-        strftime(buffer, sizeof(buffer), "%Y/%m/%d %T", ld);
-        puts(buffer);
+    char buffer [80];
+    struct tm *ld = localtime(&date);
+    strftime(buffer, sizeof(buffer), "%Y/%m/%d %T", ld);
+    puts(buffer);
 }						
 
 PersonRole::type readPersonRole(const std::string &str)
@@ -200,6 +200,15 @@ void coutPassengerUsage(PassengerUsage &v)
 		<< '\t' << v.payload.passengercount << '\t' << v.payload.stopcount << '\t'
 		<< v.payload.baggagecount << '\t' << v.payload.baggageweight << '\t' << v.payload.baggagewidth << '\t' << v.payload.baggageheight << '\t' 
 		<< v.payload.papercount  << '\t'; 
+}
+
+void coutNotificationEvent(NotificationEvent &v)
+{
+	cout << v.id << '\t' << v.receiverrole << '\t' << v.phone << '\t' << v.emitterrole << '\t' << v.emitter
+		<< '\t' << v.serviceobject << '\t' << v.serviceaction << '\t'
+		<< v.datestart << '\t' << v.infuture << '\t' << v.serviceobjectid << '\t' << v.sent << '\t' 
+		<< v.sentdate << '\t' << v.notes << '\t' << v.gcmsent << '\t' << v.isgcmsentsuccess << '\t'
+		<< v.gcmsentdate << '\t' << v.gcmresponsecode << '\t' << v.gcmresponse << '\t'; 
 }
 
 int done(void** argtable)
@@ -579,7 +588,7 @@ int doCmd(int argc, char** argv)
 	}
 	catch(const FileIOException &fioex)
 	{
-		std::cerr << "File read error: " << fioex.what() << std::endl;
+		std::cerr << "Config file read error: " << fioex.what() << std::endl;
 	}
 	catch(const ParseException &pex)
 	{
@@ -1514,8 +1523,19 @@ int doCmd(int argc, char** argv)
 					cout << std::endl; 
 				}
 			}
-		}
 
+			if (strcmp("events", *obj->sval) == 0)
+			{
+				NotificationEvents r;
+				RowRange rowrange;
+				client.getEvents(r, credentials, userdevice, rowrange);
+				for (NotificationEvents::iterator i(r.begin()); i != r.end(); ++i)
+				{
+					coutNotificationEvent(*i);
+					cout << std::endl;
+				}
+			}
+		}
 		transport->close();
 	}
 	catch (TException &tx) {
