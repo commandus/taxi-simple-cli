@@ -4429,7 +4429,7 @@ class TariffPlan {
 void swap(TariffPlan &a, TariffPlan &b);
 
 typedef struct _Rate__isset {
-  _Rate__isset() : id(false), tariffplanid(false), name(false), active(false), datestart(false), datefinish(false), isweekend(false), isday(false), hourstart(false), hourfinish(false), costmin(false), priceboarding(false), priceminute(false), pricedelay(false), pricewait(false), speedmin(false), timedelayfree(false) {}
+  _Rate__isset() : id(false), tariffplanid(false), name(false), active(false), datestart(false), datefinish(false), isweekend(false), isday(false), hourstart(false), hourfinish(false), costmin(false), priceboarding(false), priceminute(false), pricedelay(false), pricewait(false), speedmin(false), timedelayfree(false), timedrivingfree(false) {}
   bool id;
   bool tariffplanid;
   bool name;
@@ -4447,15 +4447,16 @@ typedef struct _Rate__isset {
   bool pricewait;
   bool speedmin;
   bool timedelayfree;
+  bool timedrivingfree;
 } _Rate__isset;
 
 class Rate {
  public:
 
-  static const char* ascii_fingerprint; // = "B59FCAFA8796B9A33928E7CB12304B0B";
-  static const uint8_t binary_fingerprint[16]; // = {0xB5,0x9F,0xCA,0xFA,0x87,0x96,0xB9,0xA3,0x39,0x28,0xE7,0xCB,0x12,0x30,0x4B,0x0B};
+  static const char* ascii_fingerprint; // = "C7E5F645709576B50B1D6062C4A873F0";
+  static const uint8_t binary_fingerprint[16]; // = {0xC7,0xE5,0xF6,0x45,0x70,0x95,0x76,0xB5,0x0B,0x1D,0x60,0x62,0xC4,0xA8,0x73,0xF0};
 
-  Rate() : id(0), tariffplanid(0), name(), active(0), datestart(0), datefinish(0), isweekend(0), isday(0), hourstart(0), hourfinish(0), costmin(0), priceboarding(0), priceminute(0), pricedelay(0), pricewait(0), speedmin(0), timedelayfree(0) {
+  Rate() : id(0), tariffplanid(0), name(), active(0), datestart(0), datefinish(0), isweekend(0), isday(0), hourstart(0), hourfinish(0), costmin(0), priceboarding(0), priceminute(0), pricedelay(0), pricewait(0), speedmin(0), timedelayfree(0), timedrivingfree(0) {
   }
 
   virtual ~Rate() throw() {}
@@ -4477,6 +4478,7 @@ class Rate {
   CURR pricewait;
   NUMBER32 speedmin;
   NUMBER32 timedelayfree;
+  NUMBER32 timedrivingfree;
 
   _Rate__isset __isset;
 
@@ -4548,6 +4550,10 @@ class Rate {
     timedelayfree = val;
   }
 
+  void __set_timedrivingfree(const NUMBER32 val) {
+    timedrivingfree = val;
+  }
+
   bool operator == (const Rate & rhs) const
   {
     if (!(id == rhs.id))
@@ -4583,6 +4589,8 @@ class Rate {
     if (!(speedmin == rhs.speedmin))
       return false;
     if (!(timedelayfree == rhs.timedelayfree))
+      return false;
+    if (!(timedrivingfree == rhs.timedrivingfree))
       return false;
     return true;
   }

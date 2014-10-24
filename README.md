@@ -141,6 +141,14 @@ taxi-simple-cli --add --object passenger --city 1 --customerid 1
 --empstatus		1- работает 2- в отпуске 3- уволен
 --tag			номер пользовательской классификации (не используется)
 
+Добавление тарифного плана
+--------------------------
+taxi-simple-cli --add --object tariffplan --cityid 1 -- orgserviceid 1 --notes "plan A"
+
+Добавление тарифа
+-----------------
+taxi-simple-cli --add --object rate --name "150+10" -- tariffplanid 1 --priceboarding 150 --priceminute 10 --timedelayfree 10 --timedelayfree
+
 Списки
 ======
 -l, --list

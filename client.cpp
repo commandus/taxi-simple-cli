@@ -14,7 +14,6 @@
 #include <io.h>
 #include <fcntl.h>
 #include <codecvt>
-
 #endif
 
 #include <thrift/protocol/TBinaryProtocol.h>
@@ -436,6 +435,7 @@ int doCmd(int argc, char** argv)
 	struct arg_dbl  *d_pricewait = arg_dbl0(NULL, "pricewait", "<currency>", "price per minute");
 	struct arg_int  *i_speedmin = arg_int0(NULL, "speedmin", "<speed>", "speed km/h");
 	struct arg_int  *i_timedelayfree = arg_int0(NULL, "timedelayfree", "<seconds>", "free wait time");
+	struct arg_int  *i_timedrivingfree = arg_int0(NULL, "timedrivingfree", "<seconds>", "free driving time");
 
 	struct arg_int  *i_isadmin = arg_int0(NULL, "isadmin", "0|1", "1- is admin");
 	struct arg_str	*s_pwd = arg_str0(NULL, "pwd", "<pwd>", "password");
@@ -463,7 +463,7 @@ int doCmd(int argc, char** argv)
 		i_id, i_callsign,
 		i_active, i_enabled, i_taxtype, i_preferreddriverid,
 		i_personid, i_customerid, i_isoperator, i_isvip,
-		d_datestart, d_datefinish, i_isday, i_hourstart, i_hourfinish, i_isweekend, d_costmin, d_priceboarding, d_priceminute, d_pricedelay, d_pricewait, i_speedmin, i_timedelayfree,
+		d_datestart, d_datefinish, i_isday, i_hourstart, i_hourfinish, i_isweekend, d_costmin, d_priceboarding, d_priceminute, d_pricedelay, d_pricewait, i_speedmin, i_timedelayfree, i_timedrivingfree,
 		i_isadmin, s_pwd,
 		c_sendgcm, s_apikey, s_data, s_registrationid, f_data,
 		d_latitude, d_longitude,
@@ -1169,56 +1169,63 @@ int doCmd(int argc, char** argv)
 
 				v.tariffplanid = *i_tariffplanid->ival;
 
-				if (d_datestart->count == 0)
+				
+				if (d_datestart->count != 0)
 					v.datestart = tm2time_tUTC(d_datestart->tmval);
-				if (d_datefinish->count == 0)
+				if (d_datefinish->count != 0)
 					v.datefinish = tm2time_tUTC(d_datefinish->tmval);
-				if (i_active->count == 0)
+				if (i_active->count != 0)
 					v.active = (*i_active->ival != 0);
-				if (i_isday->count == 0)
+				if (i_isday->count != 0)
 					v.isday = (*i_isday->ival != 0);
-				if (i_hourstart->count == 0)
+				if (i_hourstart->count != 0)
 				{
 					v.hourstart = *i_hourstart->ival;
 					v.isday = true;
 				}
-				if (i_hourfinish->count == 0)
+				if (i_hourfinish->count != 0)
 				{
 					v.hourfinish = *i_hourfinish->ival;
 					v.isday = true;
 				}
 
-				if (i_isweekend->count == 0)
+				if (i_isweekend->count != 0)
 					v.isweekend = (*i_isweekend->ival != 0);
 				
-				if (d_costmin->count == 0)
+				if (d_costmin->count != 0)
 					v.costmin = *d_costmin->dval;
 				else
 					v.costmin = .0;
-				if (d_priceboarding->count == 0)
+				if (d_priceboarding->count != 0)
 					v.priceboarding = *d_priceboarding->dval;
 				else
 					v.priceboarding = .0;
-				if (d_priceminute->count == 0)
+				if (d_priceminute->count != 0)
 					v.priceminute = *d_priceminute->dval;
 				else
 					v.priceminute = .0;
-				if (d_pricedelay->count == 0)
+				if (d_pricedelay->count != 0)
 					v.pricedelay = *d_pricedelay->dval;
 				else
 					v.pricedelay = v.priceminute;
-				if (d_pricewait->count == 0)
+				if (d_pricewait->count != 0)
 					v.pricewait = *d_pricewait->dval;
 				else
 					v.pricewait = v.priceminute;
-				if (i_speedmin->count == 0)
+				if (i_speedmin->count != 0)
 					v.speedmin = *i_speedmin->ival;
 				else
 					v.speedmin = 0;
-				if (i_timedelayfree->count == 0)
-					v.timedelayfree = *i_speedmin->ival;
+
+				if (i_timedelayfree->count != 0)
+					v.timedelayfree = *i_timedelayfree->ival;
 				else
 					v.timedelayfree = 0; // seconds
+
+				if (i_timedrivingfree->count != 0)
+					v.timedrivingfree = *i_timedrivingfree->ival;
+				else
+					v.timedrivingfree = 0; // seconds
 				client.addRate(ret, credentials, userdevice, v);
 			}
 		}

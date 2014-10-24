@@ -7345,8 +7345,8 @@ void swap(TariffPlan &a, TariffPlan &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* Rate::ascii_fingerprint = "B59FCAFA8796B9A33928E7CB12304B0B";
-const uint8_t Rate::binary_fingerprint[16] = {0xB5,0x9F,0xCA,0xFA,0x87,0x96,0xB9,0xA3,0x39,0x28,0xE7,0xCB,0x12,0x30,0x4B,0x0B};
+const char* Rate::ascii_fingerprint = "C7E5F645709576B50B1D6062C4A873F0";
+const uint8_t Rate::binary_fingerprint[16] = {0xC7,0xE5,0xF6,0x45,0x70,0x95,0x76,0xB5,0x0B,0x1D,0x60,0x62,0xC4,0xA8,0x73,0xF0};
 
 uint32_t Rate::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -7504,6 +7504,14 @@ uint32_t Rate::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
+      case 18:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->timedrivingfree);
+          this->__isset.timedrivingfree = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -7588,6 +7596,10 @@ uint32_t Rate::write(::apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeI32(this->timedelayfree);
   xfer += oprot->writeFieldEnd();
 
+  xfer += oprot->writeFieldBegin("timedrivingfree", ::apache::thrift::protocol::T_I32, 18);
+  xfer += oprot->writeI32(this->timedrivingfree);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -7612,6 +7624,7 @@ void swap(Rate &a, Rate &b) {
   swap(a.pricewait, b.pricewait);
   swap(a.speedmin, b.speedmin);
   swap(a.timedelayfree, b.timedelayfree);
+  swap(a.timedrivingfree, b.timedrivingfree);
   swap(a.__isset, b.__isset);
 }
 
