@@ -117,6 +117,11 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("addPassenger\n");
   }
 
+  void addDispatcher(Dispatcher& _return, const Credentials& credentials, const UserDevice& userdevice, const Dispatcher& value) {
+    // Your implementation goes here
+    printf("addDispatcher\n");
+  }
+
   void addDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice, const Driver& value) {
     // Your implementation goes here
     printf("addDriver\n");
@@ -155,6 +160,11 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
   void addServiceOrder(ServiceOrder& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& value) {
     // Your implementation goes here
     printf("addServiceOrder\n");
+  }
+
+  void getServiceOrder(ServiceOrder& _return, const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+    // Your implementation goes here
+    printf("getServiceOrder\n");
   }
 
   void addServiceOrderDecline(ServiceOrderDecline& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& value) {

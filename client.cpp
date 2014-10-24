@@ -1044,6 +1044,53 @@ int doCmd(int argc, char** argv)
 				client.addDriver(ret, credentials, userdevice, v);
 			}
 
+
+			if (strcmp("dispatcher", *obj->sval) == 0)
+			{
+				Dispatcher ret;
+				Dispatcher v;
+				v.status = EmployeeStatus::ACTIVE;
+				v.online = false;
+
+				if (s_phone->count == 0)
+				{
+					printf("--phone missed.\n");
+					done(argtable);
+					return 2;
+				}
+				v.person.credentials.phone = *s_phone->sval;
+				v.person.phone1 = *s_phone->sval;
+
+				if (s_pwd->count == 0)
+				{
+					printf("--pwd missed.\n");
+					done(argtable);
+					return 2;
+				}
+				v.person.credentials.password = *s_pwd->sval;
+				v.person.credentials.personrole = PersonRole::DRIVER;
+
+				if (s_nickname->count == 0)
+				{
+					printf("--nickname missed.\n");
+					done(argtable);
+					return 2;
+				}
+				v.nickname = *s_nickname->sval;
+
+				if (i_cityid->count == 0)
+				{
+					printf("--cityid missed.\n");
+					done(argtable);
+					return 2;
+				}
+				if (i_svccarpoolid->count == 0)
+					v.svc[taxi::TaxiServiceRole::TS_CARPOOL] = *i_svccarpoolid->ival;
+				if (i_svcdispatchid->count == 0)
+					v.svc[taxi::TaxiServiceRole::TS_DISPATCH] = *i_svcdispatchid->ival;
+				client.addDispatcher(ret, credentials, userdevice, v);
+			}
+
 			if (strcmp("vehiclecolor", *obj->sval) == 0)
 			{
 				DictEntry ret;

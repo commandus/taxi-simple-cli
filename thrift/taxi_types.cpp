@@ -823,8 +823,8 @@ void swap(GeoLocation &a, GeoLocation &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* City::ascii_fingerprint = "2271149BD58F679C5413550D19E2D0B9";
-const uint8_t City::binary_fingerprint[16] = {0x22,0x71,0x14,0x9B,0xD5,0x8F,0x67,0x9C,0x54,0x13,0x55,0x0D,0x19,0xE2,0xD0,0xB9};
+const char* City::ascii_fingerprint = "AE86968A842334B5B0AE6D511AE17C2C";
+const uint8_t City::binary_fingerprint[16] = {0xAE,0x86,0x96,0x8A,0x84,0x23,0x34,0xB5,0xB0,0xAE,0x6D,0x51,0x1A,0xE1,0x7C,0x2C};
 
 uint32_t City::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -894,6 +894,14 @@ uint32_t City::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
+      case 7:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->timezone);
+          this->__isset.timezone = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -934,6 +942,10 @@ uint32_t City::write(::apache::thrift::protocol::TProtocol* oprot) const {
   xfer += this->geolocation.write(oprot);
   xfer += oprot->writeFieldEnd();
 
+  xfer += oprot->writeFieldBegin("timezone", ::apache::thrift::protocol::T_I32, 7);
+  xfer += oprot->writeI32(this->timezone);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -947,6 +959,7 @@ void swap(City &a, City &b) {
   swap(a.name, b.name);
   swap(a.notes, b.notes);
   swap(a.geolocation, b.geolocation);
+  swap(a.timezone, b.timezone);
   swap(a.__isset, b.__isset);
 }
 

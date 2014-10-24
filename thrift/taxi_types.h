@@ -569,6 +569,12 @@ typedef std::map<Cityid, DriverOnlineMap>  CityDriverOnlineMap;
 
 typedef std::vector<class DriverOnline>  DriverOnlines;
 
+typedef ID Dispatcherid;
+
+typedef std::vector<Dispatcherid>  Dispatcherids;
+
+typedef std::vector<class Dispatcher>  Dispatchers;
+
 typedef std::map<CrewRole::type, Driverid>  Crew;
 
 typedef ID Serviceorderid;
@@ -777,22 +783,23 @@ class GeoLocation {
 void swap(GeoLocation &a, GeoLocation &b);
 
 typedef struct _City__isset {
-  _City__isset() : id(false), areaid(false), tag(false), name(false), notes(false), geolocation(false) {}
+  _City__isset() : id(false), areaid(false), tag(false), name(false), notes(false), geolocation(false), timezone(false) {}
   bool id;
   bool areaid;
   bool tag;
   bool name;
   bool notes;
   bool geolocation;
+  bool timezone;
 } _City__isset;
 
 class City {
  public:
 
-  static const char* ascii_fingerprint; // = "2271149BD58F679C5413550D19E2D0B9";
-  static const uint8_t binary_fingerprint[16]; // = {0x22,0x71,0x14,0x9B,0xD5,0x8F,0x67,0x9C,0x54,0x13,0x55,0x0D,0x19,0xE2,0xD0,0xB9};
+  static const char* ascii_fingerprint; // = "AE86968A842334B5B0AE6D511AE17C2C";
+  static const uint8_t binary_fingerprint[16]; // = {0xAE,0x86,0x96,0x8A,0x84,0x23,0x34,0xB5,0xB0,0xAE,0x6D,0x51,0x1A,0xE1,0x7C,0x2C};
 
-  City() : id(0), areaid(0), tag(0), name(), notes() {
+  City() : id(0), areaid(0), tag(0), name(), notes(), timezone(0) {
   }
 
   virtual ~City() throw() {}
@@ -803,6 +810,7 @@ class City {
   STR name;
   STR notes;
   GeoLocation geolocation;
+  NUMBER32 timezone;
 
   _City__isset __isset;
 
@@ -830,6 +838,10 @@ class City {
     geolocation = val;
   }
 
+  void __set_timezone(const NUMBER32 val) {
+    timezone = val;
+  }
+
   bool operator == (const City & rhs) const
   {
     if (!(id == rhs.id))
@@ -843,6 +855,8 @@ class City {
     if (!(notes == rhs.notes))
       return false;
     if (!(geolocation == rhs.geolocation))
+      return false;
+    if (!(timezone == rhs.timezone))
       return false;
     return true;
   }
