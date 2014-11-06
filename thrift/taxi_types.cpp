@@ -277,7 +277,6 @@ const std::map<int, const char*> _OrderFeature_VALUES_TO_NAMES(::apache::thrift:
 int _kOrderStageValues[] = {
   OrderStage::ORDERNEW,
   OrderStage::ORDERACCEPT,
-  OrderStage::ORDERDECLINED,
   OrderStage::ORDERASSIGN,
   OrderStage::ORDERASSIGNED,
   OrderStage::ORDERCONFIRMED,
@@ -286,13 +285,13 @@ int _kOrderStageValues[] = {
   OrderStage::ORDERTRANSPORTING,
   OrderStage::ORDERSTOP,
   OrderStage::ORDERCOMPLETE,
+  OrderStage::ORDERDECLINED,
   OrderStage::ORDERCANCELLED,
   OrderStage::ORDERFAILED
 };
 const char* _kOrderStageNames[] = {
   "ORDERNEW",
   "ORDERACCEPT",
-  "ORDERDECLINED",
   "ORDERASSIGN",
   "ORDERASSIGNED",
   "ORDERCONFIRMED",
@@ -301,6 +300,7 @@ const char* _kOrderStageNames[] = {
   "ORDERTRANSPORTING",
   "ORDERSTOP",
   "ORDERCOMPLETE",
+  "ORDERDECLINED",
   "ORDERCANCELLED",
   "ORDERFAILED"
 };
@@ -5506,8 +5506,8 @@ void swap(ServiceOrderStop &a, ServiceOrderStop &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* ServiceOrder::ascii_fingerprint = "EA0D7EFA6770F586CBDCFCD6D8858A5A";
-const uint8_t ServiceOrder::binary_fingerprint[16] = {0xEA,0x0D,0x7E,0xFA,0x67,0x70,0xF5,0x86,0xCB,0xDC,0xFC,0xD6,0xD8,0x85,0x8A,0x5A};
+const char* ServiceOrder::ascii_fingerprint = "52DFC62F8CE9F02C822F33B69F295F11";
+const uint8_t ServiceOrder::binary_fingerprint[16] = {0x52,0xDF,0xC6,0x2F,0x8C,0xE9,0xF0,0x2C,0x82,0x2F,0x33,0xB6,0x9F,0x29,0x5F,0x11};
 
 uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -5902,6 +5902,14 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
+      case 37:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->offers);
+          this->__isset.offers = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -6104,6 +6112,10 @@ uint32_t ServiceOrder::write(::apache::thrift::protocol::TProtocol* oprot) const
   xfer += oprot->writeBool(this->iscalculated);
   xfer += oprot->writeFieldEnd();
 
+  xfer += oprot->writeFieldBegin("offers", ::apache::thrift::protocol::T_I32, 37);
+  xfer += oprot->writeI32(this->offers);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -6147,6 +6159,7 @@ void swap(ServiceOrder &a, ServiceOrder &b) {
   swap(a.hasstops, b.hasstops);
   swap(a.notes, b.notes);
   swap(a.iscalculated, b.iscalculated);
+  swap(a.offers, b.offers);
   swap(a.__isset, b.__isset);
 }
 

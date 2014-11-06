@@ -127,6 +127,11 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("addDriver\n");
   }
 
+  void addVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const Vehicle& value) {
+    // Your implementation goes here
+    printf("addVehicle\n");
+  }
+
   void addVehicleColor(DictEntry& _return, const Credentials& credentials, const UserDevice& userdevice, const STR& name, const NUMBER32 value) {
     // Your implementation goes here
     printf("addVehicleColor\n");
@@ -180,6 +185,16 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
   void addTrack(Track& _return, const Credentials& credentials, const UserDevice& userdevice, const Track& value) {
     // Your implementation goes here
     printf("addTrack\n");
+  }
+
+  void rmCity(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmCity\n");
+  }
+
+  void rmVehicle(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmVehicle\n");
   }
 
   void rmManager(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
@@ -370,6 +385,151 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
   void getDriverServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) {
     // Your implementation goes here
     printf("getDriverServiceOrder\n");
+  }
+
+  void findAutoPayment(AutoPayments& _return, const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& search, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("findAutoPayment\n");
+  }
+
+  void findBillAct(BillActs& _return, const Credentials& credentials, const UserDevice& userdevice, const BillAct& search, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("findBillAct\n");
+  }
+
+  void findDriverBlackList(DriverBlackLists& _return, const Credentials& credentials, const UserDevice& userdevice, const DriverBlackList& search, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("findDriverBlackList\n");
+  }
+
+  void findDispatcher(Dispatchers& _return, const Credentials& credentials, const UserDevice& userdevice, const Dispatcher& search, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("findDispatcher\n");
+  }
+
+  void findNotification(Notifications& _return, const Credentials& credentials, const UserDevice& userdevice, const Notification& search, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("findNotification\n");
+  }
+
+  void findShedule(Shedules& _return, const Credentials& credentials, const UserDevice& userdevice, const Shedule& search, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("findShedule\n");
+  }
+
+  void findServiceOrderStop(ServiceOrderStops& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderStop& search, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("findServiceOrderStop\n");
+  }
+
+  void findCustomerStatistic(CustomerStatistics& _return, const Credentials& credentials, const UserDevice& userdevice, const CustomerStatistic& search, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("findCustomerStatistic\n");
+  }
+
+  void addAutoPayment(AutoPayment& _return, const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& value) {
+    // Your implementation goes here
+    printf("addAutoPayment\n");
+  }
+
+  void addBillAct(BillAct& _return, const Credentials& credentials, const UserDevice& userdevice, const BillAct& value) {
+    // Your implementation goes here
+    printf("addBillAct\n");
+  }
+
+  void addDriverBlackList(DriverBlackList& _return, const Credentials& credentials, const UserDevice& userdevice, const DriverBlackList& value) {
+    // Your implementation goes here
+    printf("addDriverBlackList\n");
+  }
+
+  void addNotification(Notification& _return, const Credentials& credentials, const UserDevice& userdevice, const Notification& value) {
+    // Your implementation goes here
+    printf("addNotification\n");
+  }
+
+  void addShedule(Shedule& _return, const Credentials& credentials, const UserDevice& userdevice, const Shedule& value) {
+    // Your implementation goes here
+    printf("addShedule\n");
+  }
+
+  void addServiceOrderStop(ServiceOrderStop& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderStop& value) {
+    // Your implementation goes here
+    printf("addServiceOrderStop\n");
+  }
+
+  void addCustomerStatistic(CustomerStatistic& _return, const Credentials& credentials, const UserDevice& userdevice, const CustomerStatistic& value) {
+    // Your implementation goes here
+    printf("addCustomerStatistic\n");
+  }
+
+  void rmAutoPayment(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmAutoPayment\n");
+  }
+
+  void rmBank(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmBank\n");
+  }
+
+  void rmBillAct(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmBillAct\n");
+  }
+
+  void rmVehicleBrand(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmVehicleBrand\n");
+  }
+
+  void rmVehicleColor(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmVehicleColor\n");
+  }
+
+  void rmDictEntry(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmDictEntry\n");
+  }
+
+  void rmDriver(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmDriver\n");
+  }
+
+  void rmDriverBlackList(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmDriverBlackList\n");
+  }
+
+  void rmNotification(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmNotification\n");
+  }
+
+  void rmCustomer(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmCustomer\n");
+  }
+
+  void rmDispatcher(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmDispatcher\n");
+  }
+
+  void rmShedule(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmShedule\n");
+  }
+
+  void rmServiceOrderStop(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmServiceOrderStop\n");
+  }
+
+  void rmCustomerStatistic(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmCustomerStatistic\n");
   }
 
 };

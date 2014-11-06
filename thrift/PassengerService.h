@@ -36,6 +36,7 @@ class PassengerServiceIf {
   virtual void addPassenger(Passenger& _return, const Credentials& credentials, const UserDevice& userdevice, const Passenger& value) = 0;
   virtual void addDispatcher(Dispatcher& _return, const Credentials& credentials, const UserDevice& userdevice, const Dispatcher& value) = 0;
   virtual void addDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice, const Driver& value) = 0;
+  virtual void addVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const Vehicle& value) = 0;
   virtual void addVehicleColor(DictEntry& _return, const Credentials& credentials, const UserDevice& userdevice, const STR& name, const NUMBER32 value) = 0;
   virtual void addVehicleBrand(DictEntry& _return, const Credentials& credentials, const UserDevice& userdevice, const VehicleCategory::type category, const STR& name) = 0;
   virtual void addVehicleModel(DictEntry& _return, const Credentials& credentials, const UserDevice& userdevice, const ID brandid, const STR& name, const NUMBER32 year) = 0;
@@ -47,6 +48,8 @@ class PassengerServiceIf {
   virtual void addServiceOrderDecline(ServiceOrderDecline& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& value) = 0;
   virtual void addClaim(Claim& _return, const Credentials& credentials, const UserDevice& userdevice, const Claim& value) = 0;
   virtual void addTrack(Track& _return, const Credentials& credentials, const UserDevice& userdevice, const Track& value) = 0;
+  virtual void rmCity(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmVehicle(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void rmManager(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void rmTariffPlan(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void rmRate(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
@@ -85,6 +88,35 @@ class PassengerServiceIf {
   virtual bool cancelOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
   virtual bool failOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
   virtual void getDriverServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) = 0;
+  virtual void findAutoPayment(AutoPayments& _return, const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& search, const RowRange& rowrange) = 0;
+  virtual void findBillAct(BillActs& _return, const Credentials& credentials, const UserDevice& userdevice, const BillAct& search, const RowRange& rowrange) = 0;
+  virtual void findDriverBlackList(DriverBlackLists& _return, const Credentials& credentials, const UserDevice& userdevice, const DriverBlackList& search, const RowRange& rowrange) = 0;
+  virtual void findDispatcher(Dispatchers& _return, const Credentials& credentials, const UserDevice& userdevice, const Dispatcher& search, const RowRange& rowrange) = 0;
+  virtual void findNotification(Notifications& _return, const Credentials& credentials, const UserDevice& userdevice, const Notification& search, const RowRange& rowrange) = 0;
+  virtual void findShedule(Shedules& _return, const Credentials& credentials, const UserDevice& userdevice, const Shedule& search, const RowRange& rowrange) = 0;
+  virtual void findServiceOrderStop(ServiceOrderStops& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderStop& search, const RowRange& rowrange) = 0;
+  virtual void findCustomerStatistic(CustomerStatistics& _return, const Credentials& credentials, const UserDevice& userdevice, const CustomerStatistic& search, const RowRange& rowrange) = 0;
+  virtual void addAutoPayment(AutoPayment& _return, const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& value) = 0;
+  virtual void addBillAct(BillAct& _return, const Credentials& credentials, const UserDevice& userdevice, const BillAct& value) = 0;
+  virtual void addDriverBlackList(DriverBlackList& _return, const Credentials& credentials, const UserDevice& userdevice, const DriverBlackList& value) = 0;
+  virtual void addNotification(Notification& _return, const Credentials& credentials, const UserDevice& userdevice, const Notification& value) = 0;
+  virtual void addShedule(Shedule& _return, const Credentials& credentials, const UserDevice& userdevice, const Shedule& value) = 0;
+  virtual void addServiceOrderStop(ServiceOrderStop& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderStop& value) = 0;
+  virtual void addCustomerStatistic(CustomerStatistic& _return, const Credentials& credentials, const UserDevice& userdevice, const CustomerStatistic& value) = 0;
+  virtual void rmAutoPayment(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmBank(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmBillAct(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmVehicleBrand(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmVehicleColor(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmDictEntry(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmDriver(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmDriverBlackList(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmNotification(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmCustomer(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmDispatcher(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmShedule(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmServiceOrderStop(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmCustomerStatistic(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
 };
 
 class PassengerServiceIfFactory {
@@ -177,6 +209,9 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
   void addDriver(Driver& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Driver& /* value */) {
     return;
   }
+  void addVehicle(Vehicle& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Vehicle& /* value */) {
+    return;
+  }
   void addVehicleColor(DictEntry& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const STR& /* name */, const NUMBER32 /* value */) {
     return;
   }
@@ -208,6 +243,12 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
     return;
   }
   void addTrack(Track& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Track& /* value */) {
+    return;
+  }
+  void rmCity(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmVehicle(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
     return;
   }
   void rmManager(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
@@ -331,6 +372,93 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
     return _return;
   }
   void getDriverServiceOrder(ServiceOrders& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const RowRange& /* rowrange */) {
+    return;
+  }
+  void findAutoPayment(AutoPayments& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const AutoPayment& /* search */, const RowRange& /* rowrange */) {
+    return;
+  }
+  void findBillAct(BillActs& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const BillAct& /* search */, const RowRange& /* rowrange */) {
+    return;
+  }
+  void findDriverBlackList(DriverBlackLists& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const DriverBlackList& /* search */, const RowRange& /* rowrange */) {
+    return;
+  }
+  void findDispatcher(Dispatchers& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Dispatcher& /* search */, const RowRange& /* rowrange */) {
+    return;
+  }
+  void findNotification(Notifications& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Notification& /* search */, const RowRange& /* rowrange */) {
+    return;
+  }
+  void findShedule(Shedules& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Shedule& /* search */, const RowRange& /* rowrange */) {
+    return;
+  }
+  void findServiceOrderStop(ServiceOrderStops& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ServiceOrderStop& /* search */, const RowRange& /* rowrange */) {
+    return;
+  }
+  void findCustomerStatistic(CustomerStatistics& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const CustomerStatistic& /* search */, const RowRange& /* rowrange */) {
+    return;
+  }
+  void addAutoPayment(AutoPayment& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const AutoPayment& /* value */) {
+    return;
+  }
+  void addBillAct(BillAct& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const BillAct& /* value */) {
+    return;
+  }
+  void addDriverBlackList(DriverBlackList& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const DriverBlackList& /* value */) {
+    return;
+  }
+  void addNotification(Notification& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Notification& /* value */) {
+    return;
+  }
+  void addShedule(Shedule& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Shedule& /* value */) {
+    return;
+  }
+  void addServiceOrderStop(ServiceOrderStop& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ServiceOrderStop& /* value */) {
+    return;
+  }
+  void addCustomerStatistic(CustomerStatistic& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const CustomerStatistic& /* value */) {
+    return;
+  }
+  void rmAutoPayment(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmBank(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmBillAct(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmVehicleBrand(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmVehicleColor(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmDictEntry(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmDriver(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmDriverBlackList(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmNotification(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmCustomer(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmDispatcher(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmShedule(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmServiceOrderStop(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmCustomerStatistic(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
     return;
   }
 };
@@ -3236,6 +3364,142 @@ class PassengerService_addDriver_presult {
 
 };
 
+typedef struct _PassengerService_addVehicle_args__isset {
+  _PassengerService_addVehicle_args__isset() : credentials(false), userdevice(false), value(false) {}
+  bool credentials;
+  bool userdevice;
+  bool value;
+} _PassengerService_addVehicle_args__isset;
+
+class PassengerService_addVehicle_args {
+ public:
+
+  PassengerService_addVehicle_args() {
+  }
+
+  virtual ~PassengerService_addVehicle_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  Vehicle value;
+
+  _PassengerService_addVehicle_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_value(const Vehicle& val) {
+    value = val;
+  }
+
+  bool operator == (const PassengerService_addVehicle_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addVehicle_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addVehicle_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_addVehicle_pargs {
+ public:
+
+
+  virtual ~PassengerService_addVehicle_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const Vehicle* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addVehicle_result__isset {
+  _PassengerService_addVehicle_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addVehicle_result__isset;
+
+class PassengerService_addVehicle_result {
+ public:
+
+  PassengerService_addVehicle_result() {
+  }
+
+  virtual ~PassengerService_addVehicle_result() throw() {}
+
+  Vehicle success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addVehicle_result__isset __isset;
+
+  void __set_success(const Vehicle& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_addVehicle_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addVehicle_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addVehicle_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addVehicle_presult__isset {
+  _PassengerService_addVehicle_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addVehicle_presult__isset;
+
+class PassengerService_addVehicle_presult {
+ public:
+
+
+  virtual ~PassengerService_addVehicle_presult() throw() {}
+
+  Vehicle* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addVehicle_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 typedef struct _PassengerService_addVehicleColor_args__isset {
   _PassengerService_addVehicleColor_args__isset() : credentials(false), userdevice(false), name(false), value(false) {}
   bool credentials;
@@ -4781,6 +5045,258 @@ class PassengerService_addTrack_presult {
   ServiceFailure servicefailure;
 
   _PassengerService_addTrack_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmCity_args__isset {
+  _PassengerService_rmCity_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmCity_args__isset;
+
+class PassengerService_rmCity_args {
+ public:
+
+  PassengerService_rmCity_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmCity_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmCity_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmCity_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmCity_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmCity_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmCity_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmCity_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmCity_result__isset {
+  _PassengerService_rmCity_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmCity_result__isset;
+
+class PassengerService_rmCity_result {
+ public:
+
+  PassengerService_rmCity_result() {
+  }
+
+  virtual ~PassengerService_rmCity_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmCity_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmCity_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmCity_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmCity_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmCity_presult__isset {
+  _PassengerService_rmCity_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmCity_presult__isset;
+
+class PassengerService_rmCity_presult {
+ public:
+
+
+  virtual ~PassengerService_rmCity_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmCity_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmVehicle_args__isset {
+  _PassengerService_rmVehicle_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmVehicle_args__isset;
+
+class PassengerService_rmVehicle_args {
+ public:
+
+  PassengerService_rmVehicle_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmVehicle_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmVehicle_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmVehicle_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmVehicle_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmVehicle_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmVehicle_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmVehicle_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmVehicle_result__isset {
+  _PassengerService_rmVehicle_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmVehicle_result__isset;
+
+class PassengerService_rmVehicle_result {
+ public:
+
+  PassengerService_rmVehicle_result() {
+  }
+
+  virtual ~PassengerService_rmVehicle_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmVehicle_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmVehicle_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmVehicle_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmVehicle_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmVehicle_presult__isset {
+  _PassengerService_rmVehicle_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmVehicle_presult__isset;
+
+class PassengerService_rmVehicle_presult {
+ public:
+
+
+  virtual ~PassengerService_rmVehicle_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmVehicle_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -10090,6 +10606,3882 @@ class PassengerService_getDriverServiceOrder_presult {
 
 };
 
+typedef struct _PassengerService_findAutoPayment_args__isset {
+  _PassengerService_findAutoPayment_args__isset() : credentials(false), userdevice(false), search(false), rowrange(false) {}
+  bool credentials;
+  bool userdevice;
+  bool search;
+  bool rowrange;
+} _PassengerService_findAutoPayment_args__isset;
+
+class PassengerService_findAutoPayment_args {
+ public:
+
+  PassengerService_findAutoPayment_args() {
+  }
+
+  virtual ~PassengerService_findAutoPayment_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  AutoPayment search;
+  RowRange rowrange;
+
+  _PassengerService_findAutoPayment_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_search(const AutoPayment& val) {
+    search = val;
+  }
+
+  void __set_rowrange(const RowRange& val) {
+    rowrange = val;
+  }
+
+  bool operator == (const PassengerService_findAutoPayment_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(search == rhs.search))
+      return false;
+    if (!(rowrange == rhs.rowrange))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findAutoPayment_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findAutoPayment_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_findAutoPayment_pargs {
+ public:
+
+
+  virtual ~PassengerService_findAutoPayment_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const AutoPayment* search;
+  const RowRange* rowrange;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findAutoPayment_result__isset {
+  _PassengerService_findAutoPayment_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findAutoPayment_result__isset;
+
+class PassengerService_findAutoPayment_result {
+ public:
+
+  PassengerService_findAutoPayment_result() {
+  }
+
+  virtual ~PassengerService_findAutoPayment_result() throw() {}
+
+  AutoPayments success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findAutoPayment_result__isset __isset;
+
+  void __set_success(const AutoPayments& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_findAutoPayment_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findAutoPayment_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findAutoPayment_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findAutoPayment_presult__isset {
+  _PassengerService_findAutoPayment_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findAutoPayment_presult__isset;
+
+class PassengerService_findAutoPayment_presult {
+ public:
+
+
+  virtual ~PassengerService_findAutoPayment_presult() throw() {}
+
+  AutoPayments* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findAutoPayment_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_findBillAct_args__isset {
+  _PassengerService_findBillAct_args__isset() : credentials(false), userdevice(false), search(false), rowrange(false) {}
+  bool credentials;
+  bool userdevice;
+  bool search;
+  bool rowrange;
+} _PassengerService_findBillAct_args__isset;
+
+class PassengerService_findBillAct_args {
+ public:
+
+  PassengerService_findBillAct_args() {
+  }
+
+  virtual ~PassengerService_findBillAct_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  BillAct search;
+  RowRange rowrange;
+
+  _PassengerService_findBillAct_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_search(const BillAct& val) {
+    search = val;
+  }
+
+  void __set_rowrange(const RowRange& val) {
+    rowrange = val;
+  }
+
+  bool operator == (const PassengerService_findBillAct_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(search == rhs.search))
+      return false;
+    if (!(rowrange == rhs.rowrange))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findBillAct_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findBillAct_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_findBillAct_pargs {
+ public:
+
+
+  virtual ~PassengerService_findBillAct_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const BillAct* search;
+  const RowRange* rowrange;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findBillAct_result__isset {
+  _PassengerService_findBillAct_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findBillAct_result__isset;
+
+class PassengerService_findBillAct_result {
+ public:
+
+  PassengerService_findBillAct_result() {
+  }
+
+  virtual ~PassengerService_findBillAct_result() throw() {}
+
+  BillActs success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findBillAct_result__isset __isset;
+
+  void __set_success(const BillActs& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_findBillAct_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findBillAct_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findBillAct_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findBillAct_presult__isset {
+  _PassengerService_findBillAct_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findBillAct_presult__isset;
+
+class PassengerService_findBillAct_presult {
+ public:
+
+
+  virtual ~PassengerService_findBillAct_presult() throw() {}
+
+  BillActs* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findBillAct_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_findDriverBlackList_args__isset {
+  _PassengerService_findDriverBlackList_args__isset() : credentials(false), userdevice(false), search(false), rowrange(false) {}
+  bool credentials;
+  bool userdevice;
+  bool search;
+  bool rowrange;
+} _PassengerService_findDriverBlackList_args__isset;
+
+class PassengerService_findDriverBlackList_args {
+ public:
+
+  PassengerService_findDriverBlackList_args() {
+  }
+
+  virtual ~PassengerService_findDriverBlackList_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  DriverBlackList search;
+  RowRange rowrange;
+
+  _PassengerService_findDriverBlackList_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_search(const DriverBlackList& val) {
+    search = val;
+  }
+
+  void __set_rowrange(const RowRange& val) {
+    rowrange = val;
+  }
+
+  bool operator == (const PassengerService_findDriverBlackList_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(search == rhs.search))
+      return false;
+    if (!(rowrange == rhs.rowrange))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findDriverBlackList_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findDriverBlackList_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_findDriverBlackList_pargs {
+ public:
+
+
+  virtual ~PassengerService_findDriverBlackList_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const DriverBlackList* search;
+  const RowRange* rowrange;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findDriverBlackList_result__isset {
+  _PassengerService_findDriverBlackList_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findDriverBlackList_result__isset;
+
+class PassengerService_findDriverBlackList_result {
+ public:
+
+  PassengerService_findDriverBlackList_result() {
+  }
+
+  virtual ~PassengerService_findDriverBlackList_result() throw() {}
+
+  DriverBlackLists success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findDriverBlackList_result__isset __isset;
+
+  void __set_success(const DriverBlackLists& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_findDriverBlackList_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findDriverBlackList_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findDriverBlackList_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findDriverBlackList_presult__isset {
+  _PassengerService_findDriverBlackList_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findDriverBlackList_presult__isset;
+
+class PassengerService_findDriverBlackList_presult {
+ public:
+
+
+  virtual ~PassengerService_findDriverBlackList_presult() throw() {}
+
+  DriverBlackLists* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findDriverBlackList_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_findDispatcher_args__isset {
+  _PassengerService_findDispatcher_args__isset() : credentials(false), userdevice(false), search(false), rowrange(false) {}
+  bool credentials;
+  bool userdevice;
+  bool search;
+  bool rowrange;
+} _PassengerService_findDispatcher_args__isset;
+
+class PassengerService_findDispatcher_args {
+ public:
+
+  PassengerService_findDispatcher_args() {
+  }
+
+  virtual ~PassengerService_findDispatcher_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  Dispatcher search;
+  RowRange rowrange;
+
+  _PassengerService_findDispatcher_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_search(const Dispatcher& val) {
+    search = val;
+  }
+
+  void __set_rowrange(const RowRange& val) {
+    rowrange = val;
+  }
+
+  bool operator == (const PassengerService_findDispatcher_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(search == rhs.search))
+      return false;
+    if (!(rowrange == rhs.rowrange))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findDispatcher_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findDispatcher_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_findDispatcher_pargs {
+ public:
+
+
+  virtual ~PassengerService_findDispatcher_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const Dispatcher* search;
+  const RowRange* rowrange;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findDispatcher_result__isset {
+  _PassengerService_findDispatcher_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findDispatcher_result__isset;
+
+class PassengerService_findDispatcher_result {
+ public:
+
+  PassengerService_findDispatcher_result() {
+  }
+
+  virtual ~PassengerService_findDispatcher_result() throw() {}
+
+  Dispatchers success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findDispatcher_result__isset __isset;
+
+  void __set_success(const Dispatchers& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_findDispatcher_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findDispatcher_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findDispatcher_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findDispatcher_presult__isset {
+  _PassengerService_findDispatcher_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findDispatcher_presult__isset;
+
+class PassengerService_findDispatcher_presult {
+ public:
+
+
+  virtual ~PassengerService_findDispatcher_presult() throw() {}
+
+  Dispatchers* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findDispatcher_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_findNotification_args__isset {
+  _PassengerService_findNotification_args__isset() : credentials(false), userdevice(false), search(false), rowrange(false) {}
+  bool credentials;
+  bool userdevice;
+  bool search;
+  bool rowrange;
+} _PassengerService_findNotification_args__isset;
+
+class PassengerService_findNotification_args {
+ public:
+
+  PassengerService_findNotification_args() {
+  }
+
+  virtual ~PassengerService_findNotification_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  Notification search;
+  RowRange rowrange;
+
+  _PassengerService_findNotification_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_search(const Notification& val) {
+    search = val;
+  }
+
+  void __set_rowrange(const RowRange& val) {
+    rowrange = val;
+  }
+
+  bool operator == (const PassengerService_findNotification_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(search == rhs.search))
+      return false;
+    if (!(rowrange == rhs.rowrange))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findNotification_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findNotification_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_findNotification_pargs {
+ public:
+
+
+  virtual ~PassengerService_findNotification_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const Notification* search;
+  const RowRange* rowrange;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findNotification_result__isset {
+  _PassengerService_findNotification_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findNotification_result__isset;
+
+class PassengerService_findNotification_result {
+ public:
+
+  PassengerService_findNotification_result() {
+  }
+
+  virtual ~PassengerService_findNotification_result() throw() {}
+
+  Notifications success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findNotification_result__isset __isset;
+
+  void __set_success(const Notifications& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_findNotification_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findNotification_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findNotification_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findNotification_presult__isset {
+  _PassengerService_findNotification_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findNotification_presult__isset;
+
+class PassengerService_findNotification_presult {
+ public:
+
+
+  virtual ~PassengerService_findNotification_presult() throw() {}
+
+  Notifications* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findNotification_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_findShedule_args__isset {
+  _PassengerService_findShedule_args__isset() : credentials(false), userdevice(false), search(false), rowrange(false) {}
+  bool credentials;
+  bool userdevice;
+  bool search;
+  bool rowrange;
+} _PassengerService_findShedule_args__isset;
+
+class PassengerService_findShedule_args {
+ public:
+
+  PassengerService_findShedule_args() {
+  }
+
+  virtual ~PassengerService_findShedule_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  Shedule search;
+  RowRange rowrange;
+
+  _PassengerService_findShedule_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_search(const Shedule& val) {
+    search = val;
+  }
+
+  void __set_rowrange(const RowRange& val) {
+    rowrange = val;
+  }
+
+  bool operator == (const PassengerService_findShedule_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(search == rhs.search))
+      return false;
+    if (!(rowrange == rhs.rowrange))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findShedule_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findShedule_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_findShedule_pargs {
+ public:
+
+
+  virtual ~PassengerService_findShedule_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const Shedule* search;
+  const RowRange* rowrange;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findShedule_result__isset {
+  _PassengerService_findShedule_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findShedule_result__isset;
+
+class PassengerService_findShedule_result {
+ public:
+
+  PassengerService_findShedule_result() {
+  }
+
+  virtual ~PassengerService_findShedule_result() throw() {}
+
+  Shedules success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findShedule_result__isset __isset;
+
+  void __set_success(const Shedules& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_findShedule_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findShedule_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findShedule_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findShedule_presult__isset {
+  _PassengerService_findShedule_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findShedule_presult__isset;
+
+class PassengerService_findShedule_presult {
+ public:
+
+
+  virtual ~PassengerService_findShedule_presult() throw() {}
+
+  Shedules* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findShedule_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_findServiceOrderStop_args__isset {
+  _PassengerService_findServiceOrderStop_args__isset() : credentials(false), userdevice(false), search(false), rowrange(false) {}
+  bool credentials;
+  bool userdevice;
+  bool search;
+  bool rowrange;
+} _PassengerService_findServiceOrderStop_args__isset;
+
+class PassengerService_findServiceOrderStop_args {
+ public:
+
+  PassengerService_findServiceOrderStop_args() {
+  }
+
+  virtual ~PassengerService_findServiceOrderStop_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ServiceOrderStop search;
+  RowRange rowrange;
+
+  _PassengerService_findServiceOrderStop_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_search(const ServiceOrderStop& val) {
+    search = val;
+  }
+
+  void __set_rowrange(const RowRange& val) {
+    rowrange = val;
+  }
+
+  bool operator == (const PassengerService_findServiceOrderStop_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(search == rhs.search))
+      return false;
+    if (!(rowrange == rhs.rowrange))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findServiceOrderStop_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findServiceOrderStop_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_findServiceOrderStop_pargs {
+ public:
+
+
+  virtual ~PassengerService_findServiceOrderStop_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ServiceOrderStop* search;
+  const RowRange* rowrange;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findServiceOrderStop_result__isset {
+  _PassengerService_findServiceOrderStop_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findServiceOrderStop_result__isset;
+
+class PassengerService_findServiceOrderStop_result {
+ public:
+
+  PassengerService_findServiceOrderStop_result() {
+  }
+
+  virtual ~PassengerService_findServiceOrderStop_result() throw() {}
+
+  ServiceOrderStops success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findServiceOrderStop_result__isset __isset;
+
+  void __set_success(const ServiceOrderStops& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_findServiceOrderStop_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findServiceOrderStop_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findServiceOrderStop_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findServiceOrderStop_presult__isset {
+  _PassengerService_findServiceOrderStop_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findServiceOrderStop_presult__isset;
+
+class PassengerService_findServiceOrderStop_presult {
+ public:
+
+
+  virtual ~PassengerService_findServiceOrderStop_presult() throw() {}
+
+  ServiceOrderStops* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findServiceOrderStop_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_findCustomerStatistic_args__isset {
+  _PassengerService_findCustomerStatistic_args__isset() : credentials(false), userdevice(false), search(false), rowrange(false) {}
+  bool credentials;
+  bool userdevice;
+  bool search;
+  bool rowrange;
+} _PassengerService_findCustomerStatistic_args__isset;
+
+class PassengerService_findCustomerStatistic_args {
+ public:
+
+  PassengerService_findCustomerStatistic_args() {
+  }
+
+  virtual ~PassengerService_findCustomerStatistic_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  CustomerStatistic search;
+  RowRange rowrange;
+
+  _PassengerService_findCustomerStatistic_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_search(const CustomerStatistic& val) {
+    search = val;
+  }
+
+  void __set_rowrange(const RowRange& val) {
+    rowrange = val;
+  }
+
+  bool operator == (const PassengerService_findCustomerStatistic_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(search == rhs.search))
+      return false;
+    if (!(rowrange == rhs.rowrange))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findCustomerStatistic_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findCustomerStatistic_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_findCustomerStatistic_pargs {
+ public:
+
+
+  virtual ~PassengerService_findCustomerStatistic_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const CustomerStatistic* search;
+  const RowRange* rowrange;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findCustomerStatistic_result__isset {
+  _PassengerService_findCustomerStatistic_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findCustomerStatistic_result__isset;
+
+class PassengerService_findCustomerStatistic_result {
+ public:
+
+  PassengerService_findCustomerStatistic_result() {
+  }
+
+  virtual ~PassengerService_findCustomerStatistic_result() throw() {}
+
+  CustomerStatistics success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findCustomerStatistic_result__isset __isset;
+
+  void __set_success(const CustomerStatistics& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_findCustomerStatistic_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_findCustomerStatistic_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_findCustomerStatistic_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_findCustomerStatistic_presult__isset {
+  _PassengerService_findCustomerStatistic_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_findCustomerStatistic_presult__isset;
+
+class PassengerService_findCustomerStatistic_presult {
+ public:
+
+
+  virtual ~PassengerService_findCustomerStatistic_presult() throw() {}
+
+  CustomerStatistics* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_findCustomerStatistic_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_addAutoPayment_args__isset {
+  _PassengerService_addAutoPayment_args__isset() : credentials(false), userdevice(false), value(false) {}
+  bool credentials;
+  bool userdevice;
+  bool value;
+} _PassengerService_addAutoPayment_args__isset;
+
+class PassengerService_addAutoPayment_args {
+ public:
+
+  PassengerService_addAutoPayment_args() {
+  }
+
+  virtual ~PassengerService_addAutoPayment_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  AutoPayment value;
+
+  _PassengerService_addAutoPayment_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_value(const AutoPayment& val) {
+    value = val;
+  }
+
+  bool operator == (const PassengerService_addAutoPayment_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addAutoPayment_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addAutoPayment_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_addAutoPayment_pargs {
+ public:
+
+
+  virtual ~PassengerService_addAutoPayment_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const AutoPayment* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addAutoPayment_result__isset {
+  _PassengerService_addAutoPayment_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addAutoPayment_result__isset;
+
+class PassengerService_addAutoPayment_result {
+ public:
+
+  PassengerService_addAutoPayment_result() {
+  }
+
+  virtual ~PassengerService_addAutoPayment_result() throw() {}
+
+  AutoPayment success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addAutoPayment_result__isset __isset;
+
+  void __set_success(const AutoPayment& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_addAutoPayment_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addAutoPayment_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addAutoPayment_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addAutoPayment_presult__isset {
+  _PassengerService_addAutoPayment_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addAutoPayment_presult__isset;
+
+class PassengerService_addAutoPayment_presult {
+ public:
+
+
+  virtual ~PassengerService_addAutoPayment_presult() throw() {}
+
+  AutoPayment* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addAutoPayment_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_addBillAct_args__isset {
+  _PassengerService_addBillAct_args__isset() : credentials(false), userdevice(false), value(false) {}
+  bool credentials;
+  bool userdevice;
+  bool value;
+} _PassengerService_addBillAct_args__isset;
+
+class PassengerService_addBillAct_args {
+ public:
+
+  PassengerService_addBillAct_args() {
+  }
+
+  virtual ~PassengerService_addBillAct_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  BillAct value;
+
+  _PassengerService_addBillAct_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_value(const BillAct& val) {
+    value = val;
+  }
+
+  bool operator == (const PassengerService_addBillAct_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addBillAct_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addBillAct_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_addBillAct_pargs {
+ public:
+
+
+  virtual ~PassengerService_addBillAct_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const BillAct* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addBillAct_result__isset {
+  _PassengerService_addBillAct_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addBillAct_result__isset;
+
+class PassengerService_addBillAct_result {
+ public:
+
+  PassengerService_addBillAct_result() {
+  }
+
+  virtual ~PassengerService_addBillAct_result() throw() {}
+
+  BillAct success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addBillAct_result__isset __isset;
+
+  void __set_success(const BillAct& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_addBillAct_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addBillAct_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addBillAct_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addBillAct_presult__isset {
+  _PassengerService_addBillAct_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addBillAct_presult__isset;
+
+class PassengerService_addBillAct_presult {
+ public:
+
+
+  virtual ~PassengerService_addBillAct_presult() throw() {}
+
+  BillAct* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addBillAct_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_addDriverBlackList_args__isset {
+  _PassengerService_addDriverBlackList_args__isset() : credentials(false), userdevice(false), value(false) {}
+  bool credentials;
+  bool userdevice;
+  bool value;
+} _PassengerService_addDriverBlackList_args__isset;
+
+class PassengerService_addDriverBlackList_args {
+ public:
+
+  PassengerService_addDriverBlackList_args() {
+  }
+
+  virtual ~PassengerService_addDriverBlackList_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  DriverBlackList value;
+
+  _PassengerService_addDriverBlackList_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_value(const DriverBlackList& val) {
+    value = val;
+  }
+
+  bool operator == (const PassengerService_addDriverBlackList_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addDriverBlackList_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addDriverBlackList_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_addDriverBlackList_pargs {
+ public:
+
+
+  virtual ~PassengerService_addDriverBlackList_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const DriverBlackList* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addDriverBlackList_result__isset {
+  _PassengerService_addDriverBlackList_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addDriverBlackList_result__isset;
+
+class PassengerService_addDriverBlackList_result {
+ public:
+
+  PassengerService_addDriverBlackList_result() {
+  }
+
+  virtual ~PassengerService_addDriverBlackList_result() throw() {}
+
+  DriverBlackList success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addDriverBlackList_result__isset __isset;
+
+  void __set_success(const DriverBlackList& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_addDriverBlackList_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addDriverBlackList_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addDriverBlackList_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addDriverBlackList_presult__isset {
+  _PassengerService_addDriverBlackList_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addDriverBlackList_presult__isset;
+
+class PassengerService_addDriverBlackList_presult {
+ public:
+
+
+  virtual ~PassengerService_addDriverBlackList_presult() throw() {}
+
+  DriverBlackList* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addDriverBlackList_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_addNotification_args__isset {
+  _PassengerService_addNotification_args__isset() : credentials(false), userdevice(false), value(false) {}
+  bool credentials;
+  bool userdevice;
+  bool value;
+} _PassengerService_addNotification_args__isset;
+
+class PassengerService_addNotification_args {
+ public:
+
+  PassengerService_addNotification_args() {
+  }
+
+  virtual ~PassengerService_addNotification_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  Notification value;
+
+  _PassengerService_addNotification_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_value(const Notification& val) {
+    value = val;
+  }
+
+  bool operator == (const PassengerService_addNotification_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addNotification_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addNotification_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_addNotification_pargs {
+ public:
+
+
+  virtual ~PassengerService_addNotification_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const Notification* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addNotification_result__isset {
+  _PassengerService_addNotification_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addNotification_result__isset;
+
+class PassengerService_addNotification_result {
+ public:
+
+  PassengerService_addNotification_result() {
+  }
+
+  virtual ~PassengerService_addNotification_result() throw() {}
+
+  Notification success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addNotification_result__isset __isset;
+
+  void __set_success(const Notification& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_addNotification_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addNotification_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addNotification_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addNotification_presult__isset {
+  _PassengerService_addNotification_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addNotification_presult__isset;
+
+class PassengerService_addNotification_presult {
+ public:
+
+
+  virtual ~PassengerService_addNotification_presult() throw() {}
+
+  Notification* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addNotification_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_addShedule_args__isset {
+  _PassengerService_addShedule_args__isset() : credentials(false), userdevice(false), value(false) {}
+  bool credentials;
+  bool userdevice;
+  bool value;
+} _PassengerService_addShedule_args__isset;
+
+class PassengerService_addShedule_args {
+ public:
+
+  PassengerService_addShedule_args() {
+  }
+
+  virtual ~PassengerService_addShedule_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  Shedule value;
+
+  _PassengerService_addShedule_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_value(const Shedule& val) {
+    value = val;
+  }
+
+  bool operator == (const PassengerService_addShedule_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addShedule_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addShedule_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_addShedule_pargs {
+ public:
+
+
+  virtual ~PassengerService_addShedule_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const Shedule* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addShedule_result__isset {
+  _PassengerService_addShedule_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addShedule_result__isset;
+
+class PassengerService_addShedule_result {
+ public:
+
+  PassengerService_addShedule_result() {
+  }
+
+  virtual ~PassengerService_addShedule_result() throw() {}
+
+  Shedule success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addShedule_result__isset __isset;
+
+  void __set_success(const Shedule& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_addShedule_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addShedule_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addShedule_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addShedule_presult__isset {
+  _PassengerService_addShedule_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addShedule_presult__isset;
+
+class PassengerService_addShedule_presult {
+ public:
+
+
+  virtual ~PassengerService_addShedule_presult() throw() {}
+
+  Shedule* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addShedule_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_addServiceOrderStop_args__isset {
+  _PassengerService_addServiceOrderStop_args__isset() : credentials(false), userdevice(false), value(false) {}
+  bool credentials;
+  bool userdevice;
+  bool value;
+} _PassengerService_addServiceOrderStop_args__isset;
+
+class PassengerService_addServiceOrderStop_args {
+ public:
+
+  PassengerService_addServiceOrderStop_args() {
+  }
+
+  virtual ~PassengerService_addServiceOrderStop_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ServiceOrderStop value;
+
+  _PassengerService_addServiceOrderStop_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_value(const ServiceOrderStop& val) {
+    value = val;
+  }
+
+  bool operator == (const PassengerService_addServiceOrderStop_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addServiceOrderStop_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addServiceOrderStop_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_addServiceOrderStop_pargs {
+ public:
+
+
+  virtual ~PassengerService_addServiceOrderStop_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ServiceOrderStop* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addServiceOrderStop_result__isset {
+  _PassengerService_addServiceOrderStop_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addServiceOrderStop_result__isset;
+
+class PassengerService_addServiceOrderStop_result {
+ public:
+
+  PassengerService_addServiceOrderStop_result() {
+  }
+
+  virtual ~PassengerService_addServiceOrderStop_result() throw() {}
+
+  ServiceOrderStop success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addServiceOrderStop_result__isset __isset;
+
+  void __set_success(const ServiceOrderStop& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_addServiceOrderStop_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addServiceOrderStop_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addServiceOrderStop_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addServiceOrderStop_presult__isset {
+  _PassengerService_addServiceOrderStop_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addServiceOrderStop_presult__isset;
+
+class PassengerService_addServiceOrderStop_presult {
+ public:
+
+
+  virtual ~PassengerService_addServiceOrderStop_presult() throw() {}
+
+  ServiceOrderStop* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addServiceOrderStop_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_addCustomerStatistic_args__isset {
+  _PassengerService_addCustomerStatistic_args__isset() : credentials(false), userdevice(false), value(false) {}
+  bool credentials;
+  bool userdevice;
+  bool value;
+} _PassengerService_addCustomerStatistic_args__isset;
+
+class PassengerService_addCustomerStatistic_args {
+ public:
+
+  PassengerService_addCustomerStatistic_args() {
+  }
+
+  virtual ~PassengerService_addCustomerStatistic_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  CustomerStatistic value;
+
+  _PassengerService_addCustomerStatistic_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_value(const CustomerStatistic& val) {
+    value = val;
+  }
+
+  bool operator == (const PassengerService_addCustomerStatistic_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addCustomerStatistic_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addCustomerStatistic_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_addCustomerStatistic_pargs {
+ public:
+
+
+  virtual ~PassengerService_addCustomerStatistic_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const CustomerStatistic* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addCustomerStatistic_result__isset {
+  _PassengerService_addCustomerStatistic_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addCustomerStatistic_result__isset;
+
+class PassengerService_addCustomerStatistic_result {
+ public:
+
+  PassengerService_addCustomerStatistic_result() {
+  }
+
+  virtual ~PassengerService_addCustomerStatistic_result() throw() {}
+
+  CustomerStatistic success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addCustomerStatistic_result__isset __isset;
+
+  void __set_success(const CustomerStatistic& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_addCustomerStatistic_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addCustomerStatistic_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addCustomerStatistic_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addCustomerStatistic_presult__isset {
+  _PassengerService_addCustomerStatistic_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addCustomerStatistic_presult__isset;
+
+class PassengerService_addCustomerStatistic_presult {
+ public:
+
+
+  virtual ~PassengerService_addCustomerStatistic_presult() throw() {}
+
+  CustomerStatistic* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addCustomerStatistic_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmAutoPayment_args__isset {
+  _PassengerService_rmAutoPayment_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmAutoPayment_args__isset;
+
+class PassengerService_rmAutoPayment_args {
+ public:
+
+  PassengerService_rmAutoPayment_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmAutoPayment_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmAutoPayment_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmAutoPayment_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmAutoPayment_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmAutoPayment_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmAutoPayment_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmAutoPayment_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmAutoPayment_result__isset {
+  _PassengerService_rmAutoPayment_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmAutoPayment_result__isset;
+
+class PassengerService_rmAutoPayment_result {
+ public:
+
+  PassengerService_rmAutoPayment_result() {
+  }
+
+  virtual ~PassengerService_rmAutoPayment_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmAutoPayment_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmAutoPayment_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmAutoPayment_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmAutoPayment_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmAutoPayment_presult__isset {
+  _PassengerService_rmAutoPayment_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmAutoPayment_presult__isset;
+
+class PassengerService_rmAutoPayment_presult {
+ public:
+
+
+  virtual ~PassengerService_rmAutoPayment_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmAutoPayment_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmBank_args__isset {
+  _PassengerService_rmBank_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmBank_args__isset;
+
+class PassengerService_rmBank_args {
+ public:
+
+  PassengerService_rmBank_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmBank_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmBank_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmBank_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmBank_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmBank_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmBank_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmBank_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmBank_result__isset {
+  _PassengerService_rmBank_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmBank_result__isset;
+
+class PassengerService_rmBank_result {
+ public:
+
+  PassengerService_rmBank_result() {
+  }
+
+  virtual ~PassengerService_rmBank_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmBank_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmBank_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmBank_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmBank_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmBank_presult__isset {
+  _PassengerService_rmBank_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmBank_presult__isset;
+
+class PassengerService_rmBank_presult {
+ public:
+
+
+  virtual ~PassengerService_rmBank_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmBank_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmBillAct_args__isset {
+  _PassengerService_rmBillAct_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmBillAct_args__isset;
+
+class PassengerService_rmBillAct_args {
+ public:
+
+  PassengerService_rmBillAct_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmBillAct_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmBillAct_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmBillAct_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmBillAct_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmBillAct_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmBillAct_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmBillAct_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmBillAct_result__isset {
+  _PassengerService_rmBillAct_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmBillAct_result__isset;
+
+class PassengerService_rmBillAct_result {
+ public:
+
+  PassengerService_rmBillAct_result() {
+  }
+
+  virtual ~PassengerService_rmBillAct_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmBillAct_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmBillAct_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmBillAct_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmBillAct_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmBillAct_presult__isset {
+  _PassengerService_rmBillAct_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmBillAct_presult__isset;
+
+class PassengerService_rmBillAct_presult {
+ public:
+
+
+  virtual ~PassengerService_rmBillAct_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmBillAct_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmVehicleBrand_args__isset {
+  _PassengerService_rmVehicleBrand_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmVehicleBrand_args__isset;
+
+class PassengerService_rmVehicleBrand_args {
+ public:
+
+  PassengerService_rmVehicleBrand_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmVehicleBrand_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmVehicleBrand_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmVehicleBrand_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmVehicleBrand_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmVehicleBrand_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmVehicleBrand_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmVehicleBrand_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmVehicleBrand_result__isset {
+  _PassengerService_rmVehicleBrand_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmVehicleBrand_result__isset;
+
+class PassengerService_rmVehicleBrand_result {
+ public:
+
+  PassengerService_rmVehicleBrand_result() {
+  }
+
+  virtual ~PassengerService_rmVehicleBrand_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmVehicleBrand_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmVehicleBrand_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmVehicleBrand_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmVehicleBrand_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmVehicleBrand_presult__isset {
+  _PassengerService_rmVehicleBrand_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmVehicleBrand_presult__isset;
+
+class PassengerService_rmVehicleBrand_presult {
+ public:
+
+
+  virtual ~PassengerService_rmVehicleBrand_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmVehicleBrand_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmVehicleColor_args__isset {
+  _PassengerService_rmVehicleColor_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmVehicleColor_args__isset;
+
+class PassengerService_rmVehicleColor_args {
+ public:
+
+  PassengerService_rmVehicleColor_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmVehicleColor_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmVehicleColor_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmVehicleColor_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmVehicleColor_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmVehicleColor_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmVehicleColor_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmVehicleColor_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmVehicleColor_result__isset {
+  _PassengerService_rmVehicleColor_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmVehicleColor_result__isset;
+
+class PassengerService_rmVehicleColor_result {
+ public:
+
+  PassengerService_rmVehicleColor_result() {
+  }
+
+  virtual ~PassengerService_rmVehicleColor_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmVehicleColor_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmVehicleColor_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmVehicleColor_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmVehicleColor_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmVehicleColor_presult__isset {
+  _PassengerService_rmVehicleColor_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmVehicleColor_presult__isset;
+
+class PassengerService_rmVehicleColor_presult {
+ public:
+
+
+  virtual ~PassengerService_rmVehicleColor_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmVehicleColor_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmDictEntry_args__isset {
+  _PassengerService_rmDictEntry_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmDictEntry_args__isset;
+
+class PassengerService_rmDictEntry_args {
+ public:
+
+  PassengerService_rmDictEntry_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmDictEntry_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmDictEntry_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmDictEntry_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmDictEntry_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmDictEntry_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmDictEntry_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmDictEntry_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmDictEntry_result__isset {
+  _PassengerService_rmDictEntry_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmDictEntry_result__isset;
+
+class PassengerService_rmDictEntry_result {
+ public:
+
+  PassengerService_rmDictEntry_result() {
+  }
+
+  virtual ~PassengerService_rmDictEntry_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmDictEntry_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmDictEntry_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmDictEntry_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmDictEntry_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmDictEntry_presult__isset {
+  _PassengerService_rmDictEntry_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmDictEntry_presult__isset;
+
+class PassengerService_rmDictEntry_presult {
+ public:
+
+
+  virtual ~PassengerService_rmDictEntry_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmDictEntry_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmDriver_args__isset {
+  _PassengerService_rmDriver_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmDriver_args__isset;
+
+class PassengerService_rmDriver_args {
+ public:
+
+  PassengerService_rmDriver_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmDriver_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmDriver_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmDriver_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmDriver_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmDriver_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmDriver_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmDriver_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmDriver_result__isset {
+  _PassengerService_rmDriver_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmDriver_result__isset;
+
+class PassengerService_rmDriver_result {
+ public:
+
+  PassengerService_rmDriver_result() {
+  }
+
+  virtual ~PassengerService_rmDriver_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmDriver_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmDriver_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmDriver_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmDriver_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmDriver_presult__isset {
+  _PassengerService_rmDriver_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmDriver_presult__isset;
+
+class PassengerService_rmDriver_presult {
+ public:
+
+
+  virtual ~PassengerService_rmDriver_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmDriver_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmDriverBlackList_args__isset {
+  _PassengerService_rmDriverBlackList_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmDriverBlackList_args__isset;
+
+class PassengerService_rmDriverBlackList_args {
+ public:
+
+  PassengerService_rmDriverBlackList_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmDriverBlackList_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmDriverBlackList_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmDriverBlackList_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmDriverBlackList_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmDriverBlackList_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmDriverBlackList_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmDriverBlackList_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmDriverBlackList_result__isset {
+  _PassengerService_rmDriverBlackList_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmDriverBlackList_result__isset;
+
+class PassengerService_rmDriverBlackList_result {
+ public:
+
+  PassengerService_rmDriverBlackList_result() {
+  }
+
+  virtual ~PassengerService_rmDriverBlackList_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmDriverBlackList_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmDriverBlackList_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmDriverBlackList_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmDriverBlackList_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmDriverBlackList_presult__isset {
+  _PassengerService_rmDriverBlackList_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmDriverBlackList_presult__isset;
+
+class PassengerService_rmDriverBlackList_presult {
+ public:
+
+
+  virtual ~PassengerService_rmDriverBlackList_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmDriverBlackList_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmNotification_args__isset {
+  _PassengerService_rmNotification_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmNotification_args__isset;
+
+class PassengerService_rmNotification_args {
+ public:
+
+  PassengerService_rmNotification_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmNotification_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmNotification_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmNotification_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmNotification_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmNotification_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmNotification_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmNotification_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmNotification_result__isset {
+  _PassengerService_rmNotification_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmNotification_result__isset;
+
+class PassengerService_rmNotification_result {
+ public:
+
+  PassengerService_rmNotification_result() {
+  }
+
+  virtual ~PassengerService_rmNotification_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmNotification_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmNotification_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmNotification_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmNotification_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmNotification_presult__isset {
+  _PassengerService_rmNotification_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmNotification_presult__isset;
+
+class PassengerService_rmNotification_presult {
+ public:
+
+
+  virtual ~PassengerService_rmNotification_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmNotification_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmCustomer_args__isset {
+  _PassengerService_rmCustomer_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmCustomer_args__isset;
+
+class PassengerService_rmCustomer_args {
+ public:
+
+  PassengerService_rmCustomer_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmCustomer_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmCustomer_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmCustomer_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmCustomer_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmCustomer_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmCustomer_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmCustomer_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmCustomer_result__isset {
+  _PassengerService_rmCustomer_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmCustomer_result__isset;
+
+class PassengerService_rmCustomer_result {
+ public:
+
+  PassengerService_rmCustomer_result() {
+  }
+
+  virtual ~PassengerService_rmCustomer_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmCustomer_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmCustomer_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmCustomer_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmCustomer_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmCustomer_presult__isset {
+  _PassengerService_rmCustomer_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmCustomer_presult__isset;
+
+class PassengerService_rmCustomer_presult {
+ public:
+
+
+  virtual ~PassengerService_rmCustomer_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmCustomer_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmDispatcher_args__isset {
+  _PassengerService_rmDispatcher_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmDispatcher_args__isset;
+
+class PassengerService_rmDispatcher_args {
+ public:
+
+  PassengerService_rmDispatcher_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmDispatcher_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmDispatcher_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmDispatcher_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmDispatcher_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmDispatcher_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmDispatcher_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmDispatcher_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmDispatcher_result__isset {
+  _PassengerService_rmDispatcher_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmDispatcher_result__isset;
+
+class PassengerService_rmDispatcher_result {
+ public:
+
+  PassengerService_rmDispatcher_result() {
+  }
+
+  virtual ~PassengerService_rmDispatcher_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmDispatcher_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmDispatcher_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmDispatcher_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmDispatcher_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmDispatcher_presult__isset {
+  _PassengerService_rmDispatcher_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmDispatcher_presult__isset;
+
+class PassengerService_rmDispatcher_presult {
+ public:
+
+
+  virtual ~PassengerService_rmDispatcher_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmDispatcher_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmShedule_args__isset {
+  _PassengerService_rmShedule_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmShedule_args__isset;
+
+class PassengerService_rmShedule_args {
+ public:
+
+  PassengerService_rmShedule_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmShedule_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmShedule_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmShedule_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmShedule_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmShedule_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmShedule_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmShedule_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmShedule_result__isset {
+  _PassengerService_rmShedule_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmShedule_result__isset;
+
+class PassengerService_rmShedule_result {
+ public:
+
+  PassengerService_rmShedule_result() {
+  }
+
+  virtual ~PassengerService_rmShedule_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmShedule_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmShedule_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmShedule_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmShedule_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmShedule_presult__isset {
+  _PassengerService_rmShedule_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmShedule_presult__isset;
+
+class PassengerService_rmShedule_presult {
+ public:
+
+
+  virtual ~PassengerService_rmShedule_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmShedule_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmServiceOrderStop_args__isset {
+  _PassengerService_rmServiceOrderStop_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmServiceOrderStop_args__isset;
+
+class PassengerService_rmServiceOrderStop_args {
+ public:
+
+  PassengerService_rmServiceOrderStop_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmServiceOrderStop_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmServiceOrderStop_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmServiceOrderStop_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmServiceOrderStop_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmServiceOrderStop_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmServiceOrderStop_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmServiceOrderStop_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmServiceOrderStop_result__isset {
+  _PassengerService_rmServiceOrderStop_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmServiceOrderStop_result__isset;
+
+class PassengerService_rmServiceOrderStop_result {
+ public:
+
+  PassengerService_rmServiceOrderStop_result() {
+  }
+
+  virtual ~PassengerService_rmServiceOrderStop_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmServiceOrderStop_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmServiceOrderStop_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmServiceOrderStop_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmServiceOrderStop_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmServiceOrderStop_presult__isset {
+  _PassengerService_rmServiceOrderStop_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmServiceOrderStop_presult__isset;
+
+class PassengerService_rmServiceOrderStop_presult {
+ public:
+
+
+  virtual ~PassengerService_rmServiceOrderStop_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmServiceOrderStop_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmCustomerStatistic_args__isset {
+  _PassengerService_rmCustomerStatistic_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmCustomerStatistic_args__isset;
+
+class PassengerService_rmCustomerStatistic_args {
+ public:
+
+  PassengerService_rmCustomerStatistic_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmCustomerStatistic_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmCustomerStatistic_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmCustomerStatistic_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmCustomerStatistic_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmCustomerStatistic_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmCustomerStatistic_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmCustomerStatistic_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmCustomerStatistic_result__isset {
+  _PassengerService_rmCustomerStatistic_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmCustomerStatistic_result__isset;
+
+class PassengerService_rmCustomerStatistic_result {
+ public:
+
+  PassengerService_rmCustomerStatistic_result() {
+  }
+
+  virtual ~PassengerService_rmCustomerStatistic_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmCustomerStatistic_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmCustomerStatistic_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmCustomerStatistic_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmCustomerStatistic_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmCustomerStatistic_presult__isset {
+  _PassengerService_rmCustomerStatistic_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmCustomerStatistic_presult__isset;
+
+class PassengerService_rmCustomerStatistic_presult {
+ public:
+
+
+  virtual ~PassengerService_rmCustomerStatistic_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmCustomerStatistic_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 class PassengerServiceClient : virtual public PassengerServiceIf {
  public:
   PassengerServiceClient(boost::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) :
@@ -10173,6 +14565,9 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   void addDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice, const Driver& value);
   void send_addDriver(const Credentials& credentials, const UserDevice& userdevice, const Driver& value);
   void recv_addDriver(Driver& _return);
+  void addVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const Vehicle& value);
+  void send_addVehicle(const Credentials& credentials, const UserDevice& userdevice, const Vehicle& value);
+  void recv_addVehicle(Vehicle& _return);
   void addVehicleColor(DictEntry& _return, const Credentials& credentials, const UserDevice& userdevice, const STR& name, const NUMBER32 value);
   void send_addVehicleColor(const Credentials& credentials, const UserDevice& userdevice, const STR& name, const NUMBER32 value);
   void recv_addVehicleColor(DictEntry& _return);
@@ -10206,6 +14601,12 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   void addTrack(Track& _return, const Credentials& credentials, const UserDevice& userdevice, const Track& value);
   void send_addTrack(const Credentials& credentials, const UserDevice& userdevice, const Track& value);
   void recv_addTrack(Track& _return);
+  void rmCity(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmCity(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmCity();
+  void rmVehicle(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmVehicle(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmVehicle();
   void rmManager(const Credentials& credentials, const UserDevice& userdevice, const ID id);
   void send_rmManager(const Credentials& credentials, const UserDevice& userdevice, const ID id);
   void recv_rmManager();
@@ -10320,6 +14721,93 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   void getDriverServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange);
   void send_getDriverServiceOrder(const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange);
   void recv_getDriverServiceOrder(ServiceOrders& _return);
+  void findAutoPayment(AutoPayments& _return, const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& search, const RowRange& rowrange);
+  void send_findAutoPayment(const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& search, const RowRange& rowrange);
+  void recv_findAutoPayment(AutoPayments& _return);
+  void findBillAct(BillActs& _return, const Credentials& credentials, const UserDevice& userdevice, const BillAct& search, const RowRange& rowrange);
+  void send_findBillAct(const Credentials& credentials, const UserDevice& userdevice, const BillAct& search, const RowRange& rowrange);
+  void recv_findBillAct(BillActs& _return);
+  void findDriverBlackList(DriverBlackLists& _return, const Credentials& credentials, const UserDevice& userdevice, const DriverBlackList& search, const RowRange& rowrange);
+  void send_findDriverBlackList(const Credentials& credentials, const UserDevice& userdevice, const DriverBlackList& search, const RowRange& rowrange);
+  void recv_findDriverBlackList(DriverBlackLists& _return);
+  void findDispatcher(Dispatchers& _return, const Credentials& credentials, const UserDevice& userdevice, const Dispatcher& search, const RowRange& rowrange);
+  void send_findDispatcher(const Credentials& credentials, const UserDevice& userdevice, const Dispatcher& search, const RowRange& rowrange);
+  void recv_findDispatcher(Dispatchers& _return);
+  void findNotification(Notifications& _return, const Credentials& credentials, const UserDevice& userdevice, const Notification& search, const RowRange& rowrange);
+  void send_findNotification(const Credentials& credentials, const UserDevice& userdevice, const Notification& search, const RowRange& rowrange);
+  void recv_findNotification(Notifications& _return);
+  void findShedule(Shedules& _return, const Credentials& credentials, const UserDevice& userdevice, const Shedule& search, const RowRange& rowrange);
+  void send_findShedule(const Credentials& credentials, const UserDevice& userdevice, const Shedule& search, const RowRange& rowrange);
+  void recv_findShedule(Shedules& _return);
+  void findServiceOrderStop(ServiceOrderStops& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderStop& search, const RowRange& rowrange);
+  void send_findServiceOrderStop(const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderStop& search, const RowRange& rowrange);
+  void recv_findServiceOrderStop(ServiceOrderStops& _return);
+  void findCustomerStatistic(CustomerStatistics& _return, const Credentials& credentials, const UserDevice& userdevice, const CustomerStatistic& search, const RowRange& rowrange);
+  void send_findCustomerStatistic(const Credentials& credentials, const UserDevice& userdevice, const CustomerStatistic& search, const RowRange& rowrange);
+  void recv_findCustomerStatistic(CustomerStatistics& _return);
+  void addAutoPayment(AutoPayment& _return, const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& value);
+  void send_addAutoPayment(const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& value);
+  void recv_addAutoPayment(AutoPayment& _return);
+  void addBillAct(BillAct& _return, const Credentials& credentials, const UserDevice& userdevice, const BillAct& value);
+  void send_addBillAct(const Credentials& credentials, const UserDevice& userdevice, const BillAct& value);
+  void recv_addBillAct(BillAct& _return);
+  void addDriverBlackList(DriverBlackList& _return, const Credentials& credentials, const UserDevice& userdevice, const DriverBlackList& value);
+  void send_addDriverBlackList(const Credentials& credentials, const UserDevice& userdevice, const DriverBlackList& value);
+  void recv_addDriverBlackList(DriverBlackList& _return);
+  void addNotification(Notification& _return, const Credentials& credentials, const UserDevice& userdevice, const Notification& value);
+  void send_addNotification(const Credentials& credentials, const UserDevice& userdevice, const Notification& value);
+  void recv_addNotification(Notification& _return);
+  void addShedule(Shedule& _return, const Credentials& credentials, const UserDevice& userdevice, const Shedule& value);
+  void send_addShedule(const Credentials& credentials, const UserDevice& userdevice, const Shedule& value);
+  void recv_addShedule(Shedule& _return);
+  void addServiceOrderStop(ServiceOrderStop& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderStop& value);
+  void send_addServiceOrderStop(const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderStop& value);
+  void recv_addServiceOrderStop(ServiceOrderStop& _return);
+  void addCustomerStatistic(CustomerStatistic& _return, const Credentials& credentials, const UserDevice& userdevice, const CustomerStatistic& value);
+  void send_addCustomerStatistic(const Credentials& credentials, const UserDevice& userdevice, const CustomerStatistic& value);
+  void recv_addCustomerStatistic(CustomerStatistic& _return);
+  void rmAutoPayment(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmAutoPayment(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmAutoPayment();
+  void rmBank(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmBank(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmBank();
+  void rmBillAct(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmBillAct(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmBillAct();
+  void rmVehicleBrand(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmVehicleBrand(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmVehicleBrand();
+  void rmVehicleColor(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmVehicleColor(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmVehicleColor();
+  void rmDictEntry(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmDictEntry(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmDictEntry();
+  void rmDriver(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmDriver(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmDriver();
+  void rmDriverBlackList(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmDriverBlackList(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmDriverBlackList();
+  void rmNotification(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmNotification(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmNotification();
+  void rmCustomer(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmCustomer(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmCustomer();
+  void rmDispatcher(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmDispatcher(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmDispatcher();
+  void rmShedule(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmShedule(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmShedule();
+  void rmServiceOrderStop(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmServiceOrderStop(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmServiceOrderStop();
+  void rmCustomerStatistic(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmCustomerStatistic(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmCustomerStatistic();
  protected:
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -10356,6 +14844,7 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_addPassenger(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addDispatcher(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addDriver(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addVehicle(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addVehicleColor(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addVehicleBrand(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addVehicleModel(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -10367,6 +14856,8 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_addServiceOrderDecline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addClaim(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addTrack(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmCity(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmVehicle(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_rmManager(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_rmTariffPlan(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_rmRate(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -10405,6 +14896,35 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_cancelOrder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_failOrder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getDriverServiceOrder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_findAutoPayment(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_findBillAct(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_findDriverBlackList(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_findDispatcher(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_findNotification(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_findShedule(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_findServiceOrderStop(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_findCustomerStatistic(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addAutoPayment(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addBillAct(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addDriverBlackList(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addNotification(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addShedule(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addServiceOrderStop(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addCustomerStatistic(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmAutoPayment(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmBank(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmBillAct(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmVehicleBrand(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmVehicleColor(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmDictEntry(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmDriver(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmDriverBlackList(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmNotification(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmCustomer(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmDispatcher(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmShedule(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmServiceOrderStop(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmCustomerStatistic(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   PassengerServiceProcessor(boost::shared_ptr<PassengerServiceIf> iface) :
     iface_(iface) {
@@ -10429,6 +14949,7 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["addPassenger"] = &PassengerServiceProcessor::process_addPassenger;
     processMap_["addDispatcher"] = &PassengerServiceProcessor::process_addDispatcher;
     processMap_["addDriver"] = &PassengerServiceProcessor::process_addDriver;
+    processMap_["addVehicle"] = &PassengerServiceProcessor::process_addVehicle;
     processMap_["addVehicleColor"] = &PassengerServiceProcessor::process_addVehicleColor;
     processMap_["addVehicleBrand"] = &PassengerServiceProcessor::process_addVehicleBrand;
     processMap_["addVehicleModel"] = &PassengerServiceProcessor::process_addVehicleModel;
@@ -10440,6 +14961,8 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["addServiceOrderDecline"] = &PassengerServiceProcessor::process_addServiceOrderDecline;
     processMap_["addClaim"] = &PassengerServiceProcessor::process_addClaim;
     processMap_["addTrack"] = &PassengerServiceProcessor::process_addTrack;
+    processMap_["rmCity"] = &PassengerServiceProcessor::process_rmCity;
+    processMap_["rmVehicle"] = &PassengerServiceProcessor::process_rmVehicle;
     processMap_["rmManager"] = &PassengerServiceProcessor::process_rmManager;
     processMap_["rmTariffPlan"] = &PassengerServiceProcessor::process_rmTariffPlan;
     processMap_["rmRate"] = &PassengerServiceProcessor::process_rmRate;
@@ -10478,6 +15001,35 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["cancelOrder"] = &PassengerServiceProcessor::process_cancelOrder;
     processMap_["failOrder"] = &PassengerServiceProcessor::process_failOrder;
     processMap_["getDriverServiceOrder"] = &PassengerServiceProcessor::process_getDriverServiceOrder;
+    processMap_["findAutoPayment"] = &PassengerServiceProcessor::process_findAutoPayment;
+    processMap_["findBillAct"] = &PassengerServiceProcessor::process_findBillAct;
+    processMap_["findDriverBlackList"] = &PassengerServiceProcessor::process_findDriverBlackList;
+    processMap_["findDispatcher"] = &PassengerServiceProcessor::process_findDispatcher;
+    processMap_["findNotification"] = &PassengerServiceProcessor::process_findNotification;
+    processMap_["findShedule"] = &PassengerServiceProcessor::process_findShedule;
+    processMap_["findServiceOrderStop"] = &PassengerServiceProcessor::process_findServiceOrderStop;
+    processMap_["findCustomerStatistic"] = &PassengerServiceProcessor::process_findCustomerStatistic;
+    processMap_["addAutoPayment"] = &PassengerServiceProcessor::process_addAutoPayment;
+    processMap_["addBillAct"] = &PassengerServiceProcessor::process_addBillAct;
+    processMap_["addDriverBlackList"] = &PassengerServiceProcessor::process_addDriverBlackList;
+    processMap_["addNotification"] = &PassengerServiceProcessor::process_addNotification;
+    processMap_["addShedule"] = &PassengerServiceProcessor::process_addShedule;
+    processMap_["addServiceOrderStop"] = &PassengerServiceProcessor::process_addServiceOrderStop;
+    processMap_["addCustomerStatistic"] = &PassengerServiceProcessor::process_addCustomerStatistic;
+    processMap_["rmAutoPayment"] = &PassengerServiceProcessor::process_rmAutoPayment;
+    processMap_["rmBank"] = &PassengerServiceProcessor::process_rmBank;
+    processMap_["rmBillAct"] = &PassengerServiceProcessor::process_rmBillAct;
+    processMap_["rmVehicleBrand"] = &PassengerServiceProcessor::process_rmVehicleBrand;
+    processMap_["rmVehicleColor"] = &PassengerServiceProcessor::process_rmVehicleColor;
+    processMap_["rmDictEntry"] = &PassengerServiceProcessor::process_rmDictEntry;
+    processMap_["rmDriver"] = &PassengerServiceProcessor::process_rmDriver;
+    processMap_["rmDriverBlackList"] = &PassengerServiceProcessor::process_rmDriverBlackList;
+    processMap_["rmNotification"] = &PassengerServiceProcessor::process_rmNotification;
+    processMap_["rmCustomer"] = &PassengerServiceProcessor::process_rmCustomer;
+    processMap_["rmDispatcher"] = &PassengerServiceProcessor::process_rmDispatcher;
+    processMap_["rmShedule"] = &PassengerServiceProcessor::process_rmShedule;
+    processMap_["rmServiceOrderStop"] = &PassengerServiceProcessor::process_rmServiceOrderStop;
+    processMap_["rmCustomerStatistic"] = &PassengerServiceProcessor::process_rmCustomerStatistic;
   }
 
   virtual ~PassengerServiceProcessor() {}
@@ -10716,6 +15268,16 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
     return;
   }
 
+  void addVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const Vehicle& value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->addVehicle(_return, credentials, userdevice, value);
+    }
+    ifaces_[i]->addVehicle(_return, credentials, userdevice, value);
+    return;
+  }
+
   void addVehicleColor(DictEntry& _return, const Credentials& credentials, const UserDevice& userdevice, const STR& name, const NUMBER32 value) {
     size_t sz = ifaces_.size();
     size_t i = 0;
@@ -10824,6 +15386,24 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
     }
     ifaces_[i]->addTrack(_return, credentials, userdevice, value);
     return;
+  }
+
+  void rmCity(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmCity(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmCity(credentials, userdevice, id);
+  }
+
+  void rmVehicle(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmVehicle(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmVehicle(credentials, userdevice, id);
   }
 
   void rmManager(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
@@ -11187,6 +15767,282 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
     }
     ifaces_[i]->getDriverServiceOrder(_return, credentials, userdevice, rowrange);
     return;
+  }
+
+  void findAutoPayment(AutoPayments& _return, const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& search, const RowRange& rowrange) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->findAutoPayment(_return, credentials, userdevice, search, rowrange);
+    }
+    ifaces_[i]->findAutoPayment(_return, credentials, userdevice, search, rowrange);
+    return;
+  }
+
+  void findBillAct(BillActs& _return, const Credentials& credentials, const UserDevice& userdevice, const BillAct& search, const RowRange& rowrange) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->findBillAct(_return, credentials, userdevice, search, rowrange);
+    }
+    ifaces_[i]->findBillAct(_return, credentials, userdevice, search, rowrange);
+    return;
+  }
+
+  void findDriverBlackList(DriverBlackLists& _return, const Credentials& credentials, const UserDevice& userdevice, const DriverBlackList& search, const RowRange& rowrange) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->findDriverBlackList(_return, credentials, userdevice, search, rowrange);
+    }
+    ifaces_[i]->findDriverBlackList(_return, credentials, userdevice, search, rowrange);
+    return;
+  }
+
+  void findDispatcher(Dispatchers& _return, const Credentials& credentials, const UserDevice& userdevice, const Dispatcher& search, const RowRange& rowrange) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->findDispatcher(_return, credentials, userdevice, search, rowrange);
+    }
+    ifaces_[i]->findDispatcher(_return, credentials, userdevice, search, rowrange);
+    return;
+  }
+
+  void findNotification(Notifications& _return, const Credentials& credentials, const UserDevice& userdevice, const Notification& search, const RowRange& rowrange) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->findNotification(_return, credentials, userdevice, search, rowrange);
+    }
+    ifaces_[i]->findNotification(_return, credentials, userdevice, search, rowrange);
+    return;
+  }
+
+  void findShedule(Shedules& _return, const Credentials& credentials, const UserDevice& userdevice, const Shedule& search, const RowRange& rowrange) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->findShedule(_return, credentials, userdevice, search, rowrange);
+    }
+    ifaces_[i]->findShedule(_return, credentials, userdevice, search, rowrange);
+    return;
+  }
+
+  void findServiceOrderStop(ServiceOrderStops& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderStop& search, const RowRange& rowrange) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->findServiceOrderStop(_return, credentials, userdevice, search, rowrange);
+    }
+    ifaces_[i]->findServiceOrderStop(_return, credentials, userdevice, search, rowrange);
+    return;
+  }
+
+  void findCustomerStatistic(CustomerStatistics& _return, const Credentials& credentials, const UserDevice& userdevice, const CustomerStatistic& search, const RowRange& rowrange) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->findCustomerStatistic(_return, credentials, userdevice, search, rowrange);
+    }
+    ifaces_[i]->findCustomerStatistic(_return, credentials, userdevice, search, rowrange);
+    return;
+  }
+
+  void addAutoPayment(AutoPayment& _return, const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->addAutoPayment(_return, credentials, userdevice, value);
+    }
+    ifaces_[i]->addAutoPayment(_return, credentials, userdevice, value);
+    return;
+  }
+
+  void addBillAct(BillAct& _return, const Credentials& credentials, const UserDevice& userdevice, const BillAct& value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->addBillAct(_return, credentials, userdevice, value);
+    }
+    ifaces_[i]->addBillAct(_return, credentials, userdevice, value);
+    return;
+  }
+
+  void addDriverBlackList(DriverBlackList& _return, const Credentials& credentials, const UserDevice& userdevice, const DriverBlackList& value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->addDriverBlackList(_return, credentials, userdevice, value);
+    }
+    ifaces_[i]->addDriverBlackList(_return, credentials, userdevice, value);
+    return;
+  }
+
+  void addNotification(Notification& _return, const Credentials& credentials, const UserDevice& userdevice, const Notification& value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->addNotification(_return, credentials, userdevice, value);
+    }
+    ifaces_[i]->addNotification(_return, credentials, userdevice, value);
+    return;
+  }
+
+  void addShedule(Shedule& _return, const Credentials& credentials, const UserDevice& userdevice, const Shedule& value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->addShedule(_return, credentials, userdevice, value);
+    }
+    ifaces_[i]->addShedule(_return, credentials, userdevice, value);
+    return;
+  }
+
+  void addServiceOrderStop(ServiceOrderStop& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderStop& value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->addServiceOrderStop(_return, credentials, userdevice, value);
+    }
+    ifaces_[i]->addServiceOrderStop(_return, credentials, userdevice, value);
+    return;
+  }
+
+  void addCustomerStatistic(CustomerStatistic& _return, const Credentials& credentials, const UserDevice& userdevice, const CustomerStatistic& value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->addCustomerStatistic(_return, credentials, userdevice, value);
+    }
+    ifaces_[i]->addCustomerStatistic(_return, credentials, userdevice, value);
+    return;
+  }
+
+  void rmAutoPayment(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmAutoPayment(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmAutoPayment(credentials, userdevice, id);
+  }
+
+  void rmBank(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmBank(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmBank(credentials, userdevice, id);
+  }
+
+  void rmBillAct(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmBillAct(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmBillAct(credentials, userdevice, id);
+  }
+
+  void rmVehicleBrand(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmVehicleBrand(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmVehicleBrand(credentials, userdevice, id);
+  }
+
+  void rmVehicleColor(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmVehicleColor(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmVehicleColor(credentials, userdevice, id);
+  }
+
+  void rmDictEntry(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmDictEntry(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmDictEntry(credentials, userdevice, id);
+  }
+
+  void rmDriver(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmDriver(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmDriver(credentials, userdevice, id);
+  }
+
+  void rmDriverBlackList(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmDriverBlackList(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmDriverBlackList(credentials, userdevice, id);
+  }
+
+  void rmNotification(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmNotification(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmNotification(credentials, userdevice, id);
+  }
+
+  void rmCustomer(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmCustomer(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmCustomer(credentials, userdevice, id);
+  }
+
+  void rmDispatcher(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmDispatcher(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmDispatcher(credentials, userdevice, id);
+  }
+
+  void rmShedule(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmShedule(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmShedule(credentials, userdevice, id);
+  }
+
+  void rmServiceOrderStop(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmServiceOrderStop(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmServiceOrderStop(credentials, userdevice, id);
+  }
+
+  void rmCustomerStatistic(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmCustomerStatistic(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmCustomerStatistic(credentials, userdevice, id);
   }
 
 };

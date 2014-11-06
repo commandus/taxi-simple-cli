@@ -225,15 +225,15 @@ struct OrderStage {
   enum type {
     ORDERNEW = 0,
     ORDERACCEPT = 1,
-    ORDERDECLINED = 2,
-    ORDERASSIGN = 3,
-    ORDERASSIGNED = 4,
-    ORDERCONFIRMED = 5,
-    ORDERDRIVING = 6,
-    ORDERWAITING = 7,
-    ORDERTRANSPORTING = 8,
-    ORDERSTOP = 9,
-    ORDERCOMPLETE = 10,
+    ORDERASSIGN = 2,
+    ORDERASSIGNED = 3,
+    ORDERCONFIRMED = 4,
+    ORDERDRIVING = 5,
+    ORDERWAITING = 6,
+    ORDERTRANSPORTING = 7,
+    ORDERSTOP = 8,
+    ORDERCOMPLETE = 9,
+    ORDERDECLINED = 10,
     ORDERCANCELLED = 11,
     ORDERFAILED = 12
   };
@@ -533,6 +533,12 @@ typedef ID Customerid;
 
 typedef std::vector<Customerid>  Customerids;
 
+typedef std::vector<class CustomerStatistic>  CustomerStatistics;
+
+typedef ID CustomerStatisticid;
+
+typedef std::vector<CustomerStatisticid>  CustomerStatisticids;
+
 typedef ID Passengerid;
 
 typedef std::vector<class Passenger>  Passengers;
@@ -615,6 +621,12 @@ typedef std::vector<class Shedule>  Shedules;
 
 typedef std::vector<Sheduleid>  Sheduleids;
 
+typedef ID DriverBlackListid;
+
+typedef std::vector<class DriverBlackList>  DriverBlackLists;
+
+typedef std::vector<DriverBlackListid>  DriverBlackListids;
+
 typedef ID TariffPlanid;
 
 typedef std::vector<class TariffPlan>  TariffPlans;
@@ -626,6 +638,24 @@ typedef ID Rateid;
 typedef std::vector<class Rate>  Rates;
 
 typedef std::vector<Rateid>  Rateids;
+
+typedef ID Notificationid;
+
+typedef std::vector<class Notification>  Notifications;
+
+typedef std::vector<Notificationid>  Notificationids;
+
+typedef ID BillActid;
+
+typedef std::vector<class BillAct>  BillActs;
+
+typedef std::vector<BillActid>  BillActids;
+
+typedef ID AutoPaymentid;
+
+typedef std::vector<class AutoPayment>  AutoPayments;
+
+typedef std::vector<AutoPaymentid>  AutoPaymentids;
 
 typedef std::vector<class NotificationEvent>  NotificationEvents;
 
@@ -3368,7 +3398,7 @@ class ServiceOrderStop {
 void swap(ServiceOrderStop &a, ServiceOrderStop &b);
 
 typedef struct _ServiceOrder__isset {
-  _ServiceOrder__isset() : id(false), cityid(false), tag(false), ordertype(false), ordertimetype(false), orderfeatures(false), svc(false), dispatcherid(false), passengerid(false), sheduleid(false), passengers(false), stops(false), payload(false), stage(false), crew(false), created(false), sheduletime(false), assigned(false), started(false), arrived(false), finished(false), estimated(false), stagemodified(false), locstart(false), locfinish(false), preferreddriverid(false), totaltimefiscal(false), totaltimeactual(false), sumfiscal(false), sumactual(false), cabclass(false), paymentstate(false), claimstate(false), hasstops(false), notes(false), iscalculated(false) {}
+  _ServiceOrder__isset() : id(false), cityid(false), tag(false), ordertype(false), ordertimetype(false), orderfeatures(false), svc(false), dispatcherid(false), passengerid(false), sheduleid(false), passengers(false), stops(false), payload(false), stage(false), crew(false), created(false), sheduletime(false), assigned(false), started(false), arrived(false), finished(false), estimated(false), stagemodified(false), locstart(false), locfinish(false), preferreddriverid(false), totaltimefiscal(false), totaltimeactual(false), sumfiscal(false), sumactual(false), cabclass(false), paymentstate(false), claimstate(false), hasstops(false), notes(false), iscalculated(false), offers(false) {}
   bool id;
   bool cityid;
   bool tag;
@@ -3405,15 +3435,16 @@ typedef struct _ServiceOrder__isset {
   bool hasstops;
   bool notes;
   bool iscalculated;
+  bool offers;
 } _ServiceOrder__isset;
 
 class ServiceOrder {
  public:
 
-  static const char* ascii_fingerprint; // = "EA0D7EFA6770F586CBDCFCD6D8858A5A";
-  static const uint8_t binary_fingerprint[16]; // = {0xEA,0x0D,0x7E,0xFA,0x67,0x70,0xF5,0x86,0xCB,0xDC,0xFC,0xD6,0xD8,0x85,0x8A,0x5A};
+  static const char* ascii_fingerprint; // = "52DFC62F8CE9F02C822F33B69F295F11";
+  static const uint8_t binary_fingerprint[16]; // = {0x52,0xDF,0xC6,0x2F,0x8C,0xE9,0xF0,0x2C,0x82,0x2F,0x33,0xB6,0x9F,0x29,0x5F,0x11};
 
-  ServiceOrder() : id(0), cityid(0), tag(0), ordertype((OrderType::type)0), ordertimetype((OrderTimeType::type)0), dispatcherid(0), passengerid(0), sheduleid(0), stage((OrderStage::type)0), created(0), sheduletime(0), assigned(0), started(0), arrived(0), finished(0), estimated(0), stagemodified(0), preferreddriverid(0), totaltimefiscal(0), totaltimeactual(0), sumfiscal(0), sumactual(0), cabclass((CabClass::type)0), paymentstate((PaymentState::type)0), claimstate((ClaimState::type)0), hasstops(0), notes(), iscalculated(0) {
+  ServiceOrder() : id(0), cityid(0), tag(0), ordertype((OrderType::type)0), ordertimetype((OrderTimeType::type)0), dispatcherid(0), passengerid(0), sheduleid(0), stage((OrderStage::type)0), created(0), sheduletime(0), assigned(0), started(0), arrived(0), finished(0), estimated(0), stagemodified(0), preferreddriverid(0), totaltimefiscal(0), totaltimeactual(0), sumfiscal(0), sumactual(0), cabclass((CabClass::type)0), paymentstate((PaymentState::type)0), claimstate((ClaimState::type)0), hasstops(0), notes(), iscalculated(0), offers(0) {
   }
 
   virtual ~ServiceOrder() throw() {}
@@ -3454,6 +3485,7 @@ class ServiceOrder {
   bool hasstops;
   STR notes;
   bool iscalculated;
+  NUMBER32 offers;
 
   _ServiceOrder__isset __isset;
 
@@ -3601,6 +3633,10 @@ class ServiceOrder {
     iscalculated = val;
   }
 
+  void __set_offers(const NUMBER32 val) {
+    offers = val;
+  }
+
   bool operator == (const ServiceOrder & rhs) const
   {
     if (!(id == rhs.id))
@@ -3674,6 +3710,8 @@ class ServiceOrder {
     if (!(notes == rhs.notes))
       return false;
     if (!(iscalculated == rhs.iscalculated))
+      return false;
+    if (!(offers == rhs.offers))
       return false;
     return true;
   }
