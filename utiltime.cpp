@@ -9,6 +9,8 @@
 #include <iomanip>
 #endif
 
+using namespace ::taxi;
+
 time_t currentTime()
 {
 	time_t r(time(NULL));
@@ -25,7 +27,7 @@ int get_utc_offset() {
 	int gmtime_hours;
 
 	/* get the local time for Jan 2, 1900 00:00 UTC */
-	timeptr = localtime( &zero );
+	timeptr = localtime(&zero);
 	gmtime_hours = timeptr->tm_hour;
 
 	/* if the local time is the "day before" the UTC, subtract 24 hours from the hours to get the UTC offset */
@@ -37,9 +39,12 @@ int get_utc_offset() {
 /*
 	the utc analogue of mktime, (much like timegm on some systems)
 */
-time_t tm2time_tUTC(struct tm* timeptr) {
-  /* gets the epoch time relative to the local time zone, and then adds the appropriate number of seconds to make it UTC */
-  return mktime(timeptr) + get_utc_offset() * 3600;
+time_t tm2time_tUTC(struct tm* tm) 
+{
+	// printf("%d %d %d %d %d\n", tm->tm_year, tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min);
+	/* gets the epoch time relative to the local time zone, and then adds the appropriate number of seconds to make it UTC */	
+	time_t r = mktime(tm) + (get_utc_offset() * 3600);
+	return r;
 }
 
 #ifdef WIN32
@@ -175,6 +180,7 @@ struct arg_date* arg_date0(const char* shortopts,
 }
 #endif
 
+
 /**
 	Return 0- Sunday, 6- Saturday
 */
@@ -198,9 +204,22 @@ int getMonth(time_t time)
 */
 taxi::Month::type getTaxiMonth(time_t time)
 {
+	taxi::Month::type r;
 	struct tm *tm = localtime(&time);
-	return static_cast<taxi::Month::type> (tm->tm_mon); 
+	r = static_cast<taxi::Month::type> (tm->tm_mon);
+	return r;
 }
+
+
+/**
+	Return hour, GMT!: 0 - 23
+*/
+int getGMTHour(time_t time)
+{
+	struct tm *tm = gmtime(&time);
+	return (tm->tm_hour); 
+}
+
 
 /**
 	Return current year
@@ -210,4 +229,21 @@ int getCurrentYear()
 	time_t r(time(NULL));
 	struct tm *tm = localtime(&r);
 	return tm->tm_year + 1900;
+}
+
+/**
+	Return true if it is Sunday, Saturday or holiday
+*/
+int isWeekend(int64_t cityid, time_t time)
+{
+	int wd = getWeekDay(time);
+	return ((wd == 0) || (wd == 6)) || isHoliday(cityid, time);
+}
+
+/**
+	Return true if it is holiday in the city
+*/
+int isHoliday(int64_t cityid, time_t time)
+{
+	return false;
 }

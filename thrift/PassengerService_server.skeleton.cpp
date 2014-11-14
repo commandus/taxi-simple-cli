@@ -172,6 +172,26 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("getServiceOrder\n");
   }
 
+  void getPassenger(Passenger& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("getPassenger\n");
+  }
+
+  void getCustomer(Customer& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("getCustomer\n");
+  }
+
+  void getDispatcher(Dispatcher& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("getDispatcher\n");
+  }
+
+  void getDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("getDriver\n");
+  }
+
   void addServiceOrderDecline(ServiceOrderDecline& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& value) {
     // Your implementation goes here
     printf("addServiceOrderDecline\n");
@@ -332,7 +352,7 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("findTrack\n");
   }
 
-  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) {
+  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const ID startId, const RowRange& rowrange) {
     // Your implementation goes here
     printf("getEvents\n");
   }

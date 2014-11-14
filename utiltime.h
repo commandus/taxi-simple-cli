@@ -25,10 +25,24 @@ struct arg_date* arg_date0(const char* shortopts,
 int getWeekDay(time_t time);
 
 /**
+	Return true if it is Sunday, Saturday or holiday
+*/
+int isWeekend(int64_t cityid, time_t time);
+
+/**
+	Return true if it is holiday in the city
+*/
+int isHoliday(int64_t cityid, time_t time);
+
+/**
 	Return 0- January, 11- December
 */
 int getMonth(time_t time);
 
+/**
+	Return hour, GMT!: 0 - 23
+*/
+int getGMTHour(time_t time);
 
 /**
 	Return current month number: 0 - 11
@@ -39,3 +53,8 @@ taxi::Month::type getTaxiMonth(time_t time);
 	Return current year
 */
 int getCurrentYear();
+
+/**
+	Return 2014
+*/
+int extractYear(time_t time);

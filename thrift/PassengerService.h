@@ -45,6 +45,10 @@ class PassengerServiceIf {
   virtual void addRate(Rate& _return, const Credentials& credentials, const UserDevice& userdevice, const Rate& value) = 0;
   virtual void addServiceOrder(ServiceOrder& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& value) = 0;
   virtual void getServiceOrder(ServiceOrder& _return, const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
+  virtual void getPassenger(Passenger& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void getCustomer(Customer& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void getDispatcher(Dispatcher& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void getDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void addServiceOrderDecline(ServiceOrderDecline& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& value) = 0;
   virtual void addClaim(Claim& _return, const Credentials& credentials, const UserDevice& userdevice, const Claim& value) = 0;
   virtual void addTrack(Track& _return, const Credentials& credentials, const UserDevice& userdevice, const Track& value) = 0;
@@ -77,7 +81,7 @@ class PassengerServiceIf {
   virtual void findServiceOrderDecline(ServiceOrderDeclines& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& search, const DateRange& sheduletime, const RowRange& rowrange) = 0;
   virtual void findClaim(Claims& _return, const Credentials& credentials, const UserDevice& userdevice, const Claim& search, const DateRange& sheduletime, const RowRange& rowrange) = 0;
   virtual void findTrack(Tracks& _return, const Credentials& credentials, const UserDevice& userdevice, const Track& search, const DateRange& sheduletime, const RowRange& rowrange) = 0;
-  virtual void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) = 0;
+  virtual void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const ID startId, const RowRange& rowrange) = 0;
   virtual bool getOnline(const Credentials& credentials, const UserDevice& userdevice) = 0;
   virtual bool setOnline(const Credentials& credentials, const UserDevice& userdevice, const bool value) = 0;
   virtual bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes) = 0;
@@ -236,6 +240,18 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
   void getServiceOrder(ServiceOrder& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */) {
     return;
   }
+  void getPassenger(Passenger& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void getCustomer(Customer& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void getDispatcher(Dispatcher& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void getDriver(Driver& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
   void addServiceOrderDecline(ServiceOrderDecline& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ServiceOrderDecline& /* value */) {
     return;
   }
@@ -332,7 +348,7 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
   void findTrack(Tracks& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Track& /* search */, const DateRange& /* sheduletime */, const RowRange& /* rowrange */) {
     return;
   }
-  void getEvents(NotificationEvents& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const RowRange& /* rowrange */) {
+  void getEvents(NotificationEvents& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* startId */, const RowRange& /* rowrange */) {
     return;
   }
   bool getOnline(const Credentials& /* credentials */, const UserDevice& /* userdevice */) {
@@ -4637,6 +4653,550 @@ class PassengerService_getServiceOrder_presult {
   ServiceFailure servicefailure;
 
   _PassengerService_getServiceOrder_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_getPassenger_args__isset {
+  _PassengerService_getPassenger_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_getPassenger_args__isset;
+
+class PassengerService_getPassenger_args {
+ public:
+
+  PassengerService_getPassenger_args() : id(0) {
+  }
+
+  virtual ~PassengerService_getPassenger_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_getPassenger_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_getPassenger_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getPassenger_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getPassenger_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_getPassenger_pargs {
+ public:
+
+
+  virtual ~PassengerService_getPassenger_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getPassenger_result__isset {
+  _PassengerService_getPassenger_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getPassenger_result__isset;
+
+class PassengerService_getPassenger_result {
+ public:
+
+  PassengerService_getPassenger_result() {
+  }
+
+  virtual ~PassengerService_getPassenger_result() throw() {}
+
+  Passenger success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getPassenger_result__isset __isset;
+
+  void __set_success(const Passenger& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_getPassenger_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getPassenger_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getPassenger_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getPassenger_presult__isset {
+  _PassengerService_getPassenger_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getPassenger_presult__isset;
+
+class PassengerService_getPassenger_presult {
+ public:
+
+
+  virtual ~PassengerService_getPassenger_presult() throw() {}
+
+  Passenger* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getPassenger_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_getCustomer_args__isset {
+  _PassengerService_getCustomer_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_getCustomer_args__isset;
+
+class PassengerService_getCustomer_args {
+ public:
+
+  PassengerService_getCustomer_args() : id(0) {
+  }
+
+  virtual ~PassengerService_getCustomer_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_getCustomer_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_getCustomer_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getCustomer_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getCustomer_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_getCustomer_pargs {
+ public:
+
+
+  virtual ~PassengerService_getCustomer_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getCustomer_result__isset {
+  _PassengerService_getCustomer_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getCustomer_result__isset;
+
+class PassengerService_getCustomer_result {
+ public:
+
+  PassengerService_getCustomer_result() {
+  }
+
+  virtual ~PassengerService_getCustomer_result() throw() {}
+
+  Customer success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getCustomer_result__isset __isset;
+
+  void __set_success(const Customer& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_getCustomer_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getCustomer_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getCustomer_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getCustomer_presult__isset {
+  _PassengerService_getCustomer_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getCustomer_presult__isset;
+
+class PassengerService_getCustomer_presult {
+ public:
+
+
+  virtual ~PassengerService_getCustomer_presult() throw() {}
+
+  Customer* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getCustomer_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_getDispatcher_args__isset {
+  _PassengerService_getDispatcher_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_getDispatcher_args__isset;
+
+class PassengerService_getDispatcher_args {
+ public:
+
+  PassengerService_getDispatcher_args() : id(0) {
+  }
+
+  virtual ~PassengerService_getDispatcher_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_getDispatcher_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_getDispatcher_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getDispatcher_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getDispatcher_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_getDispatcher_pargs {
+ public:
+
+
+  virtual ~PassengerService_getDispatcher_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getDispatcher_result__isset {
+  _PassengerService_getDispatcher_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getDispatcher_result__isset;
+
+class PassengerService_getDispatcher_result {
+ public:
+
+  PassengerService_getDispatcher_result() {
+  }
+
+  virtual ~PassengerService_getDispatcher_result() throw() {}
+
+  Dispatcher success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getDispatcher_result__isset __isset;
+
+  void __set_success(const Dispatcher& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_getDispatcher_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getDispatcher_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getDispatcher_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getDispatcher_presult__isset {
+  _PassengerService_getDispatcher_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getDispatcher_presult__isset;
+
+class PassengerService_getDispatcher_presult {
+ public:
+
+
+  virtual ~PassengerService_getDispatcher_presult() throw() {}
+
+  Dispatcher* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getDispatcher_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_getDriver_args__isset {
+  _PassengerService_getDriver_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_getDriver_args__isset;
+
+class PassengerService_getDriver_args {
+ public:
+
+  PassengerService_getDriver_args() : id(0) {
+  }
+
+  virtual ~PassengerService_getDriver_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_getDriver_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_getDriver_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getDriver_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getDriver_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_getDriver_pargs {
+ public:
+
+
+  virtual ~PassengerService_getDriver_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getDriver_result__isset {
+  _PassengerService_getDriver_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getDriver_result__isset;
+
+class PassengerService_getDriver_result {
+ public:
+
+  PassengerService_getDriver_result() {
+  }
+
+  virtual ~PassengerService_getDriver_result() throw() {}
+
+  Driver success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getDriver_result__isset __isset;
+
+  void __set_success(const Driver& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_getDriver_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getDriver_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getDriver_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getDriver_presult__isset {
+  _PassengerService_getDriver_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getDriver_presult__isset;
+
+class PassengerService_getDriver_presult {
+ public:
+
+
+  virtual ~PassengerService_getDriver_presult() throw() {}
+
+  Driver* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getDriver_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -9102,22 +9662,24 @@ class PassengerService_findTrack_presult {
 };
 
 typedef struct _PassengerService_getEvents_args__isset {
-  _PassengerService_getEvents_args__isset() : credentials(false), userdevice(false), rowrange(false) {}
+  _PassengerService_getEvents_args__isset() : credentials(false), userdevice(false), startId(false), rowrange(false) {}
   bool credentials;
   bool userdevice;
+  bool startId;
   bool rowrange;
 } _PassengerService_getEvents_args__isset;
 
 class PassengerService_getEvents_args {
  public:
 
-  PassengerService_getEvents_args() {
+  PassengerService_getEvents_args() : startId(0) {
   }
 
   virtual ~PassengerService_getEvents_args() throw() {}
 
   Credentials credentials;
   UserDevice userdevice;
+  ID startId;
   RowRange rowrange;
 
   _PassengerService_getEvents_args__isset __isset;
@@ -9130,6 +9692,10 @@ class PassengerService_getEvents_args {
     userdevice = val;
   }
 
+  void __set_startId(const ID val) {
+    startId = val;
+  }
+
   void __set_rowrange(const RowRange& val) {
     rowrange = val;
   }
@@ -9139,6 +9705,8 @@ class PassengerService_getEvents_args {
     if (!(credentials == rhs.credentials))
       return false;
     if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(startId == rhs.startId))
       return false;
     if (!(rowrange == rhs.rowrange))
       return false;
@@ -9164,6 +9732,7 @@ class PassengerService_getEvents_pargs {
 
   const Credentials* credentials;
   const UserDevice* userdevice;
+  const ID* startId;
   const RowRange* rowrange;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -14592,6 +15161,18 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   void getServiceOrder(ServiceOrder& _return, const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
   void send_getServiceOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
   void recv_getServiceOrder(ServiceOrder& _return);
+  void getPassenger(Passenger& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_getPassenger(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_getPassenger(Passenger& _return);
+  void getCustomer(Customer& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_getCustomer(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_getCustomer(Customer& _return);
+  void getDispatcher(Dispatcher& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_getDispatcher(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_getDispatcher(Dispatcher& _return);
+  void getDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_getDriver(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_getDriver(Driver& _return);
   void addServiceOrderDecline(ServiceOrderDecline& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& value);
   void send_addServiceOrderDecline(const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& value);
   void recv_addServiceOrderDecline(ServiceOrderDecline& _return);
@@ -14688,8 +15269,8 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   void findTrack(Tracks& _return, const Credentials& credentials, const UserDevice& userdevice, const Track& search, const DateRange& sheduletime, const RowRange& rowrange);
   void send_findTrack(const Credentials& credentials, const UserDevice& userdevice, const Track& search, const DateRange& sheduletime, const RowRange& rowrange);
   void recv_findTrack(Tracks& _return);
-  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange);
-  void send_getEvents(const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange);
+  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const ID startId, const RowRange& rowrange);
+  void send_getEvents(const Credentials& credentials, const UserDevice& userdevice, const ID startId, const RowRange& rowrange);
   void recv_getEvents(NotificationEvents& _return);
   bool getOnline(const Credentials& credentials, const UserDevice& userdevice);
   void send_getOnline(const Credentials& credentials, const UserDevice& userdevice);
@@ -14853,6 +15434,10 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_addRate(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addServiceOrder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getServiceOrder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getPassenger(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getCustomer(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getDispatcher(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getDriver(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addServiceOrderDecline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addClaim(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addTrack(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -14958,6 +15543,10 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["addRate"] = &PassengerServiceProcessor::process_addRate;
     processMap_["addServiceOrder"] = &PassengerServiceProcessor::process_addServiceOrder;
     processMap_["getServiceOrder"] = &PassengerServiceProcessor::process_getServiceOrder;
+    processMap_["getPassenger"] = &PassengerServiceProcessor::process_getPassenger;
+    processMap_["getCustomer"] = &PassengerServiceProcessor::process_getCustomer;
+    processMap_["getDispatcher"] = &PassengerServiceProcessor::process_getDispatcher;
+    processMap_["getDriver"] = &PassengerServiceProcessor::process_getDriver;
     processMap_["addServiceOrderDecline"] = &PassengerServiceProcessor::process_addServiceOrderDecline;
     processMap_["addClaim"] = &PassengerServiceProcessor::process_addClaim;
     processMap_["addTrack"] = &PassengerServiceProcessor::process_addTrack;
@@ -15358,6 +15947,46 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
     return;
   }
 
+  void getPassenger(Passenger& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getPassenger(_return, credentials, userdevice, id);
+    }
+    ifaces_[i]->getPassenger(_return, credentials, userdevice, id);
+    return;
+  }
+
+  void getCustomer(Customer& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getCustomer(_return, credentials, userdevice, id);
+    }
+    ifaces_[i]->getCustomer(_return, credentials, userdevice, id);
+    return;
+  }
+
+  void getDispatcher(Dispatcher& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getDispatcher(_return, credentials, userdevice, id);
+    }
+    ifaces_[i]->getDispatcher(_return, credentials, userdevice, id);
+    return;
+  }
+
+  void getDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getDriver(_return, credentials, userdevice, id);
+    }
+    ifaces_[i]->getDriver(_return, credentials, userdevice, id);
+    return;
+  }
+
   void addServiceOrderDecline(ServiceOrderDecline& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& value) {
     size_t sz = ifaces_.size();
     size_t i = 0;
@@ -15668,13 +16297,13 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
     return;
   }
 
-  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) {
+  void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const ID startId, const RowRange& rowrange) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->getEvents(_return, credentials, userdevice, rowrange);
+      ifaces_[i]->getEvents(_return, credentials, userdevice, startId, rowrange);
     }
-    ifaces_[i]->getEvents(_return, credentials, userdevice, rowrange);
+    ifaces_[i]->getEvents(_return, credentials, userdevice, startId, rowrange);
     return;
   }
 

@@ -363,6 +363,10 @@ int doCmd(int argc, char** argv)
 	struct arg_lit  *c_ls = arg_lit0("l", "list", "list objects");
 	struct arg_lit  *c_get = arg_lit0("g", "get", "get object by ID");
 	struct arg_lit  *c_rm = arg_lit0(NULL, "rm", "remove object by ID");
+	
+	struct arg_str  *c_manageorder = arg_str0("o", "order", "take,wait,drive,complete,fail", "order manupulation");
+	struct arg_int  *i_provmins = arg_int0(NULL, "minutes", "<number>", "time to go in minutes");
+
 	struct arg_lit  *c_license = arg_lit0(NULL, "license", "show license information");
 	struct arg_int  *c_ls_ofs = arg_int0(NULL, "offset", "<number>", "0..");
 	struct arg_int  *c_ls_cnt = arg_int0(NULL, "count", "<number>", "1..");
@@ -455,7 +459,9 @@ int doCmd(int argc, char** argv)
 
 	void* argtable[] = { 
 		cred_role, cred_phone, cred_password, cred_token,
-		c_license, c_add, c_get, c_rm, c_ls, c_ls_ofs, c_ls_cnt, obj, verbose, help, i_port, s_hostname,
+		c_license, c_add, c_get, c_rm, c_ls, 
+		c_manageorder, i_provmins,
+		c_ls_ofs, c_ls_cnt, obj, verbose, help, i_port, s_hostname,
 		s_name, i_year, s_notes, i_areaid, i_tag, i_orgid, s_bik, i_value, s_brandname,
 		i_bankacc, i_orgrole, i_orgtype, s_fullname, s_shortname, s_inn, s_kpp, s_orgn, s_phone, s_email, s_currentaccount, s_correspondentaccount, 
 		s_description, s_note, s_nickname,
@@ -463,6 +469,7 @@ int doCmd(int argc, char** argv)
 		i_id, i_callsign,
 		i_active, i_enabled, i_taxtype, i_preferreddriverid,
 		i_personid, i_customerid, i_isoperator, i_isvip,
+		
 		d_datestart, d_datefinish, i_isday, i_hourstart, i_hourfinish, i_isweekend, d_costmin, d_priceboarding, d_priceminute, d_pricedelay, d_pricewait, i_speedmin, i_timedelayfree, i_timedrivingfree,
 		i_isadmin, s_pwd,
 		c_sendgcm, s_apikey, s_data, s_registrationid, f_data,
@@ -1288,6 +1295,32 @@ int doCmd(int argc, char** argv)
 			if (*c_ls_cnt->ival > 0)
 				rowrange.len = *c_ls_cnt->ival;
 
+		if (c_manageorder->count > 0)
+		{
+			if (i_id->count == 0)
+			{
+				printf("--id missed.\n");
+				done(argtable);
+				return 2;
+			}
+			taxi::ID orderno = *i_id->ival;
+			taxi::NUMBER32 provmins = 10;
+			if (i_provmins->count)
+				provmins = *i_provmins->ival;
+			bool r;
+			if (strcmp("take", *c_manageorder->sval) == 0)
+				r = client.takeOrder(credentials, userdevice, orderno, true, provmins);
+			if (strcmp("wait", *c_manageorder->sval) == 0)
+				r = client.startWaiting(credentials, userdevice, orderno);
+			if (strcmp("drive", *c_manageorder->sval) == 0)
+				r = client.stopDriving(credentials, userdevice, orderno);
+			if (strcmp("complete", *c_manageorder->sval) == 0)
+				r = client.completeOrder(credentials, userdevice, orderno);
+			if (strcmp("fail", *c_manageorder->sval) == 0)
+				r = client.failOrder(credentials, userdevice, orderno);
+			cout << r << std::endl;
+		}
+
 		// Listing
 		if (c_ls->count > 0)
 		{
@@ -1582,7 +1615,7 @@ int doCmd(int argc, char** argv)
 			{
 				NotificationEvents r;
 				RowRange rowrange;
-				client.getEvents(r, credentials, userdevice, rowrange);
+				client.getEvents(r, credentials, userdevice, 0L, rowrange);
 				for (NotificationEvents::iterator i(r.begin()); i != r.end(); ++i)
 				{
 					coutNotificationEvent(*i);

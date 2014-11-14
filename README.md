@@ -204,6 +204,27 @@ taxi-simple-cli --list --object passenger
 --empstatus		1- работает 2- в отпуске 3- уволен
 --tag			номер пользовательской классификации (не используется)
 
+Заказ водителя
+==============
+
+taxi-simple-cli --order <состояние> --id <номер заказа> [--minutes <время подъезда>]
+где состояние: take,wait,drive,complete,fail
+
+например, взять заказ с примерным временем прибытия 5 минут (по умолчанию 10 минут)
+taxi-simple-cli --order take --id 12 --minutes 5
+
+Водитель подъехал и ждет
+taxi-simple-cli --order wait --id 12 
+
+Водитель начал везти
+taxi-simple-cli --order drive --id 12 
+
+Водитель не дождался пассажира
+taxi-simple-cli --order fail --id 12 
+
+Водитель успешно закончил исполнять заказ
+taxi-simple-cli --order complete --id 12 
+
 Проталкивание уведомления
 =========================
 Из строки или файла
