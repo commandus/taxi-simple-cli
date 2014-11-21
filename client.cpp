@@ -363,6 +363,7 @@ int doCmd(int argc, char** argv)
 	struct arg_lit  *c_ls = arg_lit0("l", "list", "list objects");
 	struct arg_lit  *c_get = arg_lit0("g", "get", "get object by ID");
 	struct arg_lit  *c_rm = arg_lit0(NULL, "rm", "remove object by ID");
+	struct arg_int  *i_driveronline = arg_int0(NULL, "online", "0|1", "driver offline|online");
 	
 	struct arg_str  *c_manageorder = arg_str0("o", "order", "take,wait,drive,complete,fail", "order manupulation");
 	struct arg_int  *i_provmins = arg_int0(NULL, "minutes", "<number>", "time to go in minutes");
@@ -455,11 +456,16 @@ int doCmd(int argc, char** argv)
 	struct arg_dbl  *d_latitude = arg_dbl0(NULL, "latitude", "<degrees>", "geo coordinate");
 	struct arg_dbl  *d_longitude = arg_dbl0(NULL, "longitude", "<degrees>", "geo coordinate");
 
+	// service order
+	struct arg_int  *i_ordertype = arg_int0(NULL, "ordertype", "1|2", "1- taxi (default), 2- courier");
+	struct arg_int  *i_ordertimetype = arg_int0(NULL, "ordertimetype", "1..3", "1- urgent (default), 2- time, 3- sheduled");
+
 	struct arg_end  *end = arg_end(20);
 
 	void* argtable[] = { 
 		cred_role, cred_phone, cred_password, cred_token,
 		c_license, c_add, c_get, c_rm, c_ls, 
+		i_driveronline, 
 		c_manageorder, i_provmins,
 		c_ls_ofs, c_ls_cnt, obj, verbose, help, i_port, s_hostname,
 		s_name, i_year, s_notes, i_areaid, i_tag, i_orgid, s_bik, i_value, s_brandname,
@@ -474,6 +480,7 @@ int doCmd(int argc, char** argv)
 		i_isadmin, s_pwd,
 		c_sendgcm, s_apikey, s_data, s_registrationid, f_data,
 		d_latitude, d_longitude,
+		i_ordertype, i_ordertimetype,
 		end
 	};
 	const char* progname = "taxi-simple-cli";
@@ -703,6 +710,11 @@ int doCmd(int argc, char** argv)
 				client.getOrg(r, credentials, userdevice, id);
 				coutOrg(r);
 			}
+		}
+
+		if (i_driveronline->count > 0)
+		{
+			cout << client.setOnline(credentials, userdevice, i_driveronline->ival !=0);
 		}
 
 		if (c_add->count > 0)
@@ -1051,7 +1063,6 @@ int doCmd(int argc, char** argv)
 				client.addDriver(ret, credentials, userdevice, v);
 			}
 
-
 			if (strcmp("dispatcher", *obj->sval) == 0)
 			{
 				Dispatcher ret;
@@ -1281,6 +1292,42 @@ int doCmd(int argc, char** argv)
 				else
 					v.timedrivingfree = 0; // seconds
 				client.addRate(ret, credentials, userdevice, v);
+			}
+
+			if (strcmp("serviceorder", *obj->sval) == 0)
+			{
+				ServiceOrder ret;
+				ServiceOrder v;
+				if (i_cityid->count == 0)
+				{
+					printf("--cityid missed.\n");
+					done(argtable);
+					return 2;
+				}
+				v.ordertype = OrderType::TAXI;
+				if (i_ordertype->count > 0)
+					switch (*i_ordertype->ival) 
+					{
+						case 2:
+							v.ordertype = OrderType::COURIER;
+					}
+
+				v.ordertimetype = OrderTimeType::URGENT;
+				if (i_ordertimetype->count > 0)
+					switch (*i_ordertimetype->ival) 
+					{
+						case 2:
+							v.ordertimetype = OrderTimeType::SPECIFIEDTIME;
+						case 3:
+							v.ordertimetype = OrderTimeType::EVERYDAY;
+					}
+
+				if (d_datestart->count > 0)
+					v.sheduletime = tm2time_tUTC(d_datestart->tmval);
+				
+				if (s_notes->count > 0)
+					v.notes = *s_notes->sval;
+				client.addServiceOrder(ret, credentials, userdevice, v);
 			}
 		}
 

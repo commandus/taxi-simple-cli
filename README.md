@@ -225,6 +225,24 @@ taxi-simple-cli --order fail --id 12
 Водитель успешно закончил исполнять заказ
 taxi-simple-cli --order complete --id 12 
 
+
+
+Водитель на линии или ушел с линии
+==================================
+Начал смену
+taxi-simple-cli ... --myrole driver --online 1
+
+Закончил смену
+taxi-simple-cli ... --myrole driver --online 0
+
+Заказ пассажира
+===============
+taxi-simple-cli	... --myrole passenger --add --object serviceorder --cityid <№город> [--ordertype <1..2> --ordertimetype <1..3> --datestart datetime] --notes "Примечание"]
+--ordertype 1- такси (по умолчанию) 2- курьер
+--ordertimetype 1- срочный (по умолчанию) 2- Запланированный в точно указанное время в течение суток 3-Запланированный в точно указанное время ежедневно в заданные дни недели
+
+
+
 Проталкивание уведомления
 =========================
 Из строки или файла

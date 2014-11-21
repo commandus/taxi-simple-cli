@@ -115,6 +115,7 @@ class PassengerServiceIf {
   virtual void rmDictEntry(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void rmDriver(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void rmDriverBlackList(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void rmPassenger(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void rmNotification(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void rmCustomer(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void rmDispatcher(const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
@@ -457,6 +458,9 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
     return;
   }
   void rmDriverBlackList(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void rmPassenger(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
     return;
   }
   void rmNotification(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
@@ -14295,6 +14299,132 @@ class PassengerService_rmDriverBlackList_presult {
 
 };
 
+typedef struct _PassengerService_rmPassenger_args__isset {
+  _PassengerService_rmPassenger_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_rmPassenger_args__isset;
+
+class PassengerService_rmPassenger_args {
+ public:
+
+  PassengerService_rmPassenger_args() : id(0) {
+  }
+
+  virtual ~PassengerService_rmPassenger_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_rmPassenger_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_rmPassenger_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmPassenger_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmPassenger_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmPassenger_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmPassenger_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmPassenger_result__isset {
+  _PassengerService_rmPassenger_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmPassenger_result__isset;
+
+class PassengerService_rmPassenger_result {
+ public:
+
+  PassengerService_rmPassenger_result() {
+  }
+
+  virtual ~PassengerService_rmPassenger_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmPassenger_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmPassenger_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmPassenger_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmPassenger_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmPassenger_presult__isset {
+  _PassengerService_rmPassenger_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmPassenger_presult__isset;
+
+class PassengerService_rmPassenger_presult {
+ public:
+
+
+  virtual ~PassengerService_rmPassenger_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmPassenger_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 typedef struct _PassengerService_rmNotification_args__isset {
   _PassengerService_rmNotification_args__isset() : credentials(false), userdevice(false), id(false) {}
   bool credentials;
@@ -15371,6 +15501,9 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   void rmDriverBlackList(const Credentials& credentials, const UserDevice& userdevice, const ID id);
   void send_rmDriverBlackList(const Credentials& credentials, const UserDevice& userdevice, const ID id);
   void recv_rmDriverBlackList();
+  void rmPassenger(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_rmPassenger(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_rmPassenger();
   void rmNotification(const Credentials& credentials, const UserDevice& userdevice, const ID id);
   void send_rmNotification(const Credentials& credentials, const UserDevice& userdevice, const ID id);
   void recv_rmNotification();
@@ -15504,6 +15637,7 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_rmDictEntry(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_rmDriver(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_rmDriverBlackList(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmPassenger(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_rmNotification(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_rmCustomer(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_rmDispatcher(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -15613,6 +15747,7 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["rmDictEntry"] = &PassengerServiceProcessor::process_rmDictEntry;
     processMap_["rmDriver"] = &PassengerServiceProcessor::process_rmDriver;
     processMap_["rmDriverBlackList"] = &PassengerServiceProcessor::process_rmDriverBlackList;
+    processMap_["rmPassenger"] = &PassengerServiceProcessor::process_rmPassenger;
     processMap_["rmNotification"] = &PassengerServiceProcessor::process_rmNotification;
     processMap_["rmCustomer"] = &PassengerServiceProcessor::process_rmCustomer;
     processMap_["rmDispatcher"] = &PassengerServiceProcessor::process_rmDispatcher;
@@ -16618,6 +16753,15 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
       ifaces_[i]->rmDriverBlackList(credentials, userdevice, id);
     }
     ifaces_[i]->rmDriverBlackList(credentials, userdevice, id);
+  }
+
+  void rmPassenger(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmPassenger(credentials, userdevice, id);
+    }
+    ifaces_[i]->rmPassenger(credentials, userdevice, id);
   }
 
   void rmNotification(const Credentials& credentials, const UserDevice& userdevice, const ID id) {

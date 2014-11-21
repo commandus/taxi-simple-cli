@@ -522,6 +522,11 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("rmDriverBlackList\n");
   }
 
+  void rmPassenger(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("rmPassenger\n");
+  }
+
   void rmNotification(const Credentials& credentials, const UserDevice& userdevice, const ID id) {
     // Your implementation goes here
     printf("rmNotification\n");
