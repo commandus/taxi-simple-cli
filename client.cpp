@@ -714,7 +714,7 @@ int doCmd(int argc, char** argv)
 
 		if (i_driveronline->count > 0)
 		{
-			cout << client.setOnline(credentials, userdevice, i_driveronline->ival !=0);
+			cout << client.setOnline(credentials, userdevice, *i_driveronline->ival != 0);
 		}
 
 		if (c_add->count > 0)

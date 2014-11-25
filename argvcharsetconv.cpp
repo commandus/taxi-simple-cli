@@ -1,5 +1,17 @@
 #include "argvcharsetconv.h"
-#include <string>
+#include <sys/stat.h>
+#include <string.h>
+
+#ifdef _WIN32
+std::vector<std::wstring> argv2vector(int argc, TCHAR** argv)
+{
+	return std::vector<std::wstring>(argv + 1, argv + argc);
+}
+
+void argvFree(int argc, char** argv_utf8)
+{
+	free(argv_utf8);
+}
 
 char** argvConv(int argc, TCHAR** argv)
 {
@@ -16,13 +28,13 @@ char** argvConv(int argc, TCHAR** argv)
 	}
 
 	// allocate char buffer and ptr array
-	size_t sz = len + argc + 1;	// plus terminator zeroes
-	char *buffer = (char *)malloc(sz);
-	memset(buffer, 0, sz);	// for trailing zeroes
-	size_t ptrsize = argc * sizeof(char**)+1;
-	char **ptr = (char **)malloc(ptrsize);
-	memset(ptr, 0, ptrsize);	// last NULL means terminator
+	size_t sz = len + argc + 1;	// plus terminator zero
+	size_t ptrsize = (argc + 1) * sizeof(char**);	// plus last zero 
+	size_t bufsize = ptrsize + sz;
 
+	char **ptr = (char **)malloc(bufsize);
+	char *buffer = (char *) ptr + ptrsize;
+	memset(ptr, 0, bufsize);	// for trailing zeroes
 	// convert
 	p = argv;
 	char *pb = buffer;
@@ -42,9 +54,55 @@ char** argvConv(int argc, TCHAR** argv)
 	}
 	return ptr;
 }
+#endif
 
-void argvFree(int argc, char** argv_utf8)
+bool fileexists(const std::string& fn)
 {
-	free(*argv_utf8);
-	free(argv_utf8);
+	struct stat buffer;   
+	return (stat(fn.c_str(), &buffer) == 0); 
 }
+
+std::vector<std::string> argv2vector(int argc, char** argv)
+{
+	return std::vector<std::string>(argv, argv + argc);
+}
+
+size_t vector2argv(std::vector<std::string> value, int *argc, char*** argv)
+{
+	size_t len = 0L;
+	*argc = value.size();
+	if (!*argc)
+	{
+		*argv = NULL;
+		return 0L;
+	}
+
+	for (std::vector<std::string>::iterator i(value.begin()); i != value.end(); ++i)
+	{
+		len += i->length();
+		len++;	// trailing /0
+	}
+	// allocate char buffer and ptr array
+	size_t ptrsize = (*argc + 1) * sizeof(char**);	// plus last zero 
+	size_t bufsize = ptrsize + len;
+	char **ptr = (char **)malloc(bufsize);
+	char *buffer = (char *) ptr + ptrsize;
+	*argv = ptr;
+	memset(ptr, 0, bufsize);	// for trailing zeroes
+	
+	// convert
+
+	char *pb = buffer;
+	char **cptr = ptr;
+	for (std::vector<std::string>::iterator i(value.begin()); i != value.end(); ++i)
+	{
+		*cptr =  pb;
+		size_t l = i->length();
+		memcpy(pb, i->c_str(), l);
+		pb += l;
+		pb++;	// trailing /0
+		cptr++;
+	}
+	return bufsize;
+}
+
