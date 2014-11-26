@@ -22,6 +22,7 @@
 
 #include "PassengerService.h"
 #include "utiltime.h"
+#include "argvcharsetconv.h"
 
 #ifdef _MSC_VER
 #pragma warning(disable:4290)
@@ -208,13 +209,6 @@ void coutNotificationEvent(NotificationEvent &v)
 		<< v.datestart << '\t' << v.infuture << '\t' << v.serviceobjectid << '\t' << v.sent << '\t' 
 		<< v.sentdate << '\t' << v.notes << '\t' << v.gcmsent << '\t' << v.isgcmsentsuccess << '\t'
 		<< v.gcmsentdate << '\t' << v.gcmresponsecode << '\t' << v.gcmresponse << '\t'; 
-}
-
-int done(void** argtable)
-{
-	/* deallocate each non-null entry in argtable[] */
-	arg_freetable(argtable, sizeof(argtable) / sizeof(argtable[0]));
-	return 0;
 }
 
 int init()
@@ -595,65 +589,81 @@ int doCmd(int argc, char** argv)
 	credentials.personrole = PersonRole::NOTAUTHORIZED;
 
 	// read from configuration file
-	Config cfg;
-	try
+	std::string configfn;
+	// get config file name from the command line
+	if (!parseGetConfigFile(argc, argv, configfn))
 	{
-		cfg.readFile(DEF_CONFIG);
-	}
-	catch(const FileIOException &fioex)
-	{
-		std::cerr << "Config file read error: " << fioex.what() << std::endl;
-	}
-	catch(const ParseException &pex)
-	{
-		std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()	<< " - " << pex.getError() << std::endl;
-		return (3);
+		if (!findConfigInSystemDir(configfn))
+		{
+		}
+		if (configfn.empty())
+			configfn = DEF_CONFIG;
 	}
 
-	cfg.lookupValue("client.port", port);
+	// convert to string array
+	std::vector<std::string> argvs(argv2vector(argc, argv));
+	if (fileexists(configfn))
+	{
+		Config cfg;
+		try
+		{
+			cfg.readFile(DEF_CONFIG);
+		}
+		catch(const FileIOException &fioex)
+		{
+			std::cerr << "Config file read error: " << fioex.what() << std::endl;
+		}
+		catch(const ParseException &pex)
+		{
+			std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()	<< " - " << pex.getError() << std::endl;
+			return (3);
+		}
 
-	try
-	{
-		hostname = (const char *) cfg.lookup("client.host");
-	}
-	catch(const SettingNotFoundException&)
-	{
-	}
-	try
-	{
-		std::string role = (const char *) cfg.lookup("client.credentials.role");
-		credentials.personrole = readPersonRole(role);
-	}
-	catch(const SettingNotFoundException&)
-	{
-	}
-	try
-	{
-		credentials.token = (const char *) cfg.lookup("client.crededentials.token");
-	}
-	catch(const SettingNotFoundException&)
-	{
-	}
-	try
-	{
-		credentials.phone = (const char *) cfg.lookup("client.credentials.phone");
-	}
-	catch(const SettingNotFoundException&)
-	{
-	}
-	try
-	{
-		credentials.password = (const char *) cfg.lookup("client.credentials.password");
-	}
-	catch(const SettingNotFoundException&)
-	{
-	}
-	try
-	{
-		credentials.token = (const char *) cfg.lookup("client.credentials.token");
-	}
-	catch(const SettingNotFoundException&)
-	{
+		cfg.lookupValue("client.port", port);
+
+		try
+		{
+			hostname = (const char *) cfg.lookup("client.host");
+		}
+		catch(const SettingNotFoundException&)
+		{
+		}
+		try
+		{
+			std::string role = (const char *) cfg.lookup("client.credentials.role");
+			credentials.personrole = readPersonRole(role);
+		}
+		catch(const SettingNotFoundException&)
+		{
+		}
+		try
+		{
+			credentials.token = (const char *) cfg.lookup("client.crededentials.token");
+		}
+		catch(const SettingNotFoundException&)
+		{
+		}
+		try
+		{
+			credentials.phone = (const char *) cfg.lookup("client.credentials.phone");
+		}
+		catch(const SettingNotFoundException&)
+		{
+		}
+		try
+		{
+			credentials.password = (const char *) cfg.lookup("client.credentials.password");
+		}
+		catch(const SettingNotFoundException&)
+		{
+		}
+		try
+		{
+			credentials.token = (const char *) cfg.lookup("client.credentials.token");
+		}
+		catch(const SettingNotFoundException&)
+		{
+		}
 	}
 
 	// read from command line 

@@ -2,6 +2,12 @@
 #include <sys/stat.h>
 #include <string.h>
 
+#include <glog/logging.h>
+// arg, config
+#include <argtable2.h>
+
+#define DEF_CONFIG	"taxi-simple.cfg"
+
 #ifdef _WIN32
 std::vector<std::wstring> argv2vector(int argc, TCHAR** argv)
 {
@@ -106,3 +112,57 @@ size_t vector2argv(std::vector<std::string> value, int *argc, char*** argv)
 	return bufsize;
 }
 
+/*
+	Try to find out DEF_CONFIG in ".", "~", "/usr/local/etc", "/etc/" 
+*/
+bool findConfigInSystemDir(std::string &ret)
+{
+#ifdef WIN32
+	const char *setingdirs[] = {"."};
+#define DELIM	"\\"
+#else
+	const char *setingdirs[] = {".", "~", "/usr/local/etc", "/etc/" };
+#define DELIM	"/"
+#endif
+	
+	std::vector<std::string> settingDirs(setingdirs, std::end(setingdirs));
+	for (std::vector<std::string>::iterator i = settingDirs.begin(); i != settingDirs.end(); ++i)
+	{
+		std::string fn(*i + DELIM + DEF_CONFIG);
+		if (fileexists(fn))
+		{
+			ret = fn;
+			return true;
+		}
+	}
+	ret = "";
+	return false;
+}
+
+/**
+	Get config file name from the command line
+*/
+bool parseGetConfigFile(int argc, char** argv, std::string &ret)
+{
+	// config
+	struct arg_file  *f_config = arg_file0("c", "config", "<config file>", "NOT IMPLEMENTED, default taxi-simple.cfg");
+	struct arg_end  *end = arg_end(20);
+	void* argtable[] = {f_config, end };
+
+	if ((arg_nullcheck(argtable) != 0) || ((arg_parse(argc, argv, argtable) > 0)) || ((f_config->count <= 0)))
+	{
+		done(argtable);
+		return false;
+	}
+	
+	ret = *f_config->filename;
+	done(argtable);
+	return true;
+}
+
+int done(void** argtable)
+{
+	/* deallocate each non-null entry in argtable[] */
+	arg_freetable(argtable, sizeof(argtable) / sizeof(argtable[0]));
+	return 0;
+}
