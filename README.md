@@ -29,8 +29,8 @@ client =
 	credentials =
 	{
 		role = "admin";
-		phone = "79141040619";
-		password = "123";
+		phone = "77777777";
+		password = "1111111";
 	};
 }
 
@@ -63,8 +63,8 @@ client =
 Опции аутентификации
 ====================
 -myrole			admin|manager|customer|dispatcher|driver|master|operator|passenger|guest
--myphone		79141040619
--mypassword		1234
+-myphone		77777777777
+-mypassword		11111111111
 
 Добавление
 ==========
