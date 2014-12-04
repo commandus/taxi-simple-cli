@@ -32,6 +32,31 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("getOrg\n");
   }
 
+  void getVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("getVehicle\n");
+  }
+
+  void getVehicles(Vehicles& _return, const Credentials& credentials, const UserDevice& userdevice, const Vehicleids& ids) {
+    // Your implementation goes here
+    printf("getVehicles\n");
+  }
+
+  void getDriverVehicles(Vehicles& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id) {
+    // Your implementation goes here
+    printf("getDriverVehicles\n");
+  }
+
+  void addDriverVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicle& value) {
+    // Your implementation goes here
+    printf("addDriverVehicle\n");
+  }
+
+  void rmDriverVehicle(const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicleid value) {
+    // Your implementation goes here
+    printf("rmDriverVehicle\n");
+  }
+
   void loginDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice) {
     // Your implementation goes here
     printf("loginDriver\n");

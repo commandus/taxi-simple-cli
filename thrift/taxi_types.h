@@ -1220,7 +1220,7 @@ class PassengerUsage {
 void swap(PassengerUsage &a, PassengerUsage &b);
 
 typedef struct _UserDevice__isset {
-  _UserDevice__isset() : devicetype(false), model(false), imei(false), line1(false), line2(false), hasGSMorCDMA(false), hasGPS(false), isGPS(false), geolocation(false) {}
+  _UserDevice__isset() : devicetype(false), model(false), imei(false), line1(false), line2(false), hasGSMorCDMA(false), hasGPS(false), isGPS(false), geolocation(false), apiversion(false) {}
   bool devicetype;
   bool model;
   bool imei;
@@ -1230,15 +1230,16 @@ typedef struct _UserDevice__isset {
   bool hasGPS;
   bool isGPS;
   bool geolocation;
+  bool apiversion;
 } _UserDevice__isset;
 
 class UserDevice {
  public:
 
-  static const char* ascii_fingerprint; // = "8F192A3F14BF2889CD29F3AABD117D07";
-  static const uint8_t binary_fingerprint[16]; // = {0x8F,0x19,0x2A,0x3F,0x14,0xBF,0x28,0x89,0xCD,0x29,0xF3,0xAA,0xBD,0x11,0x7D,0x07};
+  static const char* ascii_fingerprint; // = "8108E107E44973BDEF9884E42E07C6DE";
+  static const uint8_t binary_fingerprint[16]; // = {0x81,0x08,0xE1,0x07,0xE4,0x49,0x73,0xBD,0xEF,0x98,0x84,0xE4,0x2E,0x07,0xC6,0xDE};
 
-  UserDevice() : devicetype((DeviceType::type)0), model(), imei(), line1(), line2(), hasGSMorCDMA(0), hasGPS(0), isGPS(0) {
+  UserDevice() : devicetype((DeviceType::type)0), model(), imei(), line1(), line2(), hasGSMorCDMA(0), hasGPS(0), isGPS(0), apiversion(0) {
   }
 
   virtual ~UserDevice() throw() {}
@@ -1252,6 +1253,7 @@ class UserDevice {
   bool hasGPS;
   bool isGPS;
   GeoLocation geolocation;
+  NUMBER32 apiversion;
 
   _UserDevice__isset __isset;
 
@@ -1291,6 +1293,10 @@ class UserDevice {
     geolocation = val;
   }
 
+  void __set_apiversion(const NUMBER32 val) {
+    apiversion = val;
+  }
+
   bool operator == (const UserDevice & rhs) const
   {
     if (!(devicetype == rhs.devicetype))
@@ -1310,6 +1316,8 @@ class UserDevice {
     if (!(isGPS == rhs.isGPS))
       return false;
     if (!(geolocation == rhs.geolocation))
+      return false;
+    if (!(apiversion == rhs.apiversion))
       return false;
     return true;
   }
@@ -1459,8 +1467,8 @@ typedef struct _Person__isset {
 class Person {
  public:
 
-  static const char* ascii_fingerprint; // = "3B04270E07C9E2932F428DF1D2BB083B";
-  static const uint8_t binary_fingerprint[16]; // = {0x3B,0x04,0x27,0x0E,0x07,0xC9,0xE2,0x93,0x2F,0x42,0x8D,0xF1,0xD2,0xBB,0x08,0x3B};
+  static const char* ascii_fingerprint; // = "54BC070A2E9D7DCF8AD15E2C68480FB1";
+  static const uint8_t binary_fingerprint[16]; // = {0x54,0xBC,0x07,0x0A,0x2E,0x9D,0x7D,0xCF,0x8A,0xD1,0x5E,0x2C,0x68,0x48,0x0F,0xB1};
 
   Person() : id(0), tag(0), firstname(), lastname(), middlename(), prefix(), birthdate(0), deparment(), position(), note(), phone1(), phone2(), fax(), email(), photo() {
   }
@@ -1768,8 +1776,8 @@ typedef struct _Org__isset {
 class Org {
  public:
 
-  static const char* ascii_fingerprint; // = "010F7FBF8AB061F0770DD4AE5E11BE82";
-  static const uint8_t binary_fingerprint[16]; // = {0x01,0x0F,0x7F,0xBF,0x8A,0xB0,0x61,0xF0,0x77,0x0D,0xD4,0xAE,0x5E,0x11,0xBE,0x82};
+  static const char* ascii_fingerprint; // = "3D92DC0265913C98CDFF9494E2C6F3EB";
+  static const uint8_t binary_fingerprint[16]; // = {0x3D,0x92,0xDC,0x02,0x65,0x91,0x3C,0x98,0xCD,0xFF,0x94,0x94,0xE2,0xC6,0xF3,0xEB};
 
   Org() : id(0), orgrole((OrgRole::type)0), orgtype((OrgType::type)0), start(0), tag(0), name(), fullname(), shortname(), inn(), kpp(), ogrn(), phone(), email(), currentaccount(), correspondentaccount(), description(), note() {
   }
@@ -1965,8 +1973,8 @@ typedef struct _Dept__isset {
 class Dept {
  public:
 
-  static const char* ascii_fingerprint; // = "357800209A6572AE0620F1F313A254E9";
-  static const uint8_t binary_fingerprint[16]; // = {0x35,0x78,0x00,0x20,0x9A,0x65,0x72,0xAE,0x06,0x20,0xF1,0xF3,0x13,0xA2,0x54,0xE9};
+  static const char* ascii_fingerprint; // = "A6C39EA537DD55539302834453871A22";
+  static const uint8_t binary_fingerprint[16]; // = {0xA6,0xC3,0x9E,0xA5,0x37,0xDD,0x55,0x53,0x93,0x02,0x83,0x44,0x53,0x87,0x1A,0x22};
 
   Dept() : id(0), orgid(0), name(), fullname(), shortname(), phone(), email(), currentaccount(), correspondentaccount(), description(), note() {
   }
@@ -2445,8 +2453,8 @@ typedef struct _Passenger__isset {
 class Passenger {
  public:
 
-  static const char* ascii_fingerprint; // = "5A3C03771C51FC33448FE0AF0393766D";
-  static const uint8_t binary_fingerprint[16]; // = {0x5A,0x3C,0x03,0x77,0x1C,0x51,0xFC,0x33,0x44,0x8F,0xE0,0xAF,0x03,0x93,0x76,0x6D};
+  static const char* ascii_fingerprint; // = "4856000ACBF11AF46CB006077FF64D79";
+  static const uint8_t binary_fingerprint[16]; // = {0x48,0x56,0x00,0x0A,0xCB,0xF1,0x1A,0xF4,0x6C,0xB0,0x06,0x07,0x7F,0xF6,0x4D,0x79};
 
   Passenger() : id(0), cityid(0), customerid(0), tag(0), isoperator(0), isvip(0), status((EmployeeStatus::type)0), canorder((CanOrder::type)0) {
   }
@@ -2854,8 +2862,8 @@ typedef struct _Manager__isset {
 class Manager {
  public:
 
-  static const char* ascii_fingerprint; // = "B7D7482E144326613E7C934CED8C3FC2";
-  static const uint8_t binary_fingerprint[16]; // = {0xB7,0xD7,0x48,0x2E,0x14,0x43,0x26,0x61,0x3E,0x7C,0x93,0x4C,0xED,0x8C,0x3F,0xC2};
+  static const char* ascii_fingerprint; // = "32D92D238289CC575B50D200F3C23731";
+  static const uint8_t binary_fingerprint[16]; // = {0x32,0xD9,0x2D,0x23,0x82,0x89,0xCC,0x57,0x5B,0x50,0xD2,0x00,0xF3,0xC2,0x37,0x31};
 
   Manager() : id(0), cityid(0), status((EmployeeStatus::type)0), nickname(), online(0), isadmin(0) {
   }
@@ -2946,7 +2954,7 @@ class Manager {
 void swap(Manager &a, Manager &b);
 
 typedef struct _Driver__isset {
-  _Driver__isset() : id(false), cityid(false), svc(false), geolocation(false), updated(false), serviceorderid(false), status(false), person(false), license(false), nickname(false), callsign(false), cabclass(false), rating(false), online(false), ismaster(false), vehicleids(false), usagemonth(false), usageyear(false) {}
+  _Driver__isset() : id(false), cityid(false), svc(false), geolocation(false), updated(false), serviceorderid(false), status(false), person(false), license(false), nickname(false), callsign(false), cabclass(false), rating(false), online(false), ismaster(false), vehicleids(false), usagemonth(false), usageyear(false), rating5(false) {}
   bool id;
   bool cityid;
   bool svc;
@@ -2965,15 +2973,16 @@ typedef struct _Driver__isset {
   bool vehicleids;
   bool usagemonth;
   bool usageyear;
+  bool rating5;
 } _Driver__isset;
 
 class Driver {
  public:
 
-  static const char* ascii_fingerprint; // = "982AC5D670F600CF0165704E36B1F929";
-  static const uint8_t binary_fingerprint[16]; // = {0x98,0x2A,0xC5,0xD6,0x70,0xF6,0x00,0xCF,0x01,0x65,0x70,0x4E,0x36,0xB1,0xF9,0x29};
+  static const char* ascii_fingerprint; // = "712DFAC7E261959E3D48E1A4C1C5FEAA";
+  static const uint8_t binary_fingerprint[16]; // = {0x71,0x2D,0xFA,0xC7,0xE2,0x61,0x95,0x9E,0x3D,0x48,0xE1,0xA4,0xC1,0xC5,0xFE,0xAA};
 
-  Driver() : id(0), cityid(0), updated(0), serviceorderid(0), status((EmployeeStatus::type)0), nickname(), callsign(0), cabclass((CabClass::type)0), rating(0), online(0), ismaster(0) {
+  Driver() : id(0), cityid(0), updated(0), serviceorderid(0), status((EmployeeStatus::type)0), nickname(), callsign(0), cabclass((CabClass::type)0), rating(0), online(0), ismaster(0), rating5(0) {
   }
 
   virtual ~Driver() throw() {}
@@ -2996,6 +3005,7 @@ class Driver {
   Vehicleids vehicleids;
   PassengerUsageMonth usagemonth;
   PassengerUsageYear usageyear;
+  NUMBER32 rating5;
 
   _Driver__isset __isset;
 
@@ -3071,6 +3081,10 @@ class Driver {
     usageyear = val;
   }
 
+  void __set_rating5(const NUMBER32 val) {
+    rating5 = val;
+  }
+
   bool operator == (const Driver & rhs) const
   {
     if (!(id == rhs.id))
@@ -3108,6 +3122,8 @@ class Driver {
     if (!(usagemonth == rhs.usagemonth))
       return false;
     if (!(usageyear == rhs.usageyear))
+      return false;
+    if (!(rating5 == rhs.rating5))
       return false;
     return true;
   }
@@ -3197,8 +3213,8 @@ typedef struct _Dispatcher__isset {
 class Dispatcher {
  public:
 
-  static const char* ascii_fingerprint; // = "747CBE9A1F50E8316A0693AF697D6B3F";
-  static const uint8_t binary_fingerprint[16]; // = {0x74,0x7C,0xBE,0x9A,0x1F,0x50,0xE8,0x31,0x6A,0x06,0x93,0xAF,0x69,0x7D,0x6B,0x3F};
+  static const char* ascii_fingerprint; // = "26837AB8DD4EAB2CFCEF2A65FD30FDEA";
+  static const uint8_t binary_fingerprint[16]; // = {0x26,0x83,0x7A,0xB8,0xDD,0x4E,0xAB,0x2C,0xFC,0xEF,0x2A,0x65,0xFD,0x30,0xFD,0xEA};
 
   Dispatcher() : id(0), status((EmployeeStatus::type)0), nickname(), online(0) {
   }
@@ -3294,8 +3310,8 @@ typedef struct _ServiceOrderStop__isset {
 class ServiceOrderStop {
  public:
 
-  static const char* ascii_fingerprint; // = "391C5DBB859D6635C569D441D94DA0EB";
-  static const uint8_t binary_fingerprint[16]; // = {0x39,0x1C,0x5D,0xBB,0x85,0x9D,0x66,0x35,0xC5,0x69,0xD4,0x41,0xD9,0x4D,0xA0,0xEB};
+  static const char* ascii_fingerprint; // = "13CBACAB4FB2823FC8AAF781E927EA01";
+  static const uint8_t binary_fingerprint[16]; // = {0x13,0xCB,0xAC,0xAB,0x4F,0xB2,0x82,0x3F,0xC8,0xAA,0xF7,0x81,0xE9,0x27,0xEA,0x01};
 
   ServiceOrderStop() : id(0), serviceorderid(0), stopno(0), stoptype((StopType::type)0), stage((OrderStage::type)0), created(0), assigned(0), started(0), arrived(0), finished(0), notes() {
   }
@@ -3414,7 +3430,7 @@ class ServiceOrderStop {
 void swap(ServiceOrderStop &a, ServiceOrderStop &b);
 
 typedef struct _ServiceOrder__isset {
-  _ServiceOrder__isset() : id(false), cityid(false), tag(false), ordertype(false), ordertimetype(false), orderfeatures(false), svc(false), dispatcherid(false), passengerid(false), sheduleid(false), passengers(false), stops(false), payload(false), stage(false), crew(false), created(false), sheduletime(false), assigned(false), started(false), arrived(false), finished(false), estimated(false), stagemodified(false), locstart(false), locfinish(false), preferreddriverid(false), totaltimefiscal(false), totaltimeactual(false), sumfiscal(false), sumactual(false), cabclass(false), paymentstate(false), claimstate(false), hasstops(false), notes(false), iscalculated(false), offers(false) {}
+  _ServiceOrder__isset() : id(false), cityid(false), tag(false), ordertype(false), ordertimetype(false), orderfeatures(false), svc(false), dispatcherid(false), passengerid(false), sheduleid(false), passengers(false), stops(false), payload(false), stage(false), crew(false), created(false), sheduletime(false), assigned(false), started(false), arrived(false), finished(false), estimated(false), stagemodified(false), locstart(false), locfinish(false), preferreddriverid(false), totaltimefiscal(false), totaltimeactual(false), sumfiscal(false), sumactual(false), cabclass(false), paymentstate(false), claimstate(false), hasstops(false), notes(false), iscalculated(false), offers(false), flagsstagesent(false) {}
   bool id;
   bool cityid;
   bool tag;
@@ -3452,15 +3468,16 @@ typedef struct _ServiceOrder__isset {
   bool notes;
   bool iscalculated;
   bool offers;
+  bool flagsstagesent;
 } _ServiceOrder__isset;
 
 class ServiceOrder {
  public:
 
-  static const char* ascii_fingerprint; // = "7DE1767F218FA0F6264F5222D71F942D";
-  static const uint8_t binary_fingerprint[16]; // = {0x7D,0xE1,0x76,0x7F,0x21,0x8F,0xA0,0xF6,0x26,0x4F,0x52,0x22,0xD7,0x1F,0x94,0x2D};
+  static const char* ascii_fingerprint; // = "81A096F0E9AD759ABCF4B71EF2B402E4";
+  static const uint8_t binary_fingerprint[16]; // = {0x81,0xA0,0x96,0xF0,0xE9,0xAD,0x75,0x9A,0xBC,0xF4,0xB7,0x1E,0xF2,0xB4,0x02,0xE4};
 
-  ServiceOrder() : id(0), cityid(0), tag(0), ordertype((OrderType::type)0), ordertimetype((OrderTimeType::type)0), dispatcherid(0), passengerid(0), sheduleid(0), stage((OrderStage::type)0), created(0), sheduletime(0), assigned(0), started(0), arrived(0), finished(0), estimated(0), stagemodified(0), preferreddriverid(0), totaltimefiscal(0), totaltimeactual(0), sumfiscal(0), sumactual(0), cabclass((CabClass::type)0), paymentstate((PaymentState::type)0), claimstate((ClaimState::type)0), hasstops(0), notes(), iscalculated(0), offers(0) {
+  ServiceOrder() : id(0), cityid(0), tag(0), ordertype((OrderType::type)0), ordertimetype((OrderTimeType::type)0), dispatcherid(0), passengerid(0), sheduleid(0), stage((OrderStage::type)0), created(0), sheduletime(0), assigned(0), started(0), arrived(0), finished(0), estimated(0), stagemodified(0), preferreddriverid(0), totaltimefiscal(0), totaltimeactual(0), sumfiscal(0), sumactual(0), cabclass((CabClass::type)0), paymentstate((PaymentState::type)0), claimstate((ClaimState::type)0), hasstops(0), notes(), iscalculated(0), offers(0), flagsstagesent(0) {
   }
 
   virtual ~ServiceOrder() throw() {}
@@ -3502,6 +3519,7 @@ class ServiceOrder {
   STR notes;
   bool iscalculated;
   NUMBER32 offers;
+  NUMBER32 flagsstagesent;
 
   _ServiceOrder__isset __isset;
 
@@ -3653,6 +3671,10 @@ class ServiceOrder {
     offers = val;
   }
 
+  void __set_flagsstagesent(const NUMBER32 val) {
+    flagsstagesent = val;
+  }
+
   bool operator == (const ServiceOrder & rhs) const
   {
     if (!(id == rhs.id))
@@ -3728,6 +3750,8 @@ class ServiceOrder {
     if (!(iscalculated == rhs.iscalculated))
       return false;
     if (!(offers == rhs.offers))
+      return false;
+    if (!(flagsstagesent == rhs.flagsstagesent))
       return false;
     return true;
   }

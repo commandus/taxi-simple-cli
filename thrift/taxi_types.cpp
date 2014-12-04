@@ -1447,8 +1447,8 @@ void swap(PassengerUsage &a, PassengerUsage &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* UserDevice::ascii_fingerprint = "8F192A3F14BF2889CD29F3AABD117D07";
-const uint8_t UserDevice::binary_fingerprint[16] = {0x8F,0x19,0x2A,0x3F,0x14,0xBF,0x28,0x89,0xCD,0x29,0xF3,0xAA,0xBD,0x11,0x7D,0x07};
+const char* UserDevice::ascii_fingerprint = "8108E107E44973BDEF9884E42E07C6DE";
+const uint8_t UserDevice::binary_fingerprint[16] = {0x81,0x08,0xE1,0x07,0xE4,0x49,0x73,0xBD,0xEF,0x98,0x84,0xE4,0x2E,0x07,0xC6,0xDE};
 
 uint32_t UserDevice::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1544,6 +1544,14 @@ uint32_t UserDevice::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
+      case 10:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->apiversion);
+          this->__isset.apiversion = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -1596,6 +1604,10 @@ uint32_t UserDevice::write(::apache::thrift::protocol::TProtocol* oprot) const {
   xfer += this->geolocation.write(oprot);
   xfer += oprot->writeFieldEnd();
 
+  xfer += oprot->writeFieldBegin("apiversion", ::apache::thrift::protocol::T_I32, 10);
+  xfer += oprot->writeI32(this->apiversion);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1612,6 +1624,7 @@ void swap(UserDevice &a, UserDevice &b) {
   swap(a.hasGPS, b.hasGPS);
   swap(a.isGPS, b.isGPS);
   swap(a.geolocation, b.geolocation);
+  swap(a.apiversion, b.apiversion);
   swap(a.__isset, b.__isset);
 }
 
@@ -1787,8 +1800,8 @@ void swap(Credentials &a, Credentials &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* Person::ascii_fingerprint = "3B04270E07C9E2932F428DF1D2BB083B";
-const uint8_t Person::binary_fingerprint[16] = {0x3B,0x04,0x27,0x0E,0x07,0xC9,0xE2,0x93,0x2F,0x42,0x8D,0xF1,0xD2,0xBB,0x08,0x3B};
+const char* Person::ascii_fingerprint = "54BC070A2E9D7DCF8AD15E2C68480FB1";
+const uint8_t Person::binary_fingerprint[16] = {0x54,0xBC,0x07,0x0A,0x2E,0x9D,0x7D,0xCF,0x8A,0xD1,0x5E,0x2C,0x68,0x48,0x0F,0xB1};
 
 uint32_t Person::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2279,8 +2292,8 @@ void swap(Location &a, Location &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* Org::ascii_fingerprint = "010F7FBF8AB061F0770DD4AE5E11BE82";
-const uint8_t Org::binary_fingerprint[16] = {0x01,0x0F,0x7F,0xBF,0x8A,0xB0,0x61,0xF0,0x77,0x0D,0xD4,0xAE,0x5E,0x11,0xBE,0x82};
+const char* Org::ascii_fingerprint = "3D92DC0265913C98CDFF9494E2C6F3EB";
+const uint8_t Org::binary_fingerprint[16] = {0x3D,0x92,0xDC,0x02,0x65,0x91,0x3C,0x98,0xCD,0xFF,0x94,0x94,0xE2,0xC6,0xF3,0xEB};
 
 uint32_t Org::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2709,8 +2722,8 @@ void swap(Org &a, Org &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* Dept::ascii_fingerprint = "357800209A6572AE0620F1F313A254E9";
-const uint8_t Dept::binary_fingerprint[16] = {0x35,0x78,0x00,0x20,0x9A,0x65,0x72,0xAE,0x06,0x20,0xF1,0xF3,0x13,0xA2,0x54,0xE9};
+const char* Dept::ascii_fingerprint = "A6C39EA537DD55539302834453871A22";
+const uint8_t Dept::binary_fingerprint[16] = {0xA6,0xC3,0x9E,0xA5,0x37,0xDD,0x55,0x53,0x93,0x02,0x83,0x44,0x53,0x87,0x1A,0x22};
 
 uint32_t Dept::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3724,8 +3737,8 @@ void swap(CustomerStatistic &a, CustomerStatistic &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* Passenger::ascii_fingerprint = "5A3C03771C51FC33448FE0AF0393766D";
-const uint8_t Passenger::binary_fingerprint[16] = {0x5A,0x3C,0x03,0x77,0x1C,0x51,0xFC,0x33,0x44,0x8F,0xE0,0xAF,0x03,0x93,0x76,0x6D};
+const char* Passenger::ascii_fingerprint = "4856000ACBF11AF46CB006077FF64D79";
+const uint8_t Passenger::binary_fingerprint[16] = {0x48,0x56,0x00,0x0A,0xCB,0xF1,0x1A,0xF4,0x6C,0xB0,0x06,0x07,0x7F,0xF6,0x4D,0x79};
 
 uint32_t Passenger::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -4429,8 +4442,8 @@ void swap(Document &a, Document &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* Manager::ascii_fingerprint = "B7D7482E144326613E7C934CED8C3FC2";
-const uint8_t Manager::binary_fingerprint[16] = {0xB7,0xD7,0x48,0x2E,0x14,0x43,0x26,0x61,0x3E,0x7C,0x93,0x4C,0xED,0x8C,0x3F,0xC2};
+const char* Manager::ascii_fingerprint = "32D92D238289CC575B50D200F3C23731";
+const uint8_t Manager::binary_fingerprint[16] = {0x32,0xD9,0x2D,0x23,0x82,0x89,0xCC,0x57,0x5B,0x50,0xD2,0x00,0xF3,0xC2,0x37,0x31};
 
 uint32_t Manager::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -4649,8 +4662,8 @@ void swap(Manager &a, Manager &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* Driver::ascii_fingerprint = "982AC5D670F600CF0165704E36B1F929";
-const uint8_t Driver::binary_fingerprint[16] = {0x98,0x2A,0xC5,0xD6,0x70,0xF6,0x00,0xCF,0x01,0x65,0x70,0x4E,0x36,0xB1,0xF9,0x29};
+const char* Driver::ascii_fingerprint = "712DFAC7E261959E3D48E1A4C1C5FEAA";
+const uint8_t Driver::binary_fingerprint[16] = {0x71,0x2D,0xFA,0xC7,0xE2,0x61,0x95,0x9E,0x3D,0x48,0xE1,0xA4,0xC1,0xC5,0xFE,0xAA};
 
 uint32_t Driver::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -4898,6 +4911,14 @@ uint32_t Driver::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
+      case 19:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->rating5);
+          this->__isset.rating5 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -5030,6 +5051,10 @@ uint32_t Driver::write(::apache::thrift::protocol::TProtocol* oprot) const {
   }
   xfer += oprot->writeFieldEnd();
 
+  xfer += oprot->writeFieldBegin("rating5", ::apache::thrift::protocol::T_I32, 19);
+  xfer += oprot->writeI32(this->rating5);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -5055,6 +5080,7 @@ void swap(Driver &a, Driver &b) {
   swap(a.vehicleids, b.vehicleids);
   swap(a.usagemonth, b.usagemonth);
   swap(a.usageyear, b.usageyear);
+  swap(a.rating5, b.rating5);
   swap(a.__isset, b.__isset);
 }
 
@@ -5146,8 +5172,8 @@ void swap(DriverOnline &a, DriverOnline &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* Dispatcher::ascii_fingerprint = "747CBE9A1F50E8316A0693AF697D6B3F";
-const uint8_t Dispatcher::binary_fingerprint[16] = {0x74,0x7C,0xBE,0x9A,0x1F,0x50,0xE8,0x31,0x6A,0x06,0x93,0xAF,0x69,0x7D,0x6B,0x3F};
+const char* Dispatcher::ascii_fingerprint = "26837AB8DD4EAB2CFCEF2A65FD30FDEA";
+const uint8_t Dispatcher::binary_fingerprint[16] = {0x26,0x83,0x7A,0xB8,0xDD,0x4E,0xAB,0x2C,0xFC,0xEF,0x2A,0x65,0xFD,0x30,0xFD,0xEA};
 
 uint32_t Dispatcher::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -5340,8 +5366,8 @@ void swap(Dispatcher &a, Dispatcher &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* ServiceOrderStop::ascii_fingerprint = "391C5DBB859D6635C569D441D94DA0EB";
-const uint8_t ServiceOrderStop::binary_fingerprint[16] = {0x39,0x1C,0x5D,0xBB,0x85,0x9D,0x66,0x35,0xC5,0x69,0xD4,0x41,0xD9,0x4D,0xA0,0xEB};
+const char* ServiceOrderStop::ascii_fingerprint = "13CBACAB4FB2823FC8AAF781E927EA01";
+const uint8_t ServiceOrderStop::binary_fingerprint[16] = {0x13,0xCB,0xAC,0xAB,0x4F,0xB2,0x82,0x3F,0xC8,0xAA,0xF7,0x81,0xE9,0x27,0xEA,0x01};
 
 uint32_t ServiceOrderStop::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -5582,8 +5608,8 @@ void swap(ServiceOrderStop &a, ServiceOrderStop &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* ServiceOrder::ascii_fingerprint = "7DE1767F218FA0F6264F5222D71F942D";
-const uint8_t ServiceOrder::binary_fingerprint[16] = {0x7D,0xE1,0x76,0x7F,0x21,0x8F,0xA0,0xF6,0x26,0x4F,0x52,0x22,0xD7,0x1F,0x94,0x2D};
+const char* ServiceOrder::ascii_fingerprint = "81A096F0E9AD759ABCF4B71EF2B402E4";
+const uint8_t ServiceOrder::binary_fingerprint[16] = {0x81,0xA0,0x96,0xF0,0xE9,0xAD,0x75,0x9A,0xBC,0xF4,0xB7,0x1E,0xF2,0xB4,0x02,0xE4};
 
 uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -5986,6 +6012,14 @@ uint32_t ServiceOrder::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
+      case 38:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->flagsstagesent);
+          this->__isset.flagsstagesent = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -6192,6 +6226,10 @@ uint32_t ServiceOrder::write(::apache::thrift::protocol::TProtocol* oprot) const
   xfer += oprot->writeI32(this->offers);
   xfer += oprot->writeFieldEnd();
 
+  xfer += oprot->writeFieldBegin("flagsstagesent", ::apache::thrift::protocol::T_I32, 38);
+  xfer += oprot->writeI32(this->flagsstagesent);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -6236,6 +6274,7 @@ void swap(ServiceOrder &a, ServiceOrder &b) {
   swap(a.notes, b.notes);
   swap(a.iscalculated, b.iscalculated);
   swap(a.offers, b.offers);
+  swap(a.flagsstagesent, b.flagsstagesent);
   swap(a.__isset, b.__isset);
 }
 

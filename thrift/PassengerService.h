@@ -17,6 +17,11 @@ class PassengerServiceIf {
   virtual ~PassengerServiceIf() {}
   virtual void getDocument(Document& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void getOrg(Org& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void getVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
+  virtual void getVehicles(Vehicles& _return, const Credentials& credentials, const UserDevice& userdevice, const Vehicleids& ids) = 0;
+  virtual void getDriverVehicles(Vehicles& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id) = 0;
+  virtual void addDriverVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicle& value) = 0;
+  virtual void rmDriverVehicle(const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicleid value) = 0;
   virtual void loginDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice) = 0;
   virtual void loginPassenger(Passenger& _return, const Credentials& credentials, const UserDevice& userdevice) = 0;
   virtual void findDictEntry(DictEntries& _return, const Credentials& credentials, const UserDevice& userdevice, const DictEntry& search, const RowRange& rowrange) = 0;
@@ -155,6 +160,21 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
     return;
   }
   void getOrg(Org& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void getVehicle(Vehicle& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
+    return;
+  }
+  void getVehicles(Vehicles& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Vehicleids& /* ids */) {
+    return;
+  }
+  void getDriverVehicles(Vehicles& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Driverid /* id */) {
+    return;
+  }
+  void addDriverVehicle(Vehicle& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Driverid /* id */, const Vehicle& /* value */) {
+    return;
+  }
+  void rmDriverVehicle(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Driverid /* id */, const Vehicleid /* value */) {
     return;
   }
   void loginDriver(Driver& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */) {
@@ -750,6 +770,694 @@ class PassengerService_getOrg_presult {
   ServiceFailure servicefailure;
 
   _PassengerService_getOrg_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_getVehicle_args__isset {
+  _PassengerService_getVehicle_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_getVehicle_args__isset;
+
+class PassengerService_getVehicle_args {
+ public:
+
+  PassengerService_getVehicle_args() : id(0) {
+  }
+
+  virtual ~PassengerService_getVehicle_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_getVehicle_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_getVehicle_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getVehicle_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getVehicle_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_getVehicle_pargs {
+ public:
+
+
+  virtual ~PassengerService_getVehicle_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getVehicle_result__isset {
+  _PassengerService_getVehicle_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getVehicle_result__isset;
+
+class PassengerService_getVehicle_result {
+ public:
+
+  PassengerService_getVehicle_result() {
+  }
+
+  virtual ~PassengerService_getVehicle_result() throw() {}
+
+  Vehicle success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getVehicle_result__isset __isset;
+
+  void __set_success(const Vehicle& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_getVehicle_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getVehicle_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getVehicle_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getVehicle_presult__isset {
+  _PassengerService_getVehicle_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getVehicle_presult__isset;
+
+class PassengerService_getVehicle_presult {
+ public:
+
+
+  virtual ~PassengerService_getVehicle_presult() throw() {}
+
+  Vehicle* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getVehicle_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_getVehicles_args__isset {
+  _PassengerService_getVehicles_args__isset() : credentials(false), userdevice(false), ids(false) {}
+  bool credentials;
+  bool userdevice;
+  bool ids;
+} _PassengerService_getVehicles_args__isset;
+
+class PassengerService_getVehicles_args {
+ public:
+
+  PassengerService_getVehicles_args() {
+  }
+
+  virtual ~PassengerService_getVehicles_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  Vehicleids ids;
+
+  _PassengerService_getVehicles_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_ids(const Vehicleids& val) {
+    ids = val;
+  }
+
+  bool operator == (const PassengerService_getVehicles_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(ids == rhs.ids))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getVehicles_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getVehicles_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_getVehicles_pargs {
+ public:
+
+
+  virtual ~PassengerService_getVehicles_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const Vehicleids* ids;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getVehicles_result__isset {
+  _PassengerService_getVehicles_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getVehicles_result__isset;
+
+class PassengerService_getVehicles_result {
+ public:
+
+  PassengerService_getVehicles_result() {
+  }
+
+  virtual ~PassengerService_getVehicles_result() throw() {}
+
+  Vehicles success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getVehicles_result__isset __isset;
+
+  void __set_success(const Vehicles& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_getVehicles_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getVehicles_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getVehicles_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getVehicles_presult__isset {
+  _PassengerService_getVehicles_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getVehicles_presult__isset;
+
+class PassengerService_getVehicles_presult {
+ public:
+
+
+  virtual ~PassengerService_getVehicles_presult() throw() {}
+
+  Vehicles* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getVehicles_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_getDriverVehicles_args__isset {
+  _PassengerService_getDriverVehicles_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_getDriverVehicles_args__isset;
+
+class PassengerService_getDriverVehicles_args {
+ public:
+
+  PassengerService_getDriverVehicles_args() : id(0) {
+  }
+
+  virtual ~PassengerService_getDriverVehicles_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  Driverid id;
+
+  _PassengerService_getDriverVehicles_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const Driverid val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_getDriverVehicles_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getDriverVehicles_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getDriverVehicles_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_getDriverVehicles_pargs {
+ public:
+
+
+  virtual ~PassengerService_getDriverVehicles_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const Driverid* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getDriverVehicles_result__isset {
+  _PassengerService_getDriverVehicles_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getDriverVehicles_result__isset;
+
+class PassengerService_getDriverVehicles_result {
+ public:
+
+  PassengerService_getDriverVehicles_result() {
+  }
+
+  virtual ~PassengerService_getDriverVehicles_result() throw() {}
+
+  Vehicles success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getDriverVehicles_result__isset __isset;
+
+  void __set_success(const Vehicles& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_getDriverVehicles_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getDriverVehicles_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getDriverVehicles_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getDriverVehicles_presult__isset {
+  _PassengerService_getDriverVehicles_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getDriverVehicles_presult__isset;
+
+class PassengerService_getDriverVehicles_presult {
+ public:
+
+
+  virtual ~PassengerService_getDriverVehicles_presult() throw() {}
+
+  Vehicles* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getDriverVehicles_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_addDriverVehicle_args__isset {
+  _PassengerService_addDriverVehicle_args__isset() : credentials(false), userdevice(false), id(false), value(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+  bool value;
+} _PassengerService_addDriverVehicle_args__isset;
+
+class PassengerService_addDriverVehicle_args {
+ public:
+
+  PassengerService_addDriverVehicle_args() : id(0) {
+  }
+
+  virtual ~PassengerService_addDriverVehicle_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  Driverid id;
+  Vehicle value;
+
+  _PassengerService_addDriverVehicle_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const Driverid val) {
+    id = val;
+  }
+
+  void __set_value(const Vehicle& val) {
+    value = val;
+  }
+
+  bool operator == (const PassengerService_addDriverVehicle_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addDriverVehicle_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addDriverVehicle_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_addDriverVehicle_pargs {
+ public:
+
+
+  virtual ~PassengerService_addDriverVehicle_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const Driverid* id;
+  const Vehicle* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addDriverVehicle_result__isset {
+  _PassengerService_addDriverVehicle_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addDriverVehicle_result__isset;
+
+class PassengerService_addDriverVehicle_result {
+ public:
+
+  PassengerService_addDriverVehicle_result() {
+  }
+
+  virtual ~PassengerService_addDriverVehicle_result() throw() {}
+
+  Vehicle success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addDriverVehicle_result__isset __isset;
+
+  void __set_success(const Vehicle& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_addDriverVehicle_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_addDriverVehicle_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_addDriverVehicle_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_addDriverVehicle_presult__isset {
+  _PassengerService_addDriverVehicle_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_addDriverVehicle_presult__isset;
+
+class PassengerService_addDriverVehicle_presult {
+ public:
+
+
+  virtual ~PassengerService_addDriverVehicle_presult() throw() {}
+
+  Vehicle* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_addDriverVehicle_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_rmDriverVehicle_args__isset {
+  _PassengerService_rmDriverVehicle_args__isset() : credentials(false), userdevice(false), id(false), value(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+  bool value;
+} _PassengerService_rmDriverVehicle_args__isset;
+
+class PassengerService_rmDriverVehicle_args {
+ public:
+
+  PassengerService_rmDriverVehicle_args() : id(0), value(0) {
+  }
+
+  virtual ~PassengerService_rmDriverVehicle_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  Driverid id;
+  Vehicleid value;
+
+  _PassengerService_rmDriverVehicle_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const Driverid val) {
+    id = val;
+  }
+
+  void __set_value(const Vehicleid val) {
+    value = val;
+  }
+
+  bool operator == (const PassengerService_rmDriverVehicle_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmDriverVehicle_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmDriverVehicle_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_rmDriverVehicle_pargs {
+ public:
+
+
+  virtual ~PassengerService_rmDriverVehicle_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const Driverid* id;
+  const Vehicleid* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmDriverVehicle_result__isset {
+  _PassengerService_rmDriverVehicle_result__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmDriverVehicle_result__isset;
+
+class PassengerService_rmDriverVehicle_result {
+ public:
+
+  PassengerService_rmDriverVehicle_result() {
+  }
+
+  virtual ~PassengerService_rmDriverVehicle_result() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmDriverVehicle_result__isset __isset;
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_rmDriverVehicle_result & rhs) const
+  {
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_rmDriverVehicle_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_rmDriverVehicle_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_rmDriverVehicle_presult__isset {
+  _PassengerService_rmDriverVehicle_presult__isset() : servicefailure(false) {}
+  bool servicefailure;
+} _PassengerService_rmDriverVehicle_presult__isset;
+
+class PassengerService_rmDriverVehicle_presult {
+ public:
+
+
+  virtual ~PassengerService_rmDriverVehicle_presult() throw() {}
+
+  ServiceFailure servicefailure;
+
+  _PassengerService_rmDriverVehicle_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -15207,6 +15915,21 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   void getOrg(Org& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id);
   void send_getOrg(const Credentials& credentials, const UserDevice& userdevice, const ID id);
   void recv_getOrg(Org& _return);
+  void getVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_getVehicle(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_getVehicle(Vehicle& _return);
+  void getVehicles(Vehicles& _return, const Credentials& credentials, const UserDevice& userdevice, const Vehicleids& ids);
+  void send_getVehicles(const Credentials& credentials, const UserDevice& userdevice, const Vehicleids& ids);
+  void recv_getVehicles(Vehicles& _return);
+  void getDriverVehicles(Vehicles& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id);
+  void send_getDriverVehicles(const Credentials& credentials, const UserDevice& userdevice, const Driverid id);
+  void recv_getDriverVehicles(Vehicles& _return);
+  void addDriverVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicle& value);
+  void send_addDriverVehicle(const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicle& value);
+  void recv_addDriverVehicle(Vehicle& _return);
+  void rmDriverVehicle(const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicleid value);
+  void send_rmDriverVehicle(const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicleid value);
+  void recv_rmDriverVehicle();
   void loginDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice);
   void send_loginDriver(const Credentials& credentials, const UserDevice& userdevice);
   void recv_loginDriver(Driver& _return);
@@ -15539,6 +16262,11 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   ProcessMap processMap_;
   void process_getDocument(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getOrg(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getVehicle(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getVehicles(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getDriverVehicles(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addDriverVehicle(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_rmDriverVehicle(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_loginDriver(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_loginPassenger(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_findDictEntry(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -15649,6 +16377,11 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     iface_(iface) {
     processMap_["getDocument"] = &PassengerServiceProcessor::process_getDocument;
     processMap_["getOrg"] = &PassengerServiceProcessor::process_getOrg;
+    processMap_["getVehicle"] = &PassengerServiceProcessor::process_getVehicle;
+    processMap_["getVehicles"] = &PassengerServiceProcessor::process_getVehicles;
+    processMap_["getDriverVehicles"] = &PassengerServiceProcessor::process_getDriverVehicles;
+    processMap_["addDriverVehicle"] = &PassengerServiceProcessor::process_addDriverVehicle;
+    processMap_["rmDriverVehicle"] = &PassengerServiceProcessor::process_rmDriverVehicle;
     processMap_["loginDriver"] = &PassengerServiceProcessor::process_loginDriver;
     processMap_["loginPassenger"] = &PassengerServiceProcessor::process_loginPassenger;
     processMap_["findDictEntry"] = &PassengerServiceProcessor::process_findDictEntry;
@@ -15800,6 +16533,55 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
     }
     ifaces_[i]->getOrg(_return, credentials, userdevice, id);
     return;
+  }
+
+  void getVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getVehicle(_return, credentials, userdevice, id);
+    }
+    ifaces_[i]->getVehicle(_return, credentials, userdevice, id);
+    return;
+  }
+
+  void getVehicles(Vehicles& _return, const Credentials& credentials, const UserDevice& userdevice, const Vehicleids& ids) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getVehicles(_return, credentials, userdevice, ids);
+    }
+    ifaces_[i]->getVehicles(_return, credentials, userdevice, ids);
+    return;
+  }
+
+  void getDriverVehicles(Vehicles& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getDriverVehicles(_return, credentials, userdevice, id);
+    }
+    ifaces_[i]->getDriverVehicles(_return, credentials, userdevice, id);
+    return;
+  }
+
+  void addDriverVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicle& value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->addDriverVehicle(_return, credentials, userdevice, id, value);
+    }
+    ifaces_[i]->addDriverVehicle(_return, credentials, userdevice, id, value);
+    return;
+  }
+
+  void rmDriverVehicle(const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicleid value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->rmDriverVehicle(credentials, userdevice, id, value);
+    }
+    ifaces_[i]->rmDriverVehicle(credentials, userdevice, id, value);
   }
 
   void loginDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice) {
