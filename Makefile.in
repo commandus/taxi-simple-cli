@@ -52,8 +52,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_taxi_simple_cli_OBJECTS = client.$(OBJEXT) \
 	taxi-simple-cli.$(OBJEXT) utiltime.$(OBJEXT) \
-	PassengerService.$(OBJEXT) taxi_constants.$(OBJEXT) \
-	taxi_types.$(OBJEXT)
+	argvcharsetconv.$(OBJEXT) PassengerService.$(OBJEXT) \
+	taxi_constants.$(OBJEXT) taxi_types.$(OBJEXT)
 taxi_simple_cli_OBJECTS = $(am_taxi_simple_cli_OBJECTS)
 taxi_simple_cli_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@
@@ -209,7 +209,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = .
 AM_CPPFLAGS = -I. -Ithrift
-taxi_simple_cli_SOURCES = client.cpp taxi-simple-cli.cpp utiltime.cpp thrift/PassengerService.cpp thrift/taxi_constants.cpp thrift/taxi_types.cpp 
+taxi_simple_cli_SOURCES = client.cpp taxi-simple-cli.cpp utiltime.cpp argvcharsetconv.cpp thrift/PassengerService.cpp thrift/taxi_constants.cpp thrift/taxi_types.cpp 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -314,6 +314,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PassengerService.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/argvcharsetconv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/client.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/taxi-simple-cli.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/taxi_constants.Po@am__quote@

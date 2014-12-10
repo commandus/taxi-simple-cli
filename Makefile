@@ -52,8 +52,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_taxi_simple_cli_OBJECTS = client.$(OBJEXT) \
 	taxi-simple-cli.$(OBJEXT) utiltime.$(OBJEXT) \
-	PassengerService.$(OBJEXT) taxi_constants.$(OBJEXT) \
-	taxi_types.$(OBJEXT)
+	argvcharsetconv.$(OBJEXT) PassengerService.$(OBJEXT) \
+	taxi_constants.$(OBJEXT) taxi_types.$(OBJEXT)
 taxi_simple_cli_OBJECTS = $(am_taxi_simple_cli_OBJECTS)
 taxi_simple_cli_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.
@@ -124,12 +124,12 @@ AUTOCONF = autoconf
 AUTOHEADER = autoheader
 AUTOMAKE = automake-1.11
 AWK = gawk
-CC = gcc
+CC = /opt/centos/devtoolset-1.1/root/usr/bin/gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS =  -O2
-CPP = gcc -E
+CFLAGS = -O2
+CPP = /opt/centos/devtoolset-1.1/root/usr/bin/cpp
 CPPFLAGS = 
-CXX = g++
+CXX = /opt/centos/devtoolset-1.1/root/usr/bin/c++
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS =  -O2
 CYGPATH_W = echo
@@ -148,7 +148,7 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LDFLAGS = 
 LIBOBJS =  ${LIBOBJDIR}malloc$U.o ${LIBOBJDIR}mktime$U.o ${LIBOBJDIR}realloc$U.o
-LIBS = -lconfig++ -lcurl -lthrift -largtable2 
+LIBS = -lconfig++ -lcurl -lthrift -largtable2 -pthread
 LTLIBOBJS =  ${LIBOBJDIR}malloc$U.lo ${LIBOBJDIR}mktime$U.lo ${LIBOBJDIR}realloc$U.lo
 MAKEINFO = makeinfo
 MKDIR_P = /bin/mkdir -p
@@ -168,8 +168,8 @@ abs_builddir = /home/andrei/taxi/taxi-simple-cli
 abs_srcdir = /home/andrei/taxi/taxi-simple-cli
 abs_top_builddir = /home/andrei/taxi/taxi-simple-cli
 abs_top_srcdir = /home/andrei/taxi/taxi-simple-cli
-ac_ct_CC = gcc
-ac_ct_CXX = g++
+ac_ct_CC = /opt/centos/devtoolset-1.1/root/usr/bin/gcc
+ac_ct_CXX = 
 am__include = include
 am__leading_dot = .
 am__quote = 
@@ -209,7 +209,7 @@ top_builddir = .
 top_srcdir = .
 SUBDIRS = .
 AM_CPPFLAGS = -I. -Ithrift
-taxi_simple_cli_SOURCES = client.cpp taxi-simple-cli.cpp utiltime.cpp thrift/PassengerService.cpp thrift/taxi_constants.cpp thrift/taxi_types.cpp 
+taxi_simple_cli_SOURCES = client.cpp taxi-simple-cli.cpp utiltime.cpp argvcharsetconv.cpp thrift/PassengerService.cpp thrift/taxi_constants.cpp thrift/taxi_types.cpp 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -314,6 +314,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 include ./$(DEPDIR)/PassengerService.Po
+include ./$(DEPDIR)/argvcharsetconv.Po
 include ./$(DEPDIR)/client.Po
 include ./$(DEPDIR)/taxi-simple-cli.Po
 include ./$(DEPDIR)/taxi_constants.Po

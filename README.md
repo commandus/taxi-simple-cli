@@ -84,11 +84,21 @@ taxi-simple-cli --add --object vehiclebrand --name Acura
 
 Добавление модели автомобиля
 ----------------------------
-taxi-simple-cli --add --object vehiclebrand --brandname "Toyot" --name Acura
+taxi-simple-cli --add --object vehiclemodel --brandname "Toyot" --name Acura
 
 Добавление названия цвета автомобиля
 ------------------------------------
 taxi-simple-cli --add --object vehiclecolor --name "черный" --value 0
+
+Добавление автомобиля
+------------------------------------
+taxi-simple-cli --add --object vehicle 
+--brand 
+--model
+--color название или число(десятичное!)
+--plate
+--platenumber
+--vin
 
 Добавление организации
 ----------------------
@@ -121,8 +131,13 @@ taxi-simple-cli --add --object customer --nickname "ООО 1" --cityid 1
 
 Добавление водителя
 -------------------
-taxi-simple-cli --add --object driver --nickname "Вася Пупкин" --cityid 1
+taxi-simple-cli --add --object driver --phone 79141112222 --nickname "Вася Пупкин" --cityid 1
+--phone			79141112222
+--pwd			пароль
 --nickname		ник
+--firstname		имя (необязательно)
+--lastname		фамилия (необязательно)
+--middlename		отчество (необязательно)
 --callsign		позывной (номер)
 --cityid		идентификатор города
 --online		0- не на линии (по умолчанию), 1- на линии
@@ -207,6 +222,9 @@ taxi-simple-cli --list --object passenger
 Заказ водителя
 ==============
 
+Изменение статуса заказа водителем (диспетчером)
+================================================
+
 taxi-simple-cli --order <состояние> --id <номер заказа> [--minutes <время подъезда>]
 где состояние: take,wait,drive,complete,fail
 
@@ -219,13 +237,11 @@ taxi-simple-cli --order wait --id 12
 Водитель начал везти
 taxi-simple-cli --order drive --id 12 
 
-Водитель не дождался пассажира
+Водитель не дождался пассажира, не смог выполнить заказ
 taxi-simple-cli --order fail --id 12 
 
 Водитель успешно закончил исполнять заказ
 taxi-simple-cli --order complete --id 12 
-
-
 
 Водитель на линии или ушел с линии
 ==================================
@@ -240,8 +256,6 @@ taxi-simple-cli ... --myrole driver --online 0
 taxi-simple-cli	... --myrole passenger --add --object serviceorder --cityid <№город> [--ordertype <1..2> --ordertimetype <1..3> --datestart datetime] --notes "Примечание"]
 --ordertype 1- такси (по умолчанию) 2- курьер
 --ordertimetype 1- срочный (по умолчанию) 2- Запланированный в точно указанное время в течение суток 3-Запланированный в точно указанное время ежедневно в заданные дни недели
-
-
 
 Проталкивание уведомления
 =========================
@@ -297,3 +311,9 @@ A:export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib. Для 64 битных
 
 Q:Если крякозябры в выводе консоли Windows. 
 A:В свойствах окна консоли Windows должен быть установлен шрифт Lucida Console, а не Consolas. В Linux консоль utf-8
+
+Q: Пересобрать без отладочной информауции
+A: в сгенерированном ./configure файле Makefile уберимте -g из флагов компилятору
+
+Q: undefined reference to `pthread_cancel'
+A: в Makefile добавьте LIBS -pthread

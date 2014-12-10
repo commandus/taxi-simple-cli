@@ -20,6 +20,7 @@ class PassengerServiceIf {
   virtual void getVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void getVehicles(Vehicles& _return, const Credentials& credentials, const UserDevice& userdevice, const Vehicleids& ids) = 0;
   virtual void getDriverVehicles(Vehicles& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id) = 0;
+  virtual void getDictEntry(DictEntry& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) = 0;
   virtual void addDriverVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicle& value) = 0;
   virtual void rmDriverVehicle(const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicleid value) = 0;
   virtual void loginDriver(Driver& _return, const Credentials& credentials, const UserDevice& userdevice) = 0;
@@ -82,7 +83,7 @@ class PassengerServiceIf {
   virtual void findPassenger(Passengers& _return, const Credentials& credentials, const UserDevice& userdevice, const Passenger& search, const RowRange& rowrange) = 0;
   virtual void findTariffPlan(TariffPlans& _return, const Credentials& credentials, const UserDevice& userdevice, const TariffPlan& search, const RowRange& rowrange) = 0;
   virtual void findRate(Rates& _return, const Credentials& credentials, const UserDevice& userdevice, const Rate& search, const RowRange& rowrange) = 0;
-  virtual void findServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& search, const DateRange& sheduletime, const RowRange& rowrange) = 0;
+  virtual void findServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& search, const DateRange& sheduletime, const StageGroup::type stagegroup, const RowRange& rowrange) = 0;
   virtual void findServiceOrderDecline(ServiceOrderDeclines& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& search, const DateRange& sheduletime, const RowRange& rowrange) = 0;
   virtual void findClaim(Claims& _return, const Credentials& credentials, const UserDevice& userdevice, const Claim& search, const DateRange& sheduletime, const RowRange& rowrange) = 0;
   virtual void findTrack(Tracks& _return, const Credentials& credentials, const UserDevice& userdevice, const Track& search, const DateRange& sheduletime, const RowRange& rowrange) = 0;
@@ -91,7 +92,7 @@ class PassengerServiceIf {
   virtual bool setOnline(const Credentials& credentials, const UserDevice& userdevice, const bool value) = 0;
   virtual bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes) = 0;
   virtual bool startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
-  virtual bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
+  virtual bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const Driver& driver) = 0;
   virtual bool stopDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
   virtual bool completeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
   virtual bool cancelOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
@@ -169,6 +170,9 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
     return;
   }
   void getDriverVehicles(Vehicles& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Driverid /* id */) {
+    return;
+  }
+  void getDictEntry(DictEntry& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* id */) {
     return;
   }
   void addDriverVehicle(Vehicle& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Driverid /* id */, const Vehicle& /* value */) {
@@ -357,7 +361,7 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
   void findRate(Rates& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const Rate& /* search */, const RowRange& /* rowrange */) {
     return;
   }
-  void findServiceOrder(ServiceOrders& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ServiceOrder& /* search */, const DateRange& /* sheduletime */, const RowRange& /* rowrange */) {
+  void findServiceOrder(ServiceOrders& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ServiceOrder& /* search */, const DateRange& /* sheduletime */, const StageGroup::type /* stagegroup */, const RowRange& /* rowrange */) {
     return;
   }
   void findServiceOrderDecline(ServiceOrderDeclines& /* _return */, const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ServiceOrderDecline& /* search */, const DateRange& /* sheduletime */, const RowRange& /* rowrange */) {
@@ -388,7 +392,7 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
     bool _return = false;
     return _return;
   }
-  bool startDriving(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */) {
+  bool startDriving(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */, const Driver& /* driver */) {
     bool _return = false;
     return _return;
   }
@@ -1178,6 +1182,142 @@ class PassengerService_getDriverVehicles_presult {
   ServiceFailure servicefailure;
 
   _PassengerService_getDriverVehicles_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _PassengerService_getDictEntry_args__isset {
+  _PassengerService_getDictEntry_args__isset() : credentials(false), userdevice(false), id(false) {}
+  bool credentials;
+  bool userdevice;
+  bool id;
+} _PassengerService_getDictEntry_args__isset;
+
+class PassengerService_getDictEntry_args {
+ public:
+
+  PassengerService_getDictEntry_args() : id(0) {
+  }
+
+  virtual ~PassengerService_getDictEntry_args() throw() {}
+
+  Credentials credentials;
+  UserDevice userdevice;
+  ID id;
+
+  _PassengerService_getDictEntry_args__isset __isset;
+
+  void __set_credentials(const Credentials& val) {
+    credentials = val;
+  }
+
+  void __set_userdevice(const UserDevice& val) {
+    userdevice = val;
+  }
+
+  void __set_id(const ID val) {
+    id = val;
+  }
+
+  bool operator == (const PassengerService_getDictEntry_args & rhs) const
+  {
+    if (!(credentials == rhs.credentials))
+      return false;
+    if (!(userdevice == rhs.userdevice))
+      return false;
+    if (!(id == rhs.id))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getDictEntry_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getDictEntry_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PassengerService_getDictEntry_pargs {
+ public:
+
+
+  virtual ~PassengerService_getDictEntry_pargs() throw() {}
+
+  const Credentials* credentials;
+  const UserDevice* userdevice;
+  const ID* id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getDictEntry_result__isset {
+  _PassengerService_getDictEntry_result__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getDictEntry_result__isset;
+
+class PassengerService_getDictEntry_result {
+ public:
+
+  PassengerService_getDictEntry_result() {
+  }
+
+  virtual ~PassengerService_getDictEntry_result() throw() {}
+
+  DictEntry success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getDictEntry_result__isset __isset;
+
+  void __set_success(const DictEntry& val) {
+    success = val;
+  }
+
+  void __set_servicefailure(const ServiceFailure& val) {
+    servicefailure = val;
+  }
+
+  bool operator == (const PassengerService_getDictEntry_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    if (!(servicefailure == rhs.servicefailure))
+      return false;
+    return true;
+  }
+  bool operator != (const PassengerService_getDictEntry_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PassengerService_getDictEntry_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _PassengerService_getDictEntry_presult__isset {
+  _PassengerService_getDictEntry_presult__isset() : success(false), servicefailure(false) {}
+  bool success;
+  bool servicefailure;
+} _PassengerService_getDictEntry_presult__isset;
+
+class PassengerService_getDictEntry_presult {
+ public:
+
+
+  virtual ~PassengerService_getDictEntry_presult() throw() {}
+
+  DictEntry* success;
+  ServiceFailure servicefailure;
+
+  _PassengerService_getDictEntry_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -9758,18 +9898,19 @@ class PassengerService_findRate_presult {
 };
 
 typedef struct _PassengerService_findServiceOrder_args__isset {
-  _PassengerService_findServiceOrder_args__isset() : credentials(false), userdevice(false), search(false), sheduletime(false), rowrange(false) {}
+  _PassengerService_findServiceOrder_args__isset() : credentials(false), userdevice(false), search(false), sheduletime(false), stagegroup(false), rowrange(false) {}
   bool credentials;
   bool userdevice;
   bool search;
   bool sheduletime;
+  bool stagegroup;
   bool rowrange;
 } _PassengerService_findServiceOrder_args__isset;
 
 class PassengerService_findServiceOrder_args {
  public:
 
-  PassengerService_findServiceOrder_args() {
+  PassengerService_findServiceOrder_args() : stagegroup((StageGroup::type)0) {
   }
 
   virtual ~PassengerService_findServiceOrder_args() throw() {}
@@ -9778,6 +9919,7 @@ class PassengerService_findServiceOrder_args {
   UserDevice userdevice;
   ServiceOrder search;
   DateRange sheduletime;
+  StageGroup::type stagegroup;
   RowRange rowrange;
 
   _PassengerService_findServiceOrder_args__isset __isset;
@@ -9798,6 +9940,10 @@ class PassengerService_findServiceOrder_args {
     sheduletime = val;
   }
 
+  void __set_stagegroup(const StageGroup::type val) {
+    stagegroup = val;
+  }
+
   void __set_rowrange(const RowRange& val) {
     rowrange = val;
   }
@@ -9811,6 +9957,8 @@ class PassengerService_findServiceOrder_args {
     if (!(search == rhs.search))
       return false;
     if (!(sheduletime == rhs.sheduletime))
+      return false;
+    if (!(stagegroup == rhs.stagegroup))
       return false;
     if (!(rowrange == rhs.rowrange))
       return false;
@@ -9838,6 +9986,7 @@ class PassengerService_findServiceOrder_pargs {
   const UserDevice* userdevice;
   const ServiceOrder* search;
   const DateRange* sheduletime;
+  const StageGroup::type* stagegroup;
   const RowRange* rowrange;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -11072,10 +11221,11 @@ class PassengerService_startWaiting_presult {
 };
 
 typedef struct _PassengerService_startDriving_args__isset {
-  _PassengerService_startDriving_args__isset() : credentials(false), userdevice(false), serviceorderid(false) {}
+  _PassengerService_startDriving_args__isset() : credentials(false), userdevice(false), serviceorderid(false), driver(false) {}
   bool credentials;
   bool userdevice;
   bool serviceorderid;
+  bool driver;
 } _PassengerService_startDriving_args__isset;
 
 class PassengerService_startDriving_args {
@@ -11089,6 +11239,7 @@ class PassengerService_startDriving_args {
   Credentials credentials;
   UserDevice userdevice;
   ID serviceorderid;
+  Driver driver;
 
   _PassengerService_startDriving_args__isset __isset;
 
@@ -11104,6 +11255,10 @@ class PassengerService_startDriving_args {
     serviceorderid = val;
   }
 
+  void __set_driver(const Driver& val) {
+    driver = val;
+  }
+
   bool operator == (const PassengerService_startDriving_args & rhs) const
   {
     if (!(credentials == rhs.credentials))
@@ -11111,6 +11266,8 @@ class PassengerService_startDriving_args {
     if (!(userdevice == rhs.userdevice))
       return false;
     if (!(serviceorderid == rhs.serviceorderid))
+      return false;
+    if (!(driver == rhs.driver))
       return false;
     return true;
   }
@@ -11135,6 +11292,7 @@ class PassengerService_startDriving_pargs {
   const Credentials* credentials;
   const UserDevice* userdevice;
   const ID* serviceorderid;
+  const Driver* driver;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -15924,6 +16082,9 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   void getDriverVehicles(Vehicles& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id);
   void send_getDriverVehicles(const Credentials& credentials, const UserDevice& userdevice, const Driverid id);
   void recv_getDriverVehicles(Vehicles& _return);
+  void getDictEntry(DictEntry& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void send_getDictEntry(const Credentials& credentials, const UserDevice& userdevice, const ID id);
+  void recv_getDictEntry(DictEntry& _return);
   void addDriverVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicle& value);
   void send_addDriverVehicle(const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicle& value);
   void recv_addDriverVehicle(Vehicle& _return);
@@ -16110,8 +16271,8 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   void findRate(Rates& _return, const Credentials& credentials, const UserDevice& userdevice, const Rate& search, const RowRange& rowrange);
   void send_findRate(const Credentials& credentials, const UserDevice& userdevice, const Rate& search, const RowRange& rowrange);
   void recv_findRate(Rates& _return);
-  void findServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& search, const DateRange& sheduletime, const RowRange& rowrange);
-  void send_findServiceOrder(const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& search, const DateRange& sheduletime, const RowRange& rowrange);
+  void findServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& search, const DateRange& sheduletime, const StageGroup::type stagegroup, const RowRange& rowrange);
+  void send_findServiceOrder(const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& search, const DateRange& sheduletime, const StageGroup::type stagegroup, const RowRange& rowrange);
   void recv_findServiceOrder(ServiceOrders& _return);
   void findServiceOrderDecline(ServiceOrderDeclines& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& search, const DateRange& sheduletime, const RowRange& rowrange);
   void send_findServiceOrderDecline(const Credentials& credentials, const UserDevice& userdevice, const ServiceOrderDecline& search, const DateRange& sheduletime, const RowRange& rowrange);
@@ -16137,8 +16298,8 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   bool startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
   void send_startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
   bool recv_startWaiting();
-  bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
-  void send_startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
+  bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const Driver& driver);
+  void send_startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const Driver& driver);
   bool recv_startDriving();
   bool stopDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
   void send_stopDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
@@ -16265,6 +16426,7 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_getVehicle(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getVehicles(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getDriverVehicles(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getDictEntry(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addDriverVehicle(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_rmDriverVehicle(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_loginDriver(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -16380,6 +16542,7 @@ class PassengerServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["getVehicle"] = &PassengerServiceProcessor::process_getVehicle;
     processMap_["getVehicles"] = &PassengerServiceProcessor::process_getVehicles;
     processMap_["getDriverVehicles"] = &PassengerServiceProcessor::process_getDriverVehicles;
+    processMap_["getDictEntry"] = &PassengerServiceProcessor::process_getDictEntry;
     processMap_["addDriverVehicle"] = &PassengerServiceProcessor::process_addDriverVehicle;
     processMap_["rmDriverVehicle"] = &PassengerServiceProcessor::process_rmDriverVehicle;
     processMap_["loginDriver"] = &PassengerServiceProcessor::process_loginDriver;
@@ -16562,6 +16725,16 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
       ifaces_[i]->getDriverVehicles(_return, credentials, userdevice, id);
     }
     ifaces_[i]->getDriverVehicles(_return, credentials, userdevice, id);
+    return;
+  }
+
+  void getDictEntry(DictEntry& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getDictEntry(_return, credentials, userdevice, id);
+    }
+    ifaces_[i]->getDictEntry(_return, credentials, userdevice, id);
     return;
   }
 
@@ -17174,13 +17347,13 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
     return;
   }
 
-  void findServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& search, const DateRange& sheduletime, const RowRange& rowrange) {
+  void findServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& search, const DateRange& sheduletime, const StageGroup::type stagegroup, const RowRange& rowrange) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->findServiceOrder(_return, credentials, userdevice, search, sheduletime, rowrange);
+      ifaces_[i]->findServiceOrder(_return, credentials, userdevice, search, sheduletime, stagegroup, rowrange);
     }
-    ifaces_[i]->findServiceOrder(_return, credentials, userdevice, search, sheduletime, rowrange);
+    ifaces_[i]->findServiceOrder(_return, credentials, userdevice, search, sheduletime, stagegroup, rowrange);
     return;
   }
 
@@ -17260,13 +17433,13 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
     return ifaces_[i]->startWaiting(credentials, userdevice, serviceorderid);
   }
 
-  bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+  bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const Driver& driver) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->startDriving(credentials, userdevice, serviceorderid);
+      ifaces_[i]->startDriving(credentials, userdevice, serviceorderid, driver);
     }
-    return ifaces_[i]->startDriving(credentials, userdevice, serviceorderid);
+    return ifaces_[i]->startDriving(credentials, userdevice, serviceorderid, driver);
   }
 
   bool stopDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {

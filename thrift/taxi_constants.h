@@ -15,6 +15,7 @@ class taxiConstants {
  public:
   taxiConstants();
 
+  std::vector<STR>  CommonProperties;
 };
 
 extern const taxiConstants g_taxi_constants;

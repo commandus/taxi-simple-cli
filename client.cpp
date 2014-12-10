@@ -47,7 +47,7 @@ void coutdate(const taxi::DATE &date)
 {
 	struct tm *tm = localtime(&date);
 	// cout << std::put_time(tm, "%Y/%m/%d");
-	char buffer [80];
+	char buffer[80];
 	struct tm *ld = localtime(&date);
 	strftime(buffer, sizeof(buffer), "%Y/%m/%d", ld);
 	puts(buffer);
@@ -59,7 +59,7 @@ void couttime(const taxi::DATE &date)
 	// cout << std::put_time(tm, "%Y/%m/%d %T");
     char buffer [80];
     struct tm *ld = localtime(&date);
-    strftime(buffer, sizeof(buffer), "%Y/%m/%d %T", ld);
+    strftime(buffer, sizeof(buffer), "%H:%M", ld);
     puts(buffer);
 }						
 
@@ -205,9 +205,12 @@ void coutPassengerUsage(PassengerUsage &v)
 void coutNotificationEvent(NotificationEvent &v)
 {
 	cout << v.id << '\t' << v.receiverrole << '\t' << v.phone << '\t' << v.emitterrole << '\t' << v.emitter
-		<< '\t' << v.serviceobject << '\t' << v.serviceaction << '\t'
-		<< v.datestart << '\t' << v.infuture << '\t' << v.serviceobjectid << '\t' << v.sent << '\t' 
-		<< v.sentdate << '\t' << v.notes << '\t' << v.gcmsent << '\t' << v.isgcmsentsuccess << '\t'
+		<< '\t' << v.serviceobject << '\t' << v.serviceaction << '\t';
+	couttime(v.datestart);
+	cout << '\t' << v.infuture << '\t' << v.serviceobjectid << '\t' << v.sent << '\t' 
+		<< v.sentdate << '\t';
+	couts(v.notes);
+	cout << '\t' << v.gcmsent << '\t' << v.isgcmsentsuccess << '\t'
 		<< v.gcmsentdate << '\t' << v.gcmresponsecode << '\t' << v.gcmresponse << '\t'; 
 }
 
@@ -265,6 +268,24 @@ size_t readstring(FILE *f, string &data)
 	data.resize(r);
 	rewind(f);
 	return fread(&data[0], sizeof(char), r, f);
+}
+
+taxi::ID checkOneDictEntry(std::string &v, DictEntries &r)
+{
+	switch (r.size())
+	{
+	case 0:
+		cerr << v << " not found" << std::endl;
+		return 0;
+	case 1:
+		return r.begin()->id;
+	default:
+		for (DictEntries::iterator it = r.begin(); it != r.end(); ++it)
+		{
+			cerr << it->strvalue << std::endl;
+		}
+		return 0;
+	}
 }
 
 int sendGCM(const STR &apikey, const vector<STR> ids, const STR &data, bool verbose)
@@ -398,6 +419,9 @@ int doCmd(int argc, char** argv)
 	struct arg_str  *s_description = arg_str0(NULL, "description", "<text>", "string");
 	struct arg_str  *s_note = arg_str0(NULL, "note", "<text>", "string");
 	struct arg_str  *s_nickname = arg_str0(NULL, "nickname", "<nick>", "string");
+	struct arg_str  *s_firstname = arg_str0(NULL, "firstname", "<name>", "string");
+	struct arg_str  *s_lastname = arg_str0(NULL, "lastname", "<name>", "string");
+	struct arg_str  *s_middlename = arg_str0(NULL, "middlename", "<name>", "string");
 	struct arg_int  *i_cityid = arg_int0(NULL, "cityid", "<ID>", "city id");
 	struct arg_int  *i_orgserviceid = arg_int0(NULL, "orgserviceid", "<ID>", "org service id");
 	struct arg_int  *i_tariffplanid = arg_int0(NULL, "tariffplanid", "<ID>", "tariff plan id");
@@ -454,6 +478,14 @@ int doCmd(int argc, char** argv)
 	struct arg_int  *i_ordertype = arg_int0(NULL, "ordertype", "1|2", "1- taxi (default), 2- courier");
 	struct arg_int  *i_ordertimetype = arg_int0(NULL, "ordertimetype", "1..3", "1- urgent (default), 2- time, 3- sheduled");
 
+	// add vehicle			--brand --model --color --plate --platenumber --vin
+	struct arg_str  *s_brand = arg_str0(NULL, "brand", "<brand>", "brand");
+	struct arg_str  *s_model = arg_str0(NULL, "model", "<model>", "model");
+	struct arg_str  *s_color = arg_str0(NULL, "color", "<color>", "color name");
+	struct arg_str  *s_plate = arg_str0(NULL, "plate", "<plate>", "plate");
+	struct arg_int  *i_platenumber = arg_int0(NULL, "platenumber", "<number>", "");
+	struct arg_str  *s_vin = arg_str0(NULL, "vin", "<vin>", "VIN");
+
 	struct arg_end  *end = arg_end(20);
 
 	void* argtable[] = { 
@@ -464,7 +496,7 @@ int doCmd(int argc, char** argv)
 		c_ls_ofs, c_ls_cnt, obj, verbose, help, i_port, s_hostname,
 		s_name, i_year, s_notes, i_areaid, i_tag, i_orgid, s_bik, i_value, s_brandname,
 		i_bankacc, i_orgrole, i_orgtype, s_fullname, s_shortname, s_inn, s_kpp, s_orgn, s_phone, s_email, s_currentaccount, s_correspondentaccount, 
-		s_description, s_note, s_nickname,
+		s_description, s_note, s_nickname, s_firstname, s_lastname, s_middlename,	
 		i_cityid, i_orgserviceid, i_tariffplanid, i_ismaster, i_svccarpoolid, i_svcdispatchid, i_online, i_empstatus,
 		i_id, i_callsign,
 		i_active, i_enabled, i_taxtype, i_preferreddriverid,
@@ -475,6 +507,7 @@ int doCmd(int argc, char** argv)
 		c_sendgcm, s_apikey, s_data, s_registrationid, f_data,
 		d_latitude, d_longitude,
 		i_ordertype, i_ordertimetype,
+		s_brand, s_model, s_color, s_plate, i_platenumber, s_vin,
 		end
 	};
 	const char* progname = "taxi-simple-cli";
@@ -1055,6 +1088,13 @@ int doCmd(int argc, char** argv)
 				}
 				v.nickname = *s_nickname->sval;
 
+				if (s_firstname->count > 0)
+					v.person.firstname = *s_firstname->sval;
+				if (s_lastname->count > 0)
+					v.person.lastname = *s_lastname->sval;
+				if (s_middlename->count > 0)
+					v.person.middlename = *s_middlename->sval;
+
 				if (i_cityid->count == 0)
 				{
 					printf("--cityid missed.\n");
@@ -1182,6 +1222,70 @@ int doCmd(int argc, char** argv)
 					year = *i_year->ival;
 				}				
 				client.addVehicleModelByBrandName(ret, credentials, userdevice, brandname, name, year);
+			}
+
+			/**
+			add vehicle			--brand --model --color --plate --platenumber --vin
+			*/
+			if (strcmp("vehicle", *obj->sval) == 0)
+			{
+				Vehicle v;
+
+				if (s_brand->count == 0)
+				{
+					printf("--brand missed.\n");
+					done(argtable);
+					return 2;
+				}
+				if (s_model->count == 0)
+				{
+					printf("--model missed.\n");
+					done(argtable);
+					return 2;
+				}
+				if (s_color->count == 0)
+				{
+					printf("--color missed.\n");
+					done(argtable);
+					return 2;
+				}
+
+				
+				RowRange rowrange;
+				rowrange.len = 50;
+				rowrange.start = 0;
+				std::string b(*s_brand->sval);
+				DictEntries brand;
+				client.findBrand(brand, credentials, userdevice, b, rowrange);
+				if (!checkOneDictEntry(b, brand))
+					return 3;
+				v.vehiclebrandid =  brand.begin()->id;
+
+				DictEntries model;
+				std::string m(*s_model->sval);
+				client.findModel(model, credentials, userdevice, brand.begin()->id, m, rowrange);
+				if (!checkOneDictEntry(m, model))
+					return 3;
+				v.vehiclemodelid =  model.begin()->id;
+
+				DictEntries color;
+				std::string c(*s_color->sval);
+				client.findColor(color, credentials, userdevice, c, rowrange);
+				if (!checkOneDictEntry(c, model))
+					return 3;
+				v.colorid = color.begin()->id;
+
+				if (s_plate->count > 0)
+					v.plate = *s_plate->sval;
+				if (i_platenumber->count > 0)
+					v.platenumber = *i_platenumber->ival;
+
+				if (s_vin->count > 0)
+					v.vin = *s_plate->sval;
+
+				Vehicle ret;
+				client.addVehicle(ret, credentials, userdevice, v);
+				cout << ret.id;
 			}
 
 			if (strcmp("tariffplan", *obj->sval) == 0)
@@ -1338,6 +1442,7 @@ int doCmd(int argc, char** argv)
 				if (s_notes->count > 0)
 					v.notes = *s_notes->sval;
 				client.addServiceOrder(ret, credentials, userdevice, v);
+				std::cout << ret.id << std::endl;
 			}
 		}
 

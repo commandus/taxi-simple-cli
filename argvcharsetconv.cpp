@@ -1,4 +1,5 @@
 #include "argvcharsetconv.h"
+#include <cstdlib>
 #include <sys/stat.h>
 #include <string.h>
 

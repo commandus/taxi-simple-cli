@@ -47,6 +47,11 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("getDriverVehicles\n");
   }
 
+  void getDictEntry(DictEntry& _return, const Credentials& credentials, const UserDevice& userdevice, const ID id) {
+    // Your implementation goes here
+    printf("getDictEntry\n");
+  }
+
   void addDriverVehicle(Vehicle& _return, const Credentials& credentials, const UserDevice& userdevice, const Driverid id, const Vehicle& value) {
     // Your implementation goes here
     printf("addDriverVehicle\n");
@@ -357,7 +362,7 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("findRate\n");
   }
 
-  void findServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& search, const DateRange& sheduletime, const RowRange& rowrange) {
+  void findServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const ServiceOrder& search, const DateRange& sheduletime, const StageGroup::type stagegroup, const RowRange& rowrange) {
     // Your implementation goes here
     printf("findServiceOrder\n");
   }
@@ -402,7 +407,7 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("startWaiting\n");
   }
 
-  bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
+  bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const Driver& driver) {
     // Your implementation goes here
     printf("startDriving\n");
   }

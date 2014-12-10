@@ -349,7 +349,8 @@ struct DeclineOrderCause {
     DECLINE_ASSIGN_BY_DRIVER = 0,
     DECLINE_BY_DRIVER = 1,
     DECLINE_BY_SERVICE = 2,
-    DECLINE_BY_PASSENGER = 3
+    DECLINE_BY_PASSENGER = 3,
+    DECLINE_BY_DISPATCHER = 4
   };
 };
 
@@ -385,6 +386,17 @@ struct DictTag {
 };
 
 extern const std::map<int, const char*> _DictTag_VALUES_TO_NAMES;
+
+struct StageGroup {
+  enum type {
+    ORDERS_ALL = 0,
+    ORDERS_INIT = 1,
+    ORDERS_PROCESS = 2,
+    ORDERS_DONE = 3
+  };
+};
+
+extern const std::map<int, const char*> _StageGroup_VALUES_TO_NAMES;
 
 struct ServiceObject {
   enum type {
@@ -592,6 +604,8 @@ typedef std::vector<ServiceOrderStopid>  ServiceOrderStopids;
 typedef std::vector<class ServiceOrderStop>  ServiceOrderStops;
 
 typedef ID Sheduleid;
+
+typedef std::map<STR, STR>  Strings;
 
 typedef ID ServiceOrderid;
 
@@ -2559,15 +2573,15 @@ class Passenger {
 void swap(Passenger &a, Passenger &b);
 
 typedef struct _Vehicle__isset {
-  _Vehicle__isset() : id(false), vehicletype(true), vehiclecategory(false), vehicleclass(false), vehiclestatus(false), vehiclebrandid(false), vehiclemodel(false), color(false), year(false), plate(false), platenumber(false), technicalcondition(false), passengercount(false), childseat(false), checkers(false), stickers(false), lantern(false), photo(false), vin(false) {}
+  _Vehicle__isset() : id(false), vehicletype(true), vehiclecategory(false), vehicleclass(false), vehiclestatus(false), vehiclebrandid(false), vehiclemodelid(false), colorid(false), year(false), plate(false), platenumber(false), technicalcondition(false), passengercount(false), childseat(false), checkers(false), stickers(false), lantern(false), photo(false), vin(false) {}
   bool id;
   bool vehicletype;
   bool vehiclecategory;
   bool vehicleclass;
   bool vehiclestatus;
   bool vehiclebrandid;
-  bool vehiclemodel;
-  bool color;
+  bool vehiclemodelid;
+  bool colorid;
   bool year;
   bool plate;
   bool platenumber;
@@ -2587,7 +2601,7 @@ class Vehicle {
   static const char* ascii_fingerprint; // = "529D5AB19CB951DE81DB3B0A4DE5AD9E";
   static const uint8_t binary_fingerprint[16]; // = {0x52,0x9D,0x5A,0xB1,0x9C,0xB9,0x51,0xDE,0x81,0xDB,0x3B,0x0A,0x4D,0xE5,0xAD,0x9E};
 
-  Vehicle() : id(0), vehicletype((VehicleType::type)1), vehiclecategory((VehicleCategory::type)0), vehicleclass((VehicleClass::type)0), vehiclestatus((VehicleStatus::type)0), vehiclebrandid(0), vehiclemodel(0), color(0), year(0), plate(), platenumber(0), technicalcondition(), passengercount(0), childseat(0), checkers(0), stickers(0), lantern(0), photo(), vin() {
+  Vehicle() : id(0), vehicletype((VehicleType::type)1), vehiclecategory((VehicleCategory::type)0), vehicleclass((VehicleClass::type)0), vehiclestatus((VehicleStatus::type)0), vehiclebrandid(0), vehiclemodelid(0), colorid(0), year(0), plate(), platenumber(0), technicalcondition(), passengercount(0), childseat(0), checkers(0), stickers(0), lantern(0), photo(), vin() {
     vehicletype = (VehicleType::type)1;
 
   }
@@ -2600,8 +2614,8 @@ class Vehicle {
   VehicleClass::type vehicleclass;
   VehicleStatus::type vehiclestatus;
   ID vehiclebrandid;
-  ID vehiclemodel;
-  ID color;
+  ID vehiclemodelid;
+  ID colorid;
   NUMBER32 year;
   STR plate;
   NUMBER32 platenumber;
@@ -2640,12 +2654,12 @@ class Vehicle {
     vehiclebrandid = val;
   }
 
-  void __set_vehiclemodel(const ID val) {
-    vehiclemodel = val;
+  void __set_vehiclemodelid(const ID val) {
+    vehiclemodelid = val;
   }
 
-  void __set_color(const ID val) {
-    color = val;
+  void __set_colorid(const ID val) {
+    colorid = val;
   }
 
   void __set_year(const NUMBER32 val) {
@@ -2706,9 +2720,9 @@ class Vehicle {
       return false;
     if (!(vehiclebrandid == rhs.vehiclebrandid))
       return false;
-    if (!(vehiclemodel == rhs.vehiclemodel))
+    if (!(vehiclemodelid == rhs.vehiclemodelid))
       return false;
-    if (!(color == rhs.color))
+    if (!(colorid == rhs.colorid))
       return false;
     if (!(year == rhs.year))
       return false;
@@ -3200,7 +3214,7 @@ class DriverOnline {
 void swap(DriverOnline &a, DriverOnline &b);
 
 typedef struct _Dispatcher__isset {
-  _Dispatcher__isset() : id(false), svc(false), status(false), person(false), license(false), nickname(false), online(false) {}
+  _Dispatcher__isset() : id(false), svc(false), status(false), person(false), license(false), nickname(false), online(false), cityid(false) {}
   bool id;
   bool svc;
   bool status;
@@ -3208,15 +3222,16 @@ typedef struct _Dispatcher__isset {
   bool license;
   bool nickname;
   bool online;
+  bool cityid;
 } _Dispatcher__isset;
 
 class Dispatcher {
  public:
 
-  static const char* ascii_fingerprint; // = "26837AB8DD4EAB2CFCEF2A65FD30FDEA";
-  static const uint8_t binary_fingerprint[16]; // = {0x26,0x83,0x7A,0xB8,0xDD,0x4E,0xAB,0x2C,0xFC,0xEF,0x2A,0x65,0xFD,0x30,0xFD,0xEA};
+  static const char* ascii_fingerprint; // = "C3D88CE17784DBB88CD0F657FBDB1378";
+  static const uint8_t binary_fingerprint[16]; // = {0xC3,0xD8,0x8C,0xE1,0x77,0x84,0xDB,0xB8,0x8C,0xD0,0xF6,0x57,0xFB,0xDB,0x13,0x78};
 
-  Dispatcher() : id(0), status((EmployeeStatus::type)0), nickname(), online(0) {
+  Dispatcher() : id(0), status((EmployeeStatus::type)0), nickname(), online(0), cityid(0) {
   }
 
   virtual ~Dispatcher() throw() {}
@@ -3228,6 +3243,7 @@ class Dispatcher {
   DocumentMap license;
   STR nickname;
   bool online;
+  ID cityid;
 
   _Dispatcher__isset __isset;
 
@@ -3259,6 +3275,10 @@ class Dispatcher {
     online = val;
   }
 
+  void __set_cityid(const ID val) {
+    cityid = val;
+  }
+
   bool operator == (const Dispatcher & rhs) const
   {
     if (!(id == rhs.id))
@@ -3274,6 +3294,8 @@ class Dispatcher {
     if (!(nickname == rhs.nickname))
       return false;
     if (!(online == rhs.online))
+      return false;
+    if (!(cityid == rhs.cityid))
       return false;
     return true;
   }
@@ -3430,7 +3452,7 @@ class ServiceOrderStop {
 void swap(ServiceOrderStop &a, ServiceOrderStop &b);
 
 typedef struct _ServiceOrder__isset {
-  _ServiceOrder__isset() : id(false), cityid(false), tag(false), ordertype(false), ordertimetype(false), orderfeatures(false), svc(false), dispatcherid(false), passengerid(false), sheduleid(false), passengers(false), stops(false), payload(false), stage(false), crew(false), created(false), sheduletime(false), assigned(false), started(false), arrived(false), finished(false), estimated(false), stagemodified(false), locstart(false), locfinish(false), preferreddriverid(false), totaltimefiscal(false), totaltimeactual(false), sumfiscal(false), sumactual(false), cabclass(false), paymentstate(false), claimstate(false), hasstops(false), notes(false), iscalculated(false), offers(false), flagsstagesent(false) {}
+  _ServiceOrder__isset() : id(false), cityid(false), tag(false), ordertype(false), ordertimetype(false), orderfeatures(false), svc(false), dispatcherid(false), passengerid(false), sheduleid(false), passengers(false), stops(false), payload(false), stage(false), crew(false), created(false), sheduletime(false), assigned(false), started(false), arrived(false), finished(false), estimated(false), stagemodified(false), locstart(false), locfinish(false), preferreddriverid(false), totaltimefiscal(false), totaltimeactual(false), sumfiscal(false), sumactual(false), cabclass(false), paymentstate(false), claimstate(false), hasstops(false), notes(false), iscalculated(false), offers(false), flagsstagesent(false), properties(false) {}
   bool id;
   bool cityid;
   bool tag;
@@ -3469,13 +3491,14 @@ typedef struct _ServiceOrder__isset {
   bool iscalculated;
   bool offers;
   bool flagsstagesent;
+  bool properties;
 } _ServiceOrder__isset;
 
 class ServiceOrder {
  public:
 
-  static const char* ascii_fingerprint; // = "81A096F0E9AD759ABCF4B71EF2B402E4";
-  static const uint8_t binary_fingerprint[16]; // = {0x81,0xA0,0x96,0xF0,0xE9,0xAD,0x75,0x9A,0xBC,0xF4,0xB7,0x1E,0xF2,0xB4,0x02,0xE4};
+  static const char* ascii_fingerprint; // = "FE7B5DDF9F34500E9E795ED7B005FED9";
+  static const uint8_t binary_fingerprint[16]; // = {0xFE,0x7B,0x5D,0xDF,0x9F,0x34,0x50,0x0E,0x9E,0x79,0x5E,0xD7,0xB0,0x05,0xFE,0xD9};
 
   ServiceOrder() : id(0), cityid(0), tag(0), ordertype((OrderType::type)0), ordertimetype((OrderTimeType::type)0), dispatcherid(0), passengerid(0), sheduleid(0), stage((OrderStage::type)0), created(0), sheduletime(0), assigned(0), started(0), arrived(0), finished(0), estimated(0), stagemodified(0), preferreddriverid(0), totaltimefiscal(0), totaltimeactual(0), sumfiscal(0), sumactual(0), cabclass((CabClass::type)0), paymentstate((PaymentState::type)0), claimstate((ClaimState::type)0), hasstops(0), notes(), iscalculated(0), offers(0), flagsstagesent(0) {
   }
@@ -3520,6 +3543,7 @@ class ServiceOrder {
   bool iscalculated;
   NUMBER32 offers;
   NUMBER32 flagsstagesent;
+  Strings properties;
 
   _ServiceOrder__isset __isset;
 
@@ -3675,6 +3699,10 @@ class ServiceOrder {
     flagsstagesent = val;
   }
 
+  void __set_properties(const Strings& val) {
+    properties = val;
+  }
+
   bool operator == (const ServiceOrder & rhs) const
   {
     if (!(id == rhs.id))
@@ -3752,6 +3780,8 @@ class ServiceOrder {
     if (!(offers == rhs.offers))
       return false;
     if (!(flagsstagesent == rhs.flagsstagesent))
+      return false;
+    if (!(properties == rhs.properties))
       return false;
     return true;
   }

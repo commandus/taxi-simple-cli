@@ -11,6 +11,43 @@ namespace taxi {
 const taxiConstants g_taxi_constants;
 
 taxiConstants::taxiConstants() {
+  STR tmp346;
+  tmp346 = "drivercallsign";
+
+  CommonProperties.push_back(tmp346);
+  STR tmp347;
+  tmp347 = "driverfirstname";
+
+  CommonProperties.push_back(tmp347);
+  STR tmp348;
+  tmp348 = "driverlastname";
+
+  CommonProperties.push_back(tmp348);
+  STR tmp349;
+  tmp349 = "drivermiddlename";
+
+  CommonProperties.push_back(tmp349);
+  STR tmp350;
+  tmp350 = "driverphone";
+
+  CommonProperties.push_back(tmp350);
+  STR tmp351;
+  tmp351 = "vehiclebrand";
+
+  CommonProperties.push_back(tmp351);
+  STR tmp352;
+  tmp352 = "vehiclemodel";
+
+  CommonProperties.push_back(tmp352);
+  STR tmp353;
+  tmp353 = "vehiclecolor";
+
+  CommonProperties.push_back(tmp353);
+  STR tmp354;
+  tmp354 = "vehicleplate";
+
+  CommonProperties.push_back(tmp354);
+
 }
 
 } // namespace
