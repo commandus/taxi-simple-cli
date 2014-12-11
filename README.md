@@ -226,7 +226,7 @@ taxi-simple-cli --list --object passenger
 ================================================
 
 taxi-simple-cli --order <состояние> --id <номер заказа> [--minutes <время подъезда>]
-где состояние: take,wait,drive,complete,fail
+где состояние: take,wait,start,stop,complete,fail
 
 например, взять заказ с примерным временем прибытия 5 минут (по умолчанию 10 минут)
 taxi-simple-cli --order take --id 12 --minutes 5
@@ -235,7 +235,7 @@ taxi-simple-cli --order take --id 12 --minutes 5
 taxi-simple-cli --order wait --id 12 
 
 Водитель начал везти
-taxi-simple-cli --order drive --id 12 
+taxi-simple-cli --order start --id 12 
 
 Водитель не дождался пассажира, не смог выполнить заказ
 taxi-simple-cli --order fail --id 12 

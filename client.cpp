@@ -1474,7 +1474,12 @@ int doCmd(int argc, char** argv)
 				r = client.takeOrder(credentials, userdevice, orderno, true, provmins);
 			if (strcmp("wait", *c_manageorder->sval) == 0)
 				r = client.startWaiting(credentials, userdevice, orderno);
-			if (strcmp("drive", *c_manageorder->sval) == 0)
+			if (strcmp("start", *c_manageorder->sval) == 0)
+			{
+				Driver driver;
+				r = client.startDriving(credentials, userdevice, orderno, driver);
+			}
+			if (strcmp("stop", *c_manageorder->sval) == 0)
 				r = client.stopDriving(credentials, userdevice, orderno);
 			if (strcmp("complete", *c_manageorder->sval) == 0)
 				r = client.completeOrder(credentials, userdevice, orderno);
