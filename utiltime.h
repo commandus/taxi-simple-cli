@@ -3,6 +3,9 @@
 #include "argtable2.h"
 #include "taxi_types.h"
 
+bool isBigEndian();
+int BoostEndian();
+
 time_t currentTime();
 
 /* returns the utc timezone offset (e.g. -8 hours for PST) */

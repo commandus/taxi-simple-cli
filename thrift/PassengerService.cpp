@@ -19191,6 +19191,252 @@ uint32_t PassengerService_getDriverServiceOrder_presult::read(::apache::thrift::
   return xfer;
 }
 
+uint32_t PassengerService_getPassengerServiceOrder_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->credentials.read(iprot);
+          this->__isset.credentials = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->userdevice.read(iprot);
+          this->__isset.userdevice = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->rowrange.read(iprot);
+          this->__isset.rowrange = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t PassengerService_getPassengerServiceOrder_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("PassengerService_getPassengerServiceOrder_args");
+
+  xfer += oprot->writeFieldBegin("credentials", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += this->credentials.write(oprot);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("userdevice", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += this->userdevice.write(oprot);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("rowrange", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += this->rowrange.write(oprot);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t PassengerService_getPassengerServiceOrder_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("PassengerService_getPassengerServiceOrder_pargs");
+
+  xfer += oprot->writeFieldBegin("credentials", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += (*(this->credentials)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("userdevice", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += (*(this->userdevice)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("rowrange", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += (*(this->rowrange)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t PassengerService_getPassengerServiceOrder_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->success.clear();
+            uint32_t _size699;
+            ::apache::thrift::protocol::TType _etype702;
+            xfer += iprot->readListBegin(_etype702, _size699);
+            this->success.resize(_size699);
+            uint32_t _i703;
+            for (_i703 = 0; _i703 < _size699; ++_i703)
+            {
+              xfer += this->success[_i703].read(iprot);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->servicefailure.read(iprot);
+          this->__isset.servicefailure = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t PassengerService_getPassengerServiceOrder_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("PassengerService_getPassengerServiceOrder_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+    {
+      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
+      std::vector<ServiceOrder> ::const_iterator _iter704;
+      for (_iter704 = this->success.begin(); _iter704 != this->success.end(); ++_iter704)
+      {
+        xfer += (*_iter704).write(oprot);
+      }
+      xfer += oprot->writeListEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.servicefailure) {
+    xfer += oprot->writeFieldBegin("servicefailure", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->servicefailure.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t PassengerService_getPassengerServiceOrder_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            (*(this->success)).clear();
+            uint32_t _size705;
+            ::apache::thrift::protocol::TType _etype708;
+            xfer += iprot->readListBegin(_etype708, _size705);
+            (*(this->success)).resize(_size705);
+            uint32_t _i709;
+            for (_i709 = 0; _i709 < _size705; ++_i709)
+            {
+              xfer += (*(this->success))[_i709].read(iprot);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->servicefailure.read(iprot);
+          this->__isset.servicefailure = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
 uint32_t PassengerService_findAutoPayment_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -19329,14 +19575,14 @@ uint32_t PassengerService_findAutoPayment_result::read(::apache::thrift::protoco
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size699;
-            ::apache::thrift::protocol::TType _etype702;
-            xfer += iprot->readListBegin(_etype702, _size699);
-            this->success.resize(_size699);
-            uint32_t _i703;
-            for (_i703 = 0; _i703 < _size699; ++_i703)
+            uint32_t _size710;
+            ::apache::thrift::protocol::TType _etype713;
+            xfer += iprot->readListBegin(_etype713, _size710);
+            this->success.resize(_size710);
+            uint32_t _i714;
+            for (_i714 = 0; _i714 < _size710; ++_i714)
             {
-              xfer += this->success[_i703].read(iprot);
+              xfer += this->success[_i714].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -19375,10 +19621,10 @@ uint32_t PassengerService_findAutoPayment_result::write(::apache::thrift::protoc
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<AutoPayment> ::const_iterator _iter704;
-      for (_iter704 = this->success.begin(); _iter704 != this->success.end(); ++_iter704)
+      std::vector<AutoPayment> ::const_iterator _iter715;
+      for (_iter715 = this->success.begin(); _iter715 != this->success.end(); ++_iter715)
       {
-        xfer += (*_iter704).write(oprot);
+        xfer += (*_iter715).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -19417,14 +19663,14 @@ uint32_t PassengerService_findAutoPayment_presult::read(::apache::thrift::protoc
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size705;
-            ::apache::thrift::protocol::TType _etype708;
-            xfer += iprot->readListBegin(_etype708, _size705);
-            (*(this->success)).resize(_size705);
-            uint32_t _i709;
-            for (_i709 = 0; _i709 < _size705; ++_i709)
+            uint32_t _size716;
+            ::apache::thrift::protocol::TType _etype719;
+            xfer += iprot->readListBegin(_etype719, _size716);
+            (*(this->success)).resize(_size716);
+            uint32_t _i720;
+            for (_i720 = 0; _i720 < _size716; ++_i720)
             {
-              xfer += (*(this->success))[_i709].read(iprot);
+              xfer += (*(this->success))[_i720].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -19591,14 +19837,14 @@ uint32_t PassengerService_findBillAct_result::read(::apache::thrift::protocol::T
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size710;
-            ::apache::thrift::protocol::TType _etype713;
-            xfer += iprot->readListBegin(_etype713, _size710);
-            this->success.resize(_size710);
-            uint32_t _i714;
-            for (_i714 = 0; _i714 < _size710; ++_i714)
+            uint32_t _size721;
+            ::apache::thrift::protocol::TType _etype724;
+            xfer += iprot->readListBegin(_etype724, _size721);
+            this->success.resize(_size721);
+            uint32_t _i725;
+            for (_i725 = 0; _i725 < _size721; ++_i725)
             {
-              xfer += this->success[_i714].read(iprot);
+              xfer += this->success[_i725].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -19637,10 +19883,10 @@ uint32_t PassengerService_findBillAct_result::write(::apache::thrift::protocol::
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<BillAct> ::const_iterator _iter715;
-      for (_iter715 = this->success.begin(); _iter715 != this->success.end(); ++_iter715)
+      std::vector<BillAct> ::const_iterator _iter726;
+      for (_iter726 = this->success.begin(); _iter726 != this->success.end(); ++_iter726)
       {
-        xfer += (*_iter715).write(oprot);
+        xfer += (*_iter726).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -19679,14 +19925,14 @@ uint32_t PassengerService_findBillAct_presult::read(::apache::thrift::protocol::
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size716;
-            ::apache::thrift::protocol::TType _etype719;
-            xfer += iprot->readListBegin(_etype719, _size716);
-            (*(this->success)).resize(_size716);
-            uint32_t _i720;
-            for (_i720 = 0; _i720 < _size716; ++_i720)
+            uint32_t _size727;
+            ::apache::thrift::protocol::TType _etype730;
+            xfer += iprot->readListBegin(_etype730, _size727);
+            (*(this->success)).resize(_size727);
+            uint32_t _i731;
+            for (_i731 = 0; _i731 < _size727; ++_i731)
             {
-              xfer += (*(this->success))[_i720].read(iprot);
+              xfer += (*(this->success))[_i731].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -19853,14 +20099,14 @@ uint32_t PassengerService_findDriverBlackList_result::read(::apache::thrift::pro
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size721;
-            ::apache::thrift::protocol::TType _etype724;
-            xfer += iprot->readListBegin(_etype724, _size721);
-            this->success.resize(_size721);
-            uint32_t _i725;
-            for (_i725 = 0; _i725 < _size721; ++_i725)
+            uint32_t _size732;
+            ::apache::thrift::protocol::TType _etype735;
+            xfer += iprot->readListBegin(_etype735, _size732);
+            this->success.resize(_size732);
+            uint32_t _i736;
+            for (_i736 = 0; _i736 < _size732; ++_i736)
             {
-              xfer += this->success[_i725].read(iprot);
+              xfer += this->success[_i736].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -19899,10 +20145,10 @@ uint32_t PassengerService_findDriverBlackList_result::write(::apache::thrift::pr
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<DriverBlackList> ::const_iterator _iter726;
-      for (_iter726 = this->success.begin(); _iter726 != this->success.end(); ++_iter726)
+      std::vector<DriverBlackList> ::const_iterator _iter737;
+      for (_iter737 = this->success.begin(); _iter737 != this->success.end(); ++_iter737)
       {
-        xfer += (*_iter726).write(oprot);
+        xfer += (*_iter737).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -19941,14 +20187,14 @@ uint32_t PassengerService_findDriverBlackList_presult::read(::apache::thrift::pr
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size727;
-            ::apache::thrift::protocol::TType _etype730;
-            xfer += iprot->readListBegin(_etype730, _size727);
-            (*(this->success)).resize(_size727);
-            uint32_t _i731;
-            for (_i731 = 0; _i731 < _size727; ++_i731)
+            uint32_t _size738;
+            ::apache::thrift::protocol::TType _etype741;
+            xfer += iprot->readListBegin(_etype741, _size738);
+            (*(this->success)).resize(_size738);
+            uint32_t _i742;
+            for (_i742 = 0; _i742 < _size738; ++_i742)
             {
-              xfer += (*(this->success))[_i731].read(iprot);
+              xfer += (*(this->success))[_i742].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -20115,14 +20361,14 @@ uint32_t PassengerService_findDispatcher_result::read(::apache::thrift::protocol
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size732;
-            ::apache::thrift::protocol::TType _etype735;
-            xfer += iprot->readListBegin(_etype735, _size732);
-            this->success.resize(_size732);
-            uint32_t _i736;
-            for (_i736 = 0; _i736 < _size732; ++_i736)
+            uint32_t _size743;
+            ::apache::thrift::protocol::TType _etype746;
+            xfer += iprot->readListBegin(_etype746, _size743);
+            this->success.resize(_size743);
+            uint32_t _i747;
+            for (_i747 = 0; _i747 < _size743; ++_i747)
             {
-              xfer += this->success[_i736].read(iprot);
+              xfer += this->success[_i747].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -20161,10 +20407,10 @@ uint32_t PassengerService_findDispatcher_result::write(::apache::thrift::protoco
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Dispatcher> ::const_iterator _iter737;
-      for (_iter737 = this->success.begin(); _iter737 != this->success.end(); ++_iter737)
+      std::vector<Dispatcher> ::const_iterator _iter748;
+      for (_iter748 = this->success.begin(); _iter748 != this->success.end(); ++_iter748)
       {
-        xfer += (*_iter737).write(oprot);
+        xfer += (*_iter748).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -20203,14 +20449,14 @@ uint32_t PassengerService_findDispatcher_presult::read(::apache::thrift::protoco
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size738;
-            ::apache::thrift::protocol::TType _etype741;
-            xfer += iprot->readListBegin(_etype741, _size738);
-            (*(this->success)).resize(_size738);
-            uint32_t _i742;
-            for (_i742 = 0; _i742 < _size738; ++_i742)
+            uint32_t _size749;
+            ::apache::thrift::protocol::TType _etype752;
+            xfer += iprot->readListBegin(_etype752, _size749);
+            (*(this->success)).resize(_size749);
+            uint32_t _i753;
+            for (_i753 = 0; _i753 < _size749; ++_i753)
             {
-              xfer += (*(this->success))[_i742].read(iprot);
+              xfer += (*(this->success))[_i753].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -20377,14 +20623,14 @@ uint32_t PassengerService_findNotification_result::read(::apache::thrift::protoc
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size743;
-            ::apache::thrift::protocol::TType _etype746;
-            xfer += iprot->readListBegin(_etype746, _size743);
-            this->success.resize(_size743);
-            uint32_t _i747;
-            for (_i747 = 0; _i747 < _size743; ++_i747)
+            uint32_t _size754;
+            ::apache::thrift::protocol::TType _etype757;
+            xfer += iprot->readListBegin(_etype757, _size754);
+            this->success.resize(_size754);
+            uint32_t _i758;
+            for (_i758 = 0; _i758 < _size754; ++_i758)
             {
-              xfer += this->success[_i747].read(iprot);
+              xfer += this->success[_i758].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -20423,10 +20669,10 @@ uint32_t PassengerService_findNotification_result::write(::apache::thrift::proto
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Notification> ::const_iterator _iter748;
-      for (_iter748 = this->success.begin(); _iter748 != this->success.end(); ++_iter748)
+      std::vector<Notification> ::const_iterator _iter759;
+      for (_iter759 = this->success.begin(); _iter759 != this->success.end(); ++_iter759)
       {
-        xfer += (*_iter748).write(oprot);
+        xfer += (*_iter759).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -20465,14 +20711,14 @@ uint32_t PassengerService_findNotification_presult::read(::apache::thrift::proto
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size749;
-            ::apache::thrift::protocol::TType _etype752;
-            xfer += iprot->readListBegin(_etype752, _size749);
-            (*(this->success)).resize(_size749);
-            uint32_t _i753;
-            for (_i753 = 0; _i753 < _size749; ++_i753)
+            uint32_t _size760;
+            ::apache::thrift::protocol::TType _etype763;
+            xfer += iprot->readListBegin(_etype763, _size760);
+            (*(this->success)).resize(_size760);
+            uint32_t _i764;
+            for (_i764 = 0; _i764 < _size760; ++_i764)
             {
-              xfer += (*(this->success))[_i753].read(iprot);
+              xfer += (*(this->success))[_i764].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -20639,14 +20885,14 @@ uint32_t PassengerService_findShedule_result::read(::apache::thrift::protocol::T
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size754;
-            ::apache::thrift::protocol::TType _etype757;
-            xfer += iprot->readListBegin(_etype757, _size754);
-            this->success.resize(_size754);
-            uint32_t _i758;
-            for (_i758 = 0; _i758 < _size754; ++_i758)
+            uint32_t _size765;
+            ::apache::thrift::protocol::TType _etype768;
+            xfer += iprot->readListBegin(_etype768, _size765);
+            this->success.resize(_size765);
+            uint32_t _i769;
+            for (_i769 = 0; _i769 < _size765; ++_i769)
             {
-              xfer += this->success[_i758].read(iprot);
+              xfer += this->success[_i769].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -20685,10 +20931,10 @@ uint32_t PassengerService_findShedule_result::write(::apache::thrift::protocol::
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Shedule> ::const_iterator _iter759;
-      for (_iter759 = this->success.begin(); _iter759 != this->success.end(); ++_iter759)
+      std::vector<Shedule> ::const_iterator _iter770;
+      for (_iter770 = this->success.begin(); _iter770 != this->success.end(); ++_iter770)
       {
-        xfer += (*_iter759).write(oprot);
+        xfer += (*_iter770).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -20727,14 +20973,14 @@ uint32_t PassengerService_findShedule_presult::read(::apache::thrift::protocol::
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size760;
-            ::apache::thrift::protocol::TType _etype763;
-            xfer += iprot->readListBegin(_etype763, _size760);
-            (*(this->success)).resize(_size760);
-            uint32_t _i764;
-            for (_i764 = 0; _i764 < _size760; ++_i764)
+            uint32_t _size771;
+            ::apache::thrift::protocol::TType _etype774;
+            xfer += iprot->readListBegin(_etype774, _size771);
+            (*(this->success)).resize(_size771);
+            uint32_t _i775;
+            for (_i775 = 0; _i775 < _size771; ++_i775)
             {
-              xfer += (*(this->success))[_i764].read(iprot);
+              xfer += (*(this->success))[_i775].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -20901,14 +21147,14 @@ uint32_t PassengerService_findServiceOrderStop_result::read(::apache::thrift::pr
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size765;
-            ::apache::thrift::protocol::TType _etype768;
-            xfer += iprot->readListBegin(_etype768, _size765);
-            this->success.resize(_size765);
-            uint32_t _i769;
-            for (_i769 = 0; _i769 < _size765; ++_i769)
+            uint32_t _size776;
+            ::apache::thrift::protocol::TType _etype779;
+            xfer += iprot->readListBegin(_etype779, _size776);
+            this->success.resize(_size776);
+            uint32_t _i780;
+            for (_i780 = 0; _i780 < _size776; ++_i780)
             {
-              xfer += this->success[_i769].read(iprot);
+              xfer += this->success[_i780].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -20947,10 +21193,10 @@ uint32_t PassengerService_findServiceOrderStop_result::write(::apache::thrift::p
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<ServiceOrderStop> ::const_iterator _iter770;
-      for (_iter770 = this->success.begin(); _iter770 != this->success.end(); ++_iter770)
+      std::vector<ServiceOrderStop> ::const_iterator _iter781;
+      for (_iter781 = this->success.begin(); _iter781 != this->success.end(); ++_iter781)
       {
-        xfer += (*_iter770).write(oprot);
+        xfer += (*_iter781).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -20989,14 +21235,14 @@ uint32_t PassengerService_findServiceOrderStop_presult::read(::apache::thrift::p
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size771;
-            ::apache::thrift::protocol::TType _etype774;
-            xfer += iprot->readListBegin(_etype774, _size771);
-            (*(this->success)).resize(_size771);
-            uint32_t _i775;
-            for (_i775 = 0; _i775 < _size771; ++_i775)
+            uint32_t _size782;
+            ::apache::thrift::protocol::TType _etype785;
+            xfer += iprot->readListBegin(_etype785, _size782);
+            (*(this->success)).resize(_size782);
+            uint32_t _i786;
+            for (_i786 = 0; _i786 < _size782; ++_i786)
             {
-              xfer += (*(this->success))[_i775].read(iprot);
+              xfer += (*(this->success))[_i786].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -21163,14 +21409,14 @@ uint32_t PassengerService_findCustomerStatistic_result::read(::apache::thrift::p
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size776;
-            ::apache::thrift::protocol::TType _etype779;
-            xfer += iprot->readListBegin(_etype779, _size776);
-            this->success.resize(_size776);
-            uint32_t _i780;
-            for (_i780 = 0; _i780 < _size776; ++_i780)
+            uint32_t _size787;
+            ::apache::thrift::protocol::TType _etype790;
+            xfer += iprot->readListBegin(_etype790, _size787);
+            this->success.resize(_size787);
+            uint32_t _i791;
+            for (_i791 = 0; _i791 < _size787; ++_i791)
             {
-              xfer += this->success[_i780].read(iprot);
+              xfer += this->success[_i791].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -21209,10 +21455,10 @@ uint32_t PassengerService_findCustomerStatistic_result::write(::apache::thrift::
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<CustomerStatistic> ::const_iterator _iter781;
-      for (_iter781 = this->success.begin(); _iter781 != this->success.end(); ++_iter781)
+      std::vector<CustomerStatistic> ::const_iterator _iter792;
+      for (_iter792 = this->success.begin(); _iter792 != this->success.end(); ++_iter792)
       {
-        xfer += (*_iter781).write(oprot);
+        xfer += (*_iter792).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -21251,14 +21497,14 @@ uint32_t PassengerService_findCustomerStatistic_presult::read(::apache::thrift::
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size782;
-            ::apache::thrift::protocol::TType _etype785;
-            xfer += iprot->readListBegin(_etype785, _size782);
-            (*(this->success)).resize(_size782);
-            uint32_t _i786;
-            for (_i786 = 0; _i786 < _size782; ++_i786)
+            uint32_t _size793;
+            ::apache::thrift::protocol::TType _etype796;
+            xfer += iprot->readListBegin(_etype796, _size793);
+            (*(this->success)).resize(_size793);
+            uint32_t _i797;
+            for (_i797 = 0; _i797 < _size793; ++_i797)
             {
-              xfer += (*(this->success))[_i786].read(iprot);
+              xfer += (*(this->success))[_i797].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -30909,6 +31155,69 @@ void PassengerServiceClient::recv_getDriverServiceOrder(ServiceOrders& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getDriverServiceOrder failed: unknown result");
 }
 
+void PassengerServiceClient::getPassengerServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange)
+{
+  send_getPassengerServiceOrder(credentials, userdevice, rowrange);
+  recv_getPassengerServiceOrder(_return);
+}
+
+void PassengerServiceClient::send_getPassengerServiceOrder(const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("getPassengerServiceOrder", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  PassengerService_getPassengerServiceOrder_pargs args;
+  args.credentials = &credentials;
+  args.userdevice = &userdevice;
+  args.rowrange = &rowrange;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void PassengerServiceClient::recv_getPassengerServiceOrder(ServiceOrders& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("getPassengerServiceOrder") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  PassengerService_getPassengerServiceOrder_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  if (result.__isset.servicefailure) {
+    throw result.servicefailure;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getPassengerServiceOrder failed: unknown result");
+}
+
 void PassengerServiceClient::findAutoPayment(AutoPayments& _return, const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& search, const RowRange& rowrange)
 {
   send_findAutoPayment(credentials, userdevice, search, rowrange);
@@ -37468,6 +37777,63 @@ void PassengerServiceProcessor::process_getDriverServiceOrder(int32_t seqid, ::a
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "PassengerService.getDriverServiceOrder", bytes);
+  }
+}
+
+void PassengerServiceProcessor::process_getPassengerServiceOrder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("PassengerService.getPassengerServiceOrder", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PassengerService.getPassengerServiceOrder");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "PassengerService.getPassengerServiceOrder");
+  }
+
+  PassengerService_getPassengerServiceOrder_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "PassengerService.getPassengerServiceOrder", bytes);
+  }
+
+  PassengerService_getPassengerServiceOrder_result result;
+  try {
+    iface_->getPassengerServiceOrder(result.success, args.credentials, args.userdevice, args.rowrange);
+    result.__isset.success = true;
+  } catch (ServiceFailure &servicefailure) {
+    result.servicefailure = servicefailure;
+    result.__isset.servicefailure = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "PassengerService.getPassengerServiceOrder");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("getPassengerServiceOrder", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "PassengerService.getPassengerServiceOrder");
+  }
+
+  oprot->writeMessageBegin("getPassengerServiceOrder", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "PassengerService.getPassengerServiceOrder", bytes);
   }
 }
 

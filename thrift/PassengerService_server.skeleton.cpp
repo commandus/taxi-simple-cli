@@ -437,6 +437,11 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("getDriverServiceOrder\n");
   }
 
+  void getPassengerServiceOrder(ServiceOrders& _return, const Credentials& credentials, const UserDevice& userdevice, const RowRange& rowrange) {
+    // Your implementation goes here
+    printf("getPassengerServiceOrder\n");
+  }
+
   void findAutoPayment(AutoPayments& _return, const Credentials& credentials, const UserDevice& userdevice, const AutoPayment& search, const RowRange& rowrange) {
     // Your implementation goes here
     printf("findAutoPayment\n");

@@ -532,6 +532,9 @@ int doCmd(int argc, char** argv)
 		arg_print_syntax(stdout, argtable, "\n");
 		printf("taxi command line utility\n");
 		arg_print_glossary(stdout, argtable, "  %-25s %s\n");
+		
+		printf("Endian: %s boost: %s%s%s%s\n", isBigEndian()?"big":"little", BoostEndian()==1?"big":"", BoostEndian()==2?"little":"", BoostEndian()==3?"pdp":"", BoostEndian()==0?"unknown":"");
+		
 		done(argtable);
 		return 0;
 	}
@@ -1485,6 +1488,8 @@ int doCmd(int argc, char** argv)
 				r = client.completeOrder(credentials, userdevice, orderno);
 			if (strcmp("fail", *c_manageorder->sval) == 0)
 				r = client.failOrder(credentials, userdevice, orderno);
+			if (strcmp("cancel", *c_manageorder->sval) == 0)
+				r = client.cancelOrder(credentials, userdevice, orderno);
 			cout << r << std::endl;
 		}
 

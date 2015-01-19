@@ -9,7 +9,36 @@
 #include <iomanip>
 #endif
 
+#include "boost/detail/endian.hpp"
+
 using namespace ::taxi;
+
+
+bool isBigEndian()
+{
+    union 
+	{
+        uint32_t i;
+        char c[4];
+    } bint = {0x01020304};
+
+    return bint.c[0] == 1; 
+}
+
+int BoostEndian()
+{
+	int r = 0;
+#ifdef BOOST_BIG_ENDIAN
+	r = 1;
+#endif
+#ifdef BOOST_LITTLE_ENDIAN
+	r = 2;
+#endif
+#ifdef BOOST_PDP_ENDIAN
+	r = 3;
+#endif
+	return r;
+}
 
 time_t currentTime()
 {

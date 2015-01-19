@@ -1,5 +1,8 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_	1
+
+#include <stdint.h>
+
 #ifdef __GNUC__
 #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
 // https://gcc.gnu.org/projects/cxx0x.html GCC 4.5 New wording for C++0x lambdas
