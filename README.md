@@ -309,6 +309,22 @@ load-vehiclemodel.pl --file ../data/vehiclemodel.txt --count 20000 --verbose
 -----------------------------------
 load-color.pl --file ../data/color.txt --count 2000 --verbose
 
+Состояния заказа
+================
+ORDERNEW	=	0,		//	заказ не обработан
+ORDERACCEPT	=	1,		//	заказ принят
+ORDERASSIGN	=	2,		//	сервис передал выбранному водителю уведомление, но не получил подтверждения
+ORDERASSIGNED	=	3,		//	Не используется. получил подтверждение от водителя, заказ принят
+ORDERCONFIRMED	=	4,		//	Пользователь согласился с временем ожидания, выставленного водителем
+ORDERDRIVING	=	5,		//	Водитель приступил к исполнению заказа (выехал к Пользователю)
+ORDERWAITING	=	6,		//	прибыл на место назначения, ожидает Пользователя
+ORDERTRANSPORTING=	7,		//	везет Пользователя к месту назначения
+ORDERSTOP	=	8,		//	Временная остановка
+ORDERCOMPLETE	=	9,		//	Заказ выполнен
+ORDERDECLINED	=	10,		//	заказ отвергнут сервисом (нехороший клиент, нет свободных экипажей, ..)
+ORDERCANCELLED	=	11,		//	Заказ отменен Пользователем
+ORDERFAILED	=	12		//	Заказ отменен Водителем
+
 FAQ
 ===
 Q:./taxi-simple-cli: error while loading shared libraries: libthrift-1.0.0-dev.so: cannot open shared object file: No such file or directory

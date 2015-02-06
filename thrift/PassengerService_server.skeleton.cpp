@@ -397,7 +397,7 @@ class PassengerServiceHandler : virtual public PassengerServiceIf {
     printf("setOnline\n");
   }
 
-  bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes) {
+  bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes, const Driver& driver) {
     // Your implementation goes here
     printf("takeOrder\n");
   }

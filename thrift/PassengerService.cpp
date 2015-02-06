@@ -17459,6 +17459,14 @@ uint32_t PassengerService_takeOrder_args::read(::apache::thrift::protocol::TProt
           xfer += iprot->skip(ftype);
         }
         break;
+      case 6:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->driver.read(iprot);
+          this->__isset.driver = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -17495,6 +17503,10 @@ uint32_t PassengerService_takeOrder_args::write(::apache::thrift::protocol::TPro
   xfer += oprot->writeI32(this->provisionminutes);
   xfer += oprot->writeFieldEnd();
 
+  xfer += oprot->writeFieldBegin("driver", ::apache::thrift::protocol::T_STRUCT, 6);
+  xfer += this->driver.write(oprot);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -17522,6 +17534,10 @@ uint32_t PassengerService_takeOrder_pargs::write(::apache::thrift::protocol::TPr
 
   xfer += oprot->writeFieldBegin("provisionminutes", ::apache::thrift::protocol::T_I32, 5);
   xfer += oprot->writeI32((*(this->provisionminutes)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("driver", ::apache::thrift::protocol::T_STRUCT, 6);
+  xfer += (*(this->driver)).write(oprot);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -30648,13 +30664,13 @@ bool PassengerServiceClient::recv_setOnline()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "setOnline failed: unknown result");
 }
 
-bool PassengerServiceClient::takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes)
+bool PassengerServiceClient::takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes, const Driver& driver)
 {
-  send_takeOrder(credentials, userdevice, serviceorderid, confirm, provisionminutes);
+  send_takeOrder(credentials, userdevice, serviceorderid, confirm, provisionminutes, driver);
   return recv_takeOrder();
 }
 
-void PassengerServiceClient::send_takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes)
+void PassengerServiceClient::send_takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes, const Driver& driver)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("takeOrder", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -30665,6 +30681,7 @@ void PassengerServiceClient::send_takeOrder(const Credentials& credentials, cons
   args.serviceorderid = &serviceorderid;
   args.confirm = &confirm;
   args.provisionminutes = &provisionminutes;
+  args.driver = &driver;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -37347,7 +37364,7 @@ void PassengerServiceProcessor::process_takeOrder(int32_t seqid, ::apache::thrif
 
   PassengerService_takeOrder_result result;
   try {
-    result.success = iface_->takeOrder(args.credentials, args.userdevice, args.serviceorderid, args.confirm, args.provisionminutes);
+    result.success = iface_->takeOrder(args.credentials, args.userdevice, args.serviceorderid, args.confirm, args.provisionminutes, args.driver);
     result.__isset.success = true;
   } catch (ServiceFailure &servicefailure) {
     result.servicefailure = servicefailure;

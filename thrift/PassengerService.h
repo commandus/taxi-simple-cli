@@ -90,7 +90,7 @@ class PassengerServiceIf {
   virtual void getEvents(NotificationEvents& _return, const Credentials& credentials, const UserDevice& userdevice, const ID startId, const RowRange& rowrange) = 0;
   virtual bool getOnline(const Credentials& credentials, const UserDevice& userdevice) = 0;
   virtual bool setOnline(const Credentials& credentials, const UserDevice& userdevice, const bool value) = 0;
-  virtual bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes) = 0;
+  virtual bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes, const Driver& driver) = 0;
   virtual bool startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
   virtual bool startDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const Driver& driver) = 0;
   virtual bool stopDriving(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) = 0;
@@ -385,7 +385,7 @@ class PassengerServiceNull : virtual public PassengerServiceIf {
     bool _return = false;
     return _return;
   }
-  bool takeOrder(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */, const bool /* confirm */, const NUMBER32 /* provisionminutes */) {
+  bool takeOrder(const Credentials& /* credentials */, const UserDevice& /* userdevice */, const ID /* serviceorderid */, const bool /* confirm */, const NUMBER32 /* provisionminutes */, const Driver& /* driver */) {
     bool _return = false;
     return _return;
   }
@@ -10935,12 +10935,13 @@ class PassengerService_setOnline_presult {
 };
 
 typedef struct _PassengerService_takeOrder_args__isset {
-  _PassengerService_takeOrder_args__isset() : credentials(false), userdevice(false), serviceorderid(false), confirm(false), provisionminutes(false) {}
+  _PassengerService_takeOrder_args__isset() : credentials(false), userdevice(false), serviceorderid(false), confirm(false), provisionminutes(false), driver(false) {}
   bool credentials;
   bool userdevice;
   bool serviceorderid;
   bool confirm;
   bool provisionminutes;
+  bool driver;
 } _PassengerService_takeOrder_args__isset;
 
 class PassengerService_takeOrder_args {
@@ -10956,6 +10957,7 @@ class PassengerService_takeOrder_args {
   ID serviceorderid;
   bool confirm;
   NUMBER32 provisionminutes;
+  Driver driver;
 
   _PassengerService_takeOrder_args__isset __isset;
 
@@ -10979,6 +10981,10 @@ class PassengerService_takeOrder_args {
     provisionminutes = val;
   }
 
+  void __set_driver(const Driver& val) {
+    driver = val;
+  }
+
   bool operator == (const PassengerService_takeOrder_args & rhs) const
   {
     if (!(credentials == rhs.credentials))
@@ -10990,6 +10996,8 @@ class PassengerService_takeOrder_args {
     if (!(confirm == rhs.confirm))
       return false;
     if (!(provisionminutes == rhs.provisionminutes))
+      return false;
+    if (!(driver == rhs.driver))
       return false;
     return true;
   }
@@ -11016,6 +11024,7 @@ class PassengerService_takeOrder_pargs {
   const ID* serviceorderid;
   const bool* confirm;
   const NUMBER32* provisionminutes;
+  const Driver* driver;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -16432,8 +16441,8 @@ class PassengerServiceClient : virtual public PassengerServiceIf {
   bool setOnline(const Credentials& credentials, const UserDevice& userdevice, const bool value);
   void send_setOnline(const Credentials& credentials, const UserDevice& userdevice, const bool value);
   bool recv_setOnline();
-  bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes);
-  void send_takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes);
+  bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes, const Driver& driver);
+  void send_takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes, const Driver& driver);
   bool recv_takeOrder();
   bool startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
   void send_startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid);
@@ -17560,13 +17569,13 @@ class PassengerServiceMultiface : virtual public PassengerServiceIf {
     return ifaces_[i]->setOnline(credentials, userdevice, value);
   }
 
-  bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes) {
+  bool takeOrder(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid, const bool confirm, const NUMBER32 provisionminutes, const Driver& driver) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->takeOrder(credentials, userdevice, serviceorderid, confirm, provisionminutes);
+      ifaces_[i]->takeOrder(credentials, userdevice, serviceorderid, confirm, provisionminutes, driver);
     }
-    return ifaces_[i]->takeOrder(credentials, userdevice, serviceorderid, confirm, provisionminutes);
+    return ifaces_[i]->takeOrder(credentials, userdevice, serviceorderid, confirm, provisionminutes, driver);
   }
 
   bool startWaiting(const Credentials& credentials, const UserDevice& userdevice, const ID serviceorderid) {
